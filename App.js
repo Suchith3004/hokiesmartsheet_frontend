@@ -1,74 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+// import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import "./App.css";
-import { Login, Register } from "./login/";
+import fire from './login/config/Fire';
+import Login from './login/login';
+import Home from  './login/Home';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLogginActive: true
-        };
+class App extends Component {
+    constructor() {
+      super();
+      this.state = ({
+        user: null,
+      });
+      this.authListener = this.authListener.bind(this);
     }
-
+  
     componentDidMount() {
-        //Add .right by default
-        this.rightSide.classList.add("right");
+      this.authListener();
     }
-
-    changeState() {
-        const { isLogginActive } = this.state;
-
-        if (isLogginActive) {
-            this.rightSide.classList.remove("right");
-            this.rightSide.classList.add("left");
+  
+    authListener() {
+      fire.auth().onAuthStateChanged((user) => {
+        console.log(user);
+        if (user) {
+          this.setState({ user });
+          localStorage.setItem('user', user.uid);
         } else {
-            this.rightSide.classList.remove("left");
-            this.rightSide.classList.add("right");
+          this.setState({ user: null });
+          localStorage.removeItem('user');
         }
-        this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
+      });
     }
-
+  
     render() {
-        const { isLogginActive } = this.state;
-        const current = isLogginActive ? "Register" : "Login";
-        const currentActive = isLogginActive ? "login" : "register";
-        return (
-            <div className="App">
-                <div className="login">
-                    <div className="container" ref={ref => (this.container = ref)}>
-                        {isLogginActive && (
-                            <Login containerRef={ref => (this.current = ref)} />
-                        )}
-                        {!isLogginActive && (
-                            <Register containerRef={ref => (this.current = ref)} />
-                        )}
-                    </div>
-                    <RightSide
-                        current={current}
-                        currentActive={currentActive}
-                        containerRef={ref => (this.rightSide = ref)}
-                        onClick={this.changeState.bind(this)}
-                    />
-                </div>
-            </div>
-        );
-    }
-}
-
-const RightSide = props => {
-    return (
-        <div
-            className="right-side"
-            ref={props.containerRef}
-            onClick={props.onClick}
-        >
-            <div className="inner-container">
-                <div className="text">{props.current}</div>
-            </div>
+      return (
+        <div className="App">
+          {this.state.user ? (
+            <Home />
+          ) :
+            (
+              <Login />
+            )}
         </div>
-    );
-};
-
-export default App;
+      );
+    }
+  }
+  
+  export default App;
+  
