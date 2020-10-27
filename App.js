@@ -10,7 +10,7 @@ import Home from  './login/Home';
 class App extends Component {
     constructor() {
       super();
-      this.state = ({
+      this.state = ({ //puts user in a state 
         user: null,
       });
       this.authListener = this.authListener.bind(this);
@@ -21,7 +21,7 @@ class App extends Component {
     }
   
     authListener() {
-      fire.auth().onAuthStateChanged((user) => {
+      fire.auth().onAuthStateChanged((user) => { //checks if user logged in 
         console.log(user);
         if (user) {
           this.setState({ user });
@@ -36,11 +36,11 @@ class App extends Component {
     render() {
       return (
         <div className="App">
-          {this.state.user ? (
-            <Home />
+          {this.state.user ? ( //checks if user is logged in, then goes to home
+            <Home /> //this renders home 
           ) :
             (
-              <Login />
+              <Login /> //if user is not logged in, renders Login. 
             )}
         </div>
       );
