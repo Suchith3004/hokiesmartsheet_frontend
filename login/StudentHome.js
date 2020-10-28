@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/Fire';
 
-class Home extends Component {
+class StudentHome extends Component {
     constructor(props) {
         super(props);
         this.logout = this.logout.bind(this);
@@ -15,7 +15,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <h1>Welcome to Home</h1>
+                <h1>Welcome to the Student Page</h1>
                 <button onClick={this.logout}>Logout</button>
             </div>
         );
@@ -24,5 +24,5 @@ class Home extends Component {
 
 }
 
-export default Home;
+export default StudentHome;
 

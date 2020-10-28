@@ -1,11 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-// import React from 'react';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import "./App.css";
 import fire from './login/config/Fire';
 import Login from './login/login';
-import Home from  './login/Home';
+import Home from './login/StudentHome';
+import StudentRegister from "./login/StudentRegister";
+import MentorRegister from "./login/MentorRegister";
+
+
 
 class App extends Component {
     constructor() {
@@ -35,12 +36,13 @@ class App extends Component {
   
     render() {
       return (
+
         <div className="App">
           {this.state.user ? (
             <Home />
           ) :
             (
-              <Login />
+                <Login />
             )}
         </div>
       );
