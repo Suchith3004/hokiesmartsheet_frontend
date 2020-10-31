@@ -8,13 +8,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "bootstrap": "^4.5.3",
+    "dependencies": "0.0.1",
     "expo": "~39.0.2",
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
     "expo-updates": "~0.3.2",
     "firebase": "^8.0.0",
     "react": "16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "16.13.1",
     "react-native": "~0.63.3",
     "react-native-gesture-handler": "~1.7.0",

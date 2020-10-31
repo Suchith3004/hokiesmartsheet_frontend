@@ -5,6 +5,8 @@ import Login from './login/login';
 import Home from './login/StudentHome';
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
+import DSemesterItem from "./checksheet/DSemesterItem";
+import Checksheet from "./checksheet/Checksheet";
 
 
 
@@ -42,7 +44,7 @@ class App extends Component {
             <Home /> //this renders home 
           ) :
             (
-              <Login /> //if user is not logged in, renders Login.
+              <Checksheet /> //if user is not logged in, renders Login.
             )}
         </div>
       );
