@@ -44,7 +44,7 @@ class App extends Component {
             <Home /> //this renders home 
           ) :
             (
-              <Checksheet /> //if user is not logged in, renders Login.
+              <Login /> //if user is not logged in, renders Login.
             )}
         </div>
       );

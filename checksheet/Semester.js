@@ -1,43 +1,48 @@
-import React, { Component } from 'react';
-import DSemesterItem from "./DSemesterItem";
+import React from "react";
+import styled from 'styled-components';
+import Task from './DSemesterItem'
 import {Droppable} from "react-beautiful-dnd";
 
+const Container = styled.div`
+    margin: 8px;
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+`;
+const Title = styled.h3`
+    padding: 8px;
+`;
+const TaskList = styled.div`
+    padding: 8px;
+    transition: background-color 0.2s ease;
+    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+    flex-grow: 1;
+    min-height: 100px;
+`;
 
-class Semester extends Component {
-    constructor(props) {
-        super(props);
-    }
 
-    render() {
-        const SemesterStyle = {
-            margin: '8px',
-            border: '1px solid lightgrey',
-            borderRadius: '2px'
-        };
-        const TitleStyle = {
-            padding:'8px',
-        };
-        const ClassesListStyle = {
-            padding:'8px',
-        };
 
-        return(
-            <div style={SemesterStyle}>
-                <div style={TitleStyle}>
-                    {this.props.semester.title};
-                </div>
-                <Droppable droppableId = {this.props.semester.id} >
-                    {provided => (
-                        <div   {...provided.droppableProps} innerRef={provided.innerRef} style={ClassesListStyle}>
-                            {this.props.classes.map((dSemesterItem,index) => <DSemesterItem key = {dSemesterItem.id} dSemesterItem = {dSemesterItem} index = {index}/> )}
+export default class Column extends React.Component{
+    render(){
+        return (
+            <Container>
+                <Title>{this.props.column.title}</Title>
+                <Droppable droppableId = {this.props.column.id}>
+                    {(provided,snapshot) => (
+                        <TaskList
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            isDraggingOver={snapshot.isDraggingOver}
+                        >
+                            {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)}
                             {provided.placeholder}
-                        </div>
+                        </TaskList>
                     )}
                 </Droppable>
-            </div>
-        )
+            </Container>
+        );
     }
-
 }
 
-export default Semester;
