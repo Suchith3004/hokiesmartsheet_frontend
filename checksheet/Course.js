@@ -43,6 +43,7 @@ class Course extends Component {
         return null;
     }
 
+
     render() {
         return (
             <div>

@@ -30,3 +30,4 @@ export default {
     put: params => request(Object.assign({ method: 'PUT' }, params)),
     delete: params => request(Object.assign({ method: 'DELETE' }, params))
 };
+
