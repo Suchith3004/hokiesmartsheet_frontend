@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import fire from './config/Fire';
+import Course from '../checksheet/Course'
 
 class StudentHome extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class StudentHome extends Component {
             <div>
                 <h1>Welcome to the Student Page</h1>
                 <button onClick={this.logout}>Logout</button>
+                <Course name="CS 2114"/>
             </div>
         );
 

@@ -20,28 +20,29 @@ class Course extends Component {
         // }
     }
 
-    // fetchCourseInfo() {
-    //
-    //     const [course, setCourse] = useState(null);
-    //
-    //     dbFetch.default.get({
-    //         endpoint: "/getCourseByPrefix",
-    //         data: { category: subject, number: number }
-    //     })
-    //         .then(response => response.json())
-    //         .then(data =>
-    //             setCourse(data)
-    //         )
-    //         .catch(error => console.error("Failed to fetch course. " + error.message));
-    //
-    //     if(course) {
-    //         return <div>
-    //             {JSON.stringify(course)}
-    //         </div>
-    //     }
-    //
-    //     return null;
-    // }
+    fetchCourseInfo() {
+
+        const [course, setCourse] = useState(null);
+
+        dbFetch.default.get({
+            endpoint: "/getCourseByPrefix",
+            data: { category: subject, number: number }
+        })
+            .then(response => response.json())
+            .then(data => 
+                setCourse(data)
+            )
+            .catch(error => console.error("Failed to fetch course. " + error.message));
+
+        if(course) {
+            return <div>
+                {JSON.stringify(course)}
+            </div>
+        }
+
+        return null;
+    }
+
 
     render() {
         return (
