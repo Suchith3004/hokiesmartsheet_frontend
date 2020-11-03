@@ -1,7 +1,6 @@
-
 import React from "react";
 import styled from 'styled-components';
-import Task from './DSemesterItem'
+import Task from './Class'
 import {Droppable} from "react-beautiful-dnd";
 
 const Container = styled.div`
@@ -23,14 +22,14 @@ const TaskList = styled.div`
     min-height: 100px;
 `;
 
-
-
-
 export default class Column extends React.Component{
     render(){
         return (
             <Container>
                 <Title>{this.props.column.title}</Title>
+                {this.props.showSearch ? (
+                    <input style={{width:"50%", margin:"8px"}} type="text" width="90%" placeholder="Search" />
+                ) : ( <span />)}
                 <Droppable droppableId = {this.props.column.id}>
                     {(provided,snapshot) => (
                         <TaskList
@@ -47,4 +46,3 @@ export default class Column extends React.Component{
         );
     }
 }
-
