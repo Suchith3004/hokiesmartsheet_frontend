@@ -1,6 +1,6 @@
-
 import React, {useState} from 'react';
 import Column from "./Semester";
+import CourseSelector from "./CourseSelector";
 import styled from 'styled-components';
 import '@atlaskit/css-reset'
 import{DragDropContext} from "react-beautiful-dnd";
@@ -19,6 +19,12 @@ const initialData ={
         'CS1234' : {id: 'CS1234', numCredits: '3', type: 'E'},
         'CS5678' : {id: 'CS5678', numCredits: '3', type: 'E'},
         'CS9123' : {id: 'CS9123', numCredits: '3', type: 'E'},
+        'CS9990' : {id: 'CS9990', numCredits: '3', type: 'E'},
+        'CS9991' : {id: 'CS9991', numCredits: '3', type: 'E'},
+        'CS9992' : {id: 'CS9992', numCredits: '3', type: 'E'},
+        'MATH9990' : {id: 'MATH9990', numCredits: '3', type: 'E'},
+        'MATH9991' : {id: 'MATH9991', numCredits: '3', type: 'E'},
+        'MATH9992' : {id: 'MATH9992', numCredits: '3', type: 'E'},
     },
     columns:{
         'column-1':{
@@ -36,8 +42,19 @@ const initialData ={
             title: 'Semester 3',
             taskIds: [ 'CS1234', 'CS5678', 'CS9123'],
         },
+        'major-selection':{
+            id: 'major-selection',
+            title: 'Major Selection',
+            taskIds: ['CS9990', 'CS9991', 'CS9992',],
+        },
+        'minor-selection':{
+            id: 'minor-selection',
+            title: 'Minor Selection',
+            taskIds: ['MATH9990', 'MATH9991', 'MATH9992',],
+        }
     },
     columnOrder:['column-1','column-2','column-3'],
+    selectorColumns:['major-selection', 'minor-selection'],
 };
 
 
@@ -147,6 +164,7 @@ export default class Table extends React.Component{
                 onDragEnd={this.onDragEnd}
             >
                 <Container>
+                    <CourseSelector selectorColumns={this.state.selectorColumns} columnData={this.state.columns} tasks={this.state.tasks} />
                     {this.state.columnOrder.map(columnId => {
                         const column = this.state.columns[columnId];
                         const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
@@ -157,5 +175,3 @@ export default class Table extends React.Component{
         );
     }
 }
-
-

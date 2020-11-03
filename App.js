@@ -5,7 +5,7 @@ import Login from './login/login';
 import Home from './login/StudentHome';
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
-import DSemesterItem from "./checksheet/DSemesterItem";
+import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
 
 
@@ -41,7 +41,7 @@ class App extends Component {
 
         <div className="App">
           {this.state.user ? ( //checks if user is logged in, then goes to home
-            <Home /> //this renders home 
+            <Home /> //this renders home
           ) :
             (
               <Login /> //if user is not logged in, renders Login.
