@@ -3,6 +3,13 @@ import "./App.css";
 import fire from './login/config/Fire';
 import Login from './login/login';
 import Home from './login/StudentHome';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
 import DSemesterItem from "./checksheet/Class";
@@ -40,13 +47,38 @@ class App extends Component {
       return (
 
         <div className="App">
-          {this.state.user ? ( //checks if user is logged in, then goes to home
-            <Home /> //this renders home
-          ) :
-            (
-              <Login /> //if user is not logged in, renders Login.
-            )}
-        </div>
+          <Router>
+            <Switch>
+              <Route exact path="/" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home"/>
+                ) : (
+                  <Redirect to="/login"/>
+                )
+              )}/>
+              <Route path="/home" render={() => (
+                this.state.user ? (
+                  <Home />
+                ) : (
+                  <Redirect to="/login"/>
+                )
+              )}/>
+              <Route path="/editcourses" render={() => (
+                this.state.user ? (
+                  <StudentRegister />
+                ) : (
+                  <Redirect to="/login"/>
+                )
+              )}/>
+              <Route exact path="/login" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home"/>
+                ) : (
+                  <Login />
+                )
+              )}/>
+            </Switch>
+          </Router>        </div>
       );
     }
   }
