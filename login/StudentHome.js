@@ -3,7 +3,14 @@ import { useHistory } from 'react-router-dom';
 import fire from './config/Fire';
 import MentorRegister from './MentorRegister';
 import StudentRegister from './StudentRegister';
+import Back from'./StudentHome';
+import styled from "styled-components";
+import { Draggable } from "react-beautiful-dnd";
 
+const Container = styled.div`
+text-align: center;
+background-color: lightblue;
+`;
 
 
 
@@ -12,7 +19,7 @@ class StudentHome extends Component {
         super(props);
         this.logout = this.logout.bind(this);
         this.courseEdit = this.courseEdit.bind(this);
-        this.coursePlan = this.coursePlan.bind(this);
+        this.back = this.back.bind(this);
 
 
     }
@@ -26,21 +33,28 @@ class StudentHome extends Component {
 
     }
     coursePlan() {
-       // <MentorRegister /> //this renders home 
+        // <MentorRegister /> //this renders home 
     }
-    
+    back() {
+        // <MentorRegister /> //this renders home 
+    }
 
     render() {
+
         return (
-            <div>
+            <Container>
                 <h1>Welcome to the Student Page</h1>
-                <button onClick={this.logout}>Logout</button>
+                <button onClick={this.back}>Back</button>
                 <button onClick={this.courseEdit}>Edit your courses taken</button>
-                <button onClick={this.coursePlan}>Course Plan</button>
+                <button onClick={this.logout}>Logout</button>
+
+                <div><text> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+</text></div>
 
 
-            </div>
+            </Container>
         );
+
 
     }
 

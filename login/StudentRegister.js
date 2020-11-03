@@ -1,42 +1,125 @@
 import React, { Component } from 'react';
 import fire from './config/Fire';
+import styled from "styled-components";
+import { Draggable } from "react-beautiful-dnd";
+
+const Container = styled.div`
+background-color: lightblue;
+margin: 8px; 
+position: relative;
+overflow: auto;
+
+
+`;
 
 class StudentRegister extends Component {
     constructor(props) {
         super(props);
+
     }
 
+    numTextFields(event) {
+        /*Getting the number of text fields*/
+        var no = document.getElementById('numClasses').value;
+        // /*Generating text fields dynamically in the same form itself*/
+        for (var i = 1; i < no; i++) {
+            var textfield = document.createElement('input');
+            textfield.type = "text";
+            textfield.value = "";
+            document.getElementById('textfields').appendChild(textfield);
+        }
+        // console.log("hello");
+    }
     render() {
+
+        function getAPClasses() {
+            var str = "", i;
+            for (i = 0; i < asa.cars.options.length; i++) {
+                if (asa.cars.options[i].selected) {
+                    str += asa.cars.options[i].value + ",";
+                }
+            }
+            if (str.charAt(str.length - 1) == ',') {
+                str = str.substr(0, str.length - 1);
+            }
+
+
+            alert("Options selected are " + str);
+
+        }
+
+
         return (
-            <body>
-            <form action="/">
-                <h1>Student Registration</h1>
-                <div className="info">
-                    <input className="fname" type="text" name="name" placeholder="First name"/>
-                    <input className="mname" type="text" name="name" placeholder="Middle name"/>
-                    <input className="lname" type="text" name="name" placeholder="Last name"/>
-                    <input className="pid" type="text" name="name" placeholder="Student PID"/>
-                    <input className="gradyear" type="text" name="name" placeholder="Graduation Year"/>
-                    <input type="text" name="name" placeholder="Phone number"/>
-                    <label htmlFor="majors">Choose a major:</label>
-                    <select name="major" id="major">
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Computer Engineering">Computer Engineering</option>
-                    </select>
-                    <label htmlFor="minors">Choose a minor:</label>
-                    <select name="minor" id="minor">
-                        <option value="None">None</option>
-                        <option value="Mathematics">Mathematics</option>
-                    </select>
-                </div>
-            </form>
-            </body>
+            <Container>
+
+                <form action="/">
+                    <h1>Student Registration</h1>
+                    <div className="info">
+                        <div> <input className="fname" type="text" name="name" placeholder="First name" /></div>
+                        <div><input className="mname" type="text" name="name" placeholder="Middle name" /></div>
+                        <div>  <input className="lname" type="text" name="name" placeholder="Last name" /></div>
+                        <div>   <input className="pid" type="text" name="name" placeholder="Student PID" /></div>
+                        <div>   <input className="gradyear" type="text" name="name" placeholder="Graduation Year" /></div>
+                        <div>   <input type="text" name="name" placeholder="Phone number" /></div>
+
+
+                        <div>  <label htmlFor="majors">Choose a major:</label></div>
+                        <div>   <select name="major" id="major">
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                        </select>
+                        </div>
+
+                        <div>  <label htmlFor="minors">Choose a minor:</label></div>
+                        <div>  <select name="minor" id="minor">
+                            <option value="None">None</option>
+                            <option value="Mathematics">Mathematics</option>
+                        </select>
+                        </div>
+
+                        <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
+                        <div>   <input type="text" name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
+                        <form id="textfields">
+                            <input type="text" id="textfields" ></input>
+                        </form>
+
+
+
+                        <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
+                        <select name="cars" id="combo" multiple>
+                            <option value="CSa">Computer Science A</option>
+                            <option value="micro">Microeconomics</option>
+                            <option value="macro">Macroeconomics</option>
+                            <option value="engLangComp">English - Language/Composition</option>
+                            <option value="engLitComp">English - Literature/Composition</option>
+                            <option value="hist">U.S. History</option>
+                            <option value="calcab">Calculus AB</option>
+                            <option value="calcbc">Calculus BC</option>
+                            <option value="phy1">Physics 1: Algebra-Based</option>
+                            <option value="phy2">Physics 2: Algebra-Based</option>
+                            <option value="phyc">Physics C - Mechanics</option>
+                            <option value="govpol">U.S. Government & Politics</option>
+                            <option value="compgov">Comparative Government & Politics</option>
+                        </select>
+                        <input type="button" onClick="getAPClasses()"></input>
+
+
+
+
+
+                    </div>
+                </form>
+
+
+            </Container>
+
+
+
 
         );
 
     }
 
 }
-
 export default StudentRegister;
 

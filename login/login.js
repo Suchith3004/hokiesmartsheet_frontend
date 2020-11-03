@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
 import fire from './config/Fire';
 import StudentRegister from "./StudentRegister";
+import styled from "styled-components";
+import { Draggable } from "react-beautiful-dnd";
 
+const Container = styled.div`
+
+`;
 class Login extends Component {
+
     constructor(props) {
       super(props);
+      <div
+      style={{
+        backgroundColor: 'blue',
+        width: '100px',
+        height: '100px'
+      }}
+    />
       this.login = this.login.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.signup = this.signup.bind(this);
@@ -15,10 +28,24 @@ class Login extends Component {
     }
   
     handleChange(e) {
+      <div
+      style={{
+        backgroundColor: 'blue',
+        width: '100px',
+        height: '100px'
+      }}
+    />
       this.setState({ [e.target.name]: e.target.value });
     }
   
     login(e) {
+      <div
+      style={{
+        backgroundColor: 'blue',
+        width: '100px',
+        height: '100px'
+      }}
+    />
       e.preventDefault();
       fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
       }).catch((error) => {
@@ -34,9 +61,14 @@ class Login extends Component {
           console.log(error);
         })
     }
+
     render() {
+
       return (
+        <Container>
+
         <div className="col-md-6">
+
           <form>
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
@@ -50,9 +82,16 @@ class Login extends Component {
             <button type="submit" onClick={this.login} class="btn btn-primary">Login</button>
             <button onClick={this.signup} style={{marginLeft: '25px'}} className="btn btn-success">Signup</button>
           </form>
+
         </div>
+        </Container>
+
       );
+
     }
+
+
   }
+
   export default Login;
   
