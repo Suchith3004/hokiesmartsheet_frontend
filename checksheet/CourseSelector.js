@@ -23,8 +23,7 @@ const TaskList = styled.div`
 
 
 
-
-export default class Table extends React.Component{
+export default class CourseSelector extends React.Component{
     render(){
         return (
             <Container>

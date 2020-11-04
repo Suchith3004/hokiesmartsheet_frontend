@@ -4,7 +4,8 @@ import CourseSelector from "./CourseSelector";
 import styled from 'styled-components';
 import '@atlaskit/css-reset'
 import{DragDropContext} from "react-beautiful-dnd";
-var dbFetch = require('../api/dbFetch')
+import dbFetch from '../api/dbFetch'
+
 
 
 
@@ -64,28 +65,37 @@ const Container = styled.div`
 export default class Table extends React.Component{
     constructor(props) {
         super(props);
-        this.state = initialData
+        this.state = {
+            error: null,
+            isLoaded: false,
+            items: {}
+          };
         //this.fetchCourseInfo()
     }
 
-    fetchCourseInfo() {
-        const [course, setCourse] = useState(null);
+    componentDidMount() {
 
-        dbFetch.default.get({
+        dbFetch.get({
             endpoint: "/getDefaultChecksheet",
             data: { major: "CS", gradYear: "2022" }
         })
             .then(response => response.json())
-            .then(data =>
-                setCourse(data)
-            )
-            .catch(error => console.error("Failed to fetch course. " + error.message));
+            .then((data) => {
+                this.setState({
+                  isLoaded: true,
+                  items: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                  });
+            });
 
-        if(course) {
-            //this.state =  JSON.stringify(course)
-            console.log(JSON.stringify(course))
-        }
-    }
+        
+      }
 
     onDragStart = () =>{
         document.body.style.color = 'orange';
@@ -96,82 +106,96 @@ export default class Table extends React.Component{
     };
 
     onDragEnd = result =>{
-        document.body.style.color = 'inherit';
-        const{destination, source, draggableId} = result;
+        // document.body.style.color = 'inherit';
+        // const{destination, source, draggableId} = result;
 
-        if(!destination){
-            return;
-        }
-        if(destination.draggableId === source.droppableId && destination.index === source.index){
-            return;
-        }
-        const start = this.state.columns[source.droppableId];
-        const finish = this.state.columns[destination.droppableId];
+        // if(!destination){
+        //     return;
+        // }
+        // if(destination.draggableId === source.droppableId && destination.index === source.index){
+        //     return;
+        // }
+        // const start = this.state.columns[source.droppableId];
+        // const finish = this.state.columns[destination.droppableId];
 
-        if(start === finish){
-            const newTaskIds = Array.from(start.taskIds);
-            newTaskIds.splice(source.index, 1);
-            newTaskIds.splice(destination.index,0,draggableId);
+        // if(start === finish){
+        //     const newTaskIds = Array.from(start.taskIds);
+        //     newTaskIds.splice(source.index, 1);
+        //     newTaskIds.splice(destination.index,0,draggableId);
 
-            const newColumn ={
-                ...start,
-                taskIds: newTaskIds,
-            };
+        //     const newColumn ={
+        //         ...start,
+        //         taskIds: newTaskIds,
+        //     };
 
-            const newState = {
-                ...this.state,
-                columns: {
-                    ...this.state.columns,
-                    [newColumn.id]:newColumn,
-                },
-            };
-            this.setState(newState);
-            return;
-        }
+        //     const newState = {
+        //         ...this.state,
+        //         columns: {
+        //             ...this.state.columns,
+        //             [newColumn.id]:newColumn,
+        //         },
+        //     };
+        //     this.setState(newState);
+        //     return;
+        // }
 
-        //Moving from one list to another
-        const startTaskIds = Array.from(start.taskIds);
-        startTaskIds.splice(source.index,1);
-        const newStart ={
-            ...start,
-            taskIds: startTaskIds,
-        };
+        // //Moving from one list to another
+        // const startTaskIds = Array.from(start.taskIds);
+        // startTaskIds.splice(source.index,1);
+        // const newStart ={
+        //     ...start,
+        //     taskIds: startTaskIds,
+        // };
 
-        const finishTaskIds = Array.from(finish.taskIds);
-        finishTaskIds.splice(destination.in,0,draggableId);
-        const newFinish ={
-            ...finish,
-            taskIds: finishTaskIds,
-        };
+        // const finishTaskIds = Array.from(finish.taskIds);
+        // finishTaskIds.splice(destination.in,0,draggableId);
+        // const newFinish ={
+        //     ...finish,
+        //     taskIds: finishTaskIds,
+        // };
 
-        const newState = {
-            ...this.state,
-            columns: {
-                ...this.state.columns,
-                [newStart.id]:newStart,
-                [newFinish.id]:newFinish,
-            },
-        };
-        this.setState(newState)
+        // const newState = {
+        //     ...this.state,
+        //     columns: {
+        //         ...this.state.columns,
+        //         [newStart.id]:newStart,
+        //         [newFinish.id]:newFinish,
+        //     },
+        // };
+        // this.setState(newState)
     };
 
 
     render(){
-        return (
-            <DragDropContext
-                onDragStart = {this.onDragStart}
-                onDragUpdate = {this.onDragUpdate}
-                onDragEnd={this.onDragEnd}
-            >
-                <Container>
-                    <CourseSelector selectorColumns={this.state.selectorColumns} columnData={this.state.columns} tasks={this.state.tasks} />
-                    {this.state.columnOrder.map(columnId => {
-                        const column = this.state.columns[columnId];
-                        const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                        return <Column key={column.id} column={column} tasks = {tasks} />
-                    })}
-                </Container>
-            </DragDropContext>
-        );
+        const { error, isLoaded, items } = this.state;
+        if (error) {
+          return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+          return <div>Loading...</div>;
+        } else {
+            return (
+                <DragDropContext
+                    onDragStart = {this.onDragStart}
+                    onDragUpdate = {this.onDragUpdate}
+                    onDragEnd={this.onDragEnd}
+                >
+                    <Container>
+                        {/* <CourseSelector selectorColumns={this.state.selectorColumns} columnData={this.state.columns} tasks={this.state.tasks} /> */}
+                        {this.state.items.semesters.forEach((sem, index) => {
+                            const column = sem;
+                            const tasks = sem.semesterCourses;
+                            const name = "Semester " + sem.semNum;
+                            return <Column key={name} column={column} tasks = {tasks} />
+                        })}
+                        {/* {this.state.columnOrder.map(columnId => {
+                            const column = this.state.columns[columnId];
+                            const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
+                            return <Column key={column.id} column={column} tasks = {tasks} />
+                        })} */}
+                    </Container>
+                </DragDropContext>
+            );
+        }
+
     }
 }

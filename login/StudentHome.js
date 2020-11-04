@@ -1,9 +1,10 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import fire from './config/Fire';
 import CheckSheet from '../checksheet/Checksheet'
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import dbFetch from '../api/dbFetch'
 
 const Container = styled.div`
 text-align: center;
@@ -38,7 +39,33 @@ class StudentHome extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {}
     }
+
+    userChecksheet() {
+        var userSheet = {};
+        // const [userSheet, setSheet] = useState({
+        //     hello: 'hi'
+        // });
+        
+
+        // useEffect(() => {
+            dbFetch.get({
+                endpoint: "/getDefaultChecksheet",
+                data: { major: "CS", gradYear: "2022" }
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    userSheet =data;
+                    // setSheet(data)
+                    console.log(userSheet);
+                })
+                .catch(error => console.error("Failed to fetch course. " + error.message));
+        // })
+
+        return (<CheckSheet initialData = {this.state} />);
+    }
+
 
     render() {
         return (
@@ -54,7 +81,7 @@ class StudentHome extends Component {
                     </text></div>
 
                 </Container>
-                <CheckSheet initialData = {this.state} />
+                {/* <CheckSheet/> */}
             </div>
         );
 

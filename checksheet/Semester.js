@@ -24,20 +24,27 @@ const TaskList = styled.div`
 
 export default class Column extends React.Component{
     render(){
+        console.log("here");
         return (
             <Container>
-                <Title>{this.props.column.title}</Title>
+                <Title>{this.props.key}</Title>
                 {this.props.showSearch ? (
                     <input style={{width:"50%", margin:"8px"}} type="text" width="90%" placeholder="Search" />
                 ) : ( <span />)}
-                <Droppable droppableId = {this.props.column.id}>
+                <Droppable droppableId = {this.props.key}>
                     {(provided,snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
-                            {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)}
+                            {
+                                this.props.tasks.forEach((course, index) => {
+                                    console.log(course);
+                                    <Task key={course.courseId} task = {course} index={index}/>
+                                })
+                            }
+                            {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}
                             {provided.placeholder}
                         </TaskList>
                     )}
