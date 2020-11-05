@@ -85,7 +85,7 @@ class StudentRegister extends Component {
                         <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
                         <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
                         <form id="textfields">
-                            <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  id="textfields" ></input>
+                            <input type="text" id="textfields" ></input>
                         </form>
 
 
