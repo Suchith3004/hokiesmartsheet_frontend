@@ -8,8 +8,8 @@ const Container = styled.div`
 text-align: center;
 display: inline-block;
     margin-left: auto;
-    
-    margin-right: auto;
+    margin-top:200px
+    algin-items:center;
     justify-content: center;
     color: White;
 `;
@@ -87,7 +87,7 @@ class Login extends Component {
 
             <Container>
 
-                <div className="col-md-6">
+                <div className="col-md-6" alignItems='center'>
                     <h1><label style={{ fontSize: 50, color:"white" }} for="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
 
 

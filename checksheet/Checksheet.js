@@ -65,8 +65,10 @@ const Container = styled.div`
     flex-wrap: wrap;
     width: 1000px;
     padding: 70px;
-    margin: 200px;
     background-color:#b04f5f;
+    align-items: center;
+    margin-left:150px;
+    margin-top: 50px;
 `;
 export default class Table extends React.Component{
     constructor(props) {
@@ -177,7 +179,8 @@ export default class Table extends React.Component{
                     onDragEnd={this.onDragEnd}
                 >
                     <Container>
-                        {/* <CourseSelector selectorColumns={this.state.selectorColumns} columnData={this.state.columns} tasks={this.state.tasks} /> */}
+                        {/* <Column key={'Homeless'} name = {'Major Requirements'} column = {this.state.items.homlessCourses} tasks= {this.state.items.homelessCourses} showSearch={true}/> */}
+                        {/* <CourseSelector selectorColumns={this.state.items.homlessCourses} columnData={this.state.columns} tasks={this.state.tasks} /> */}
                         {this.state.items.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;
