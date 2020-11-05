@@ -9,7 +9,7 @@ import dbFetch from '../api/dbFetch'
 const Container = styled.div`
 text-align: center;
 background-color: #a24857;
-position: absolute;
+padding: 30px;
 `;
 
 function LogoutButton(props) {
@@ -45,12 +45,15 @@ class StudentHome extends Component {
                         <Link to="/editcourses">
                         <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
                         </Link>
-                        <LogoutButton/></div>
-
+                        <LogoutButton/>
+                    </div>
+                    
+                    <CheckSheet/>
 
                 </Container>
-                <CheckSheet />
             </div>
+            
+
         );
 
     }

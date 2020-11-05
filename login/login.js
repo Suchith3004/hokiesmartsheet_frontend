@@ -34,7 +34,6 @@ function SubmitButton(props) {
             .catch((error) => {
                 console.log(error);
             })
-
     }
 
     return (

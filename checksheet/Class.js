@@ -1,7 +1,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import {Draggable} from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
 
 
 const Container = styled.div`
@@ -9,7 +9,7 @@ const Container = styled.div`
     border-radius: 2px;
     padding: 8px;
     margin-bottom: 8px;
-    background-color: ${props=> (props.isDragging ? 'lightgreen' : 'white')};
+    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
     display: flex;
 `;
 
@@ -20,20 +20,26 @@ const Handle = styled.div`
     border-radius: 4px;
     margin-right: 8px;
 `;
-export default class Task extends React.Component{
+export default class Task extends React.Component {
     render() {
-        console.log(this.props.task.courseId);
+
+        var courseName = this.props.task.name;
+        if (courseName.includes('Elective') || courseName.includes('Pathway'))
+            courseName = '';
+
         return (
-            <Draggable draggableId={this.props.task.courseId} index = {this.props.index}>
-                {(provided,snapshot) => (
+            <Draggable draggableId={this.props.task.courseId} index={this.props.index}>
+                {(provided, snapshot) => (
                     <Container
                         {...provided.draggableProps}
                         ref={provided.innerRef}
-                        isDragging = {snapshot.isDragging}
+                        isDragging={snapshot.isDragging}
                         className="classHandleText"
                     >
                         <Handle  {...provided.dragHandleProps} />
-                        {this.props.task.courseId}
+                        <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
+                        <p style={{ color: 'black', textAlign: 'right'}}> {this.props.task.credits}</p>
+                        
                     </Container>
                 )}
             </Draggable>

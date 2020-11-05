@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import fire from './config/Fire';
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import { SearchBar } from '../utilities/SearchBar';
+import dbFetch from '../api/dbFetch'
+
 
 const Container = styled.div`
 padding:20px;
@@ -13,10 +16,44 @@ padding:10px;
 border-radius:10px;
 border-top-left-radius: 25px;
 `;
+
 class StudentRegister extends Component {
+
     constructor(props) {
         super(props);
 
+        this.state = {
+            isLoaded: false,
+            error: null,
+            apEquivalents: {},
+            courseOptions: {}
+        }
+
+    }
+
+
+    componentDidMount() {
+        dbFetch.get({
+            endpoint: "/getAllAPEquivalents",
+            data: {}
+        })
+            .then( (response) =>{ 
+                response.json()
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    isLoaded: true,
+                    apEquivalents: data
+                })
+            })
+            .catch((error) => {
+                console.error("Failed to fetch apEquivalents. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
     }
 
     numTextFields(event) {
@@ -31,56 +68,77 @@ class StudentRegister extends Component {
         }
         // console.log("hello");
     }
+
+
     render() {
+        // const { apSearchValue, setAPSearchValue } = useState('');
+        // const { apSearchList, setAPSearchList } = useState();
+        function filterAPClasses( apSearchValue ) {
+            const filteredResults = this.state.apEquivalents.filter(equivalent => {
+                return equivalent.apName.toLowerCase().includes(apSearchValue.toLowerCase());
+            });
 
-        function getAPClasses() {
-            var str = "", i;
-            for (i = 0; i < asa.cars.options.length; i++) {
-                if (asa.cars.options[i].selected) {
-                    str += asa.cars.options[i].value + ",";
-                }
-            }
-            if (str.charAt(str.length - 1) == ',') {
-                str = str.substr(0, str.length - 1);
-            }
+            const cleanedResults = filteredResults.map(equivalent => {
+                return equivalent.apName + ' (' + equivalent.apScore + ') => ' + equivalent.vtCourseName;
+            })
 
-
-            alert("Options selected are " + str);
-
+            return cleanedResults;
+            
+            // setAPSearchList(cleanedResults);
         }
 
+
+        // function getAPClasses() {
+        //     var str = "", i;
+        //     for (i = 0; i < asa.cars.options.length; i++) {
+        //         if (asa.cars.options[i].selected) {
+        //             str += asa.cars.options[i].value + ",";
+        //         }
+        //     }
+        //     if (str.charAt(str.length - 1) == ',') {
+        //         str = str.substr(0, str.length - 1);
+        //     }
+
+
+        //     alert("Options selected are " + str);
+
+        // }
+        function cleanDefaultOptions() {
+            return this.state.apEquivalents.map(equivalent => {
+                return equivalent.apName + ' (' + equivalent.apScore + ') => ' + equivalent.vtCourseName;
+            })
+        }
 
         return (
 
             <form action="/">
-                <label style={{fontSize:60, padding:-40}}>Student Registration</label>
+                <label style={{ fontSize: 60, padding: -40 }}>Student Registration</label>
                 <Container>
-
+                    {/* <div> 
+                        <SearchBar filterSearchChange={filterAPClasses} defaultOptions={cleanDefaultOptions}/>   
+                    </div> */}
                     <div className="info">
-                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
-                        <div><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="mname" type="text" name="name" placeholder="Middle name" /></div>
-                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Last name" /></div>
-                        <div>   <input className="pid" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Student PID" /></div>
-                        <div>   <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Graduation Year" /></div>
-                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="name" placeholder="Phone number" /></div>
-
+                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
+                        <div>  <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="mname" type="text" name="name" placeholder="Middle name" /></div>
+                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Last name" /></div>
+                        <div>  <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Graduation Year" /></div>
 
                         <div>  <label htmlFor="majors">Choose a major:</label></div>
-                        <div>   <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}}name="major" id="major">
+                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="major" id="major">
                             <option value="Computer Science">Computer Science</option>
                             <option value="Computer Engineering">Computer Engineering</option>
                         </select>
                         </div>
 
                         <div>  <label htmlFor="minors">Choose a minor:</label></div>
-                        <div>  <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}} name="minor" id="minor">
+                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="minor" id="minor">
                             <option value="None">None</option>
                             <option value="Mathematics">Mathematics</option>
                         </select>
                         </div>
 
                         <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
-                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
                         <form id="textfields">
                             <input type="text" id="textfields" ></input>
                         </form>

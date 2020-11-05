@@ -7,18 +7,22 @@ const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
-    width: 300px;
+    width: 350px;
+    height: 400px;
     display: flex;
     flex-direction: column;
+    background-color:#a24857
 `;
 const Title = styled.h3`
     padding: 8px;
+    color: aqua
 `;
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
     flex-grow: 1;
+    padding-bottom: 30px;
     min-height: 100px;
 `;
 

@@ -62,6 +62,11 @@ const initialData ={
 
 const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
+    width: 900px;
+    padding: 65px;
+    margin: 200px;
+    background-color:#b04f5f;
 `;
 export default class Table extends React.Component{
     constructor(props) {
@@ -77,8 +82,8 @@ export default class Table extends React.Component{
     componentDidMount() {
 
         dbFetch.get({
-            endpoint: "/getDefaultChecksheet",
-            data: { major: "CS", gradYear: "2022" }
+            endpoint: "/getUserChecksheet/92839",
+            data: {}
         })
             .then(response => response.json())
             .then((data) => {
@@ -123,55 +128,38 @@ export default class Table extends React.Component{
             return;
         }
 
+        if(destination.droppableId === source.droppableId)
+            return;
 
-        // const start = this.state.columns[source.droppableId];
-        // const finish = this.state.columns[destination.droppableId];
+        console.log('source ' + source.droppableId);
+        console.log('destination ' + destination.droppableId);
+        
+        const fromSem = source.droppableId.split(" ")[1];
+        const toSem = destination.droppableId.split(' ')[1];
 
-        // if(start === finish){
-        //     const newTaskIds = Array.from(start.taskIds);
-        //     newTaskIds.splice(source.index, 1);
-        //     newTaskIds.splice(destination.index,0,draggableId);
-
-        //     const newColumn ={
-        //         ...start,
-        //         taskIds: newTaskIds,
-        //     };
-
-        //     const newState = {
-        //         ...this.state,
-        //         columns: {
-        //             ...this.state.columns,
-        //             [newColumn.id]:newColumn,
-        //         },
-        //     };
-        //     this.setState(newState);
-        //     return;
-        // }
-
-        // //Moving from one list to another
-        // const startTaskIds = Array.from(start.taskIds);
-        // startTaskIds.splice(source.index,1);
-        // const newStart ={
-        //     ...start,
-        //     taskIds: startTaskIds,
-        // };
-
-        // const finishTaskIds = Array.from(finish.taskIds);
-        // finishTaskIds.splice(destination.in,0,draggableId);
-        // const newFinish ={
-        //     ...finish,
-        //     taskIds: finishTaskIds,
-        // };
-
-        // const newState = {
-        //     ...this.state,
-        //     columns: {
-        //         ...this.state.columns,
-        //         [newStart.id]:newStart,
-        //         [newFinish.id]:newFinish,
-        //     },
-        // };
-        // this.setState(newState)
+        dbFetch.put({
+            endpoint: "/moveClass",
+            data: {
+                userId:'92839',
+                courseId: draggableId,
+                toSem: parseInt(toSem),
+                fromSem: parseInt(fromSem) 
+            }
+        })
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                  isLoaded: true,
+                  items: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                  });
+            });
     };
 
 
