@@ -1,17 +1,23 @@
 
-import React from "react";
+import React, {Component, useState} from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import { CoursePopup, CustomPopup } from '../utilities/CoursePopup';
 
 
 const Container = styled.div`
     border: 1px solid lightgrey;
     border-radius: 2px;
-    padding: 8px;
-    margin-bottom: 8px;
+    padding: 4px;
+    margin-bottom: 4px;
     background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
-    display: flex;
+    display: flex;               
+    flex-direction: row;          
+    flex-wrap: nowrap;            
+    justify-content: space-between; 
 `;
+
+
 
 const Handle = styled.div`
     width : 20px;
@@ -23,6 +29,8 @@ const Handle = styled.div`
 export default class Task extends React.Component {
     render() {
 
+        // const {open, setOpen} = useState(false);
+
         var courseName = this.props.task.name;
         if (courseName.includes('Elective') || courseName.includes('Pathway'))
             courseName = '';
@@ -30,6 +38,7 @@ export default class Task extends React.Component {
         return (
             <Draggable draggableId={this.props.task.courseId} index={this.props.index}>
                 {(provided, snapshot) => (
+
                     <Container
                         {...provided.draggableProps}
                         ref={provided.innerRef}
@@ -37,9 +46,17 @@ export default class Task extends React.Component {
                         className="classHandleText"
                     >
                         <Handle  {...provided.dragHandleProps} />
-                        <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
-                        <p style={{ color: 'black', textAlign: 'right'}}> {this.props.task.credits}</p>
+
                         
+                        {/* <CoursePopup open= {open} setOpen={setOpen}/> */}
+
+                        <div style={{ backgroundColor: 'white' }} >
+                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>s
+                        </div>
+                        <div style={{ backgroundColor: 'white' }}>
+                            <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
+                        </div>
+
                     </Container>
                 )}
             </Draggable>

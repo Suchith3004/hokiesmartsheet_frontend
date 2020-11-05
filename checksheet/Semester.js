@@ -8,10 +8,12 @@ const Container = styled.div`
     border: 1px solid lightgrey;
     border-radius: 2px;
     width: 400px;
-    height: 400px;
+    height: 250px;
     display: flex;
     flex-direction: column;
-    background-color:#a24857
+    background-color:#a24857;
+    padding-bottom:30px;
+    align-items: center;
 `;
 const Title = styled.h3`
     padding: 8px;
@@ -22,9 +24,9 @@ const TaskList = styled.div`
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
     flex-grow: 1;
-    width: 350px;
-    padding-bottom: 30px;
+    width: 350px;x
     min-height: 100px;
+    background-color:#a24857;
 `;
 
 export default class Column extends React.Component{
