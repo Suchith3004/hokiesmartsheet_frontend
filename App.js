@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./App.css";
 import fire from './login/config/Fire';
 import Login from './login/login';
-import Home from './login/StudentHome';
+import Home from './login/StudentRegister';
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
 

@@ -4,14 +4,18 @@ import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-background-color: lightblue;
-margin: 8px; 
-position: relative;
-overflow: auto;
+padding:20px;
+  border:0;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+
+`;
+const roundedInput = styled.div`
+padding:10px;
+border-radius:10px;
+border-top-left-radius: 25px;
 
 
 `;
-
 class StudentRegister extends Component {
     constructor(props) {
         super(props);
@@ -50,43 +54,44 @@ class StudentRegister extends Component {
 
 
         return (
-            <Container>
 
-                <form action="/">
-                    <h1>Student Registration</h1>
+            <form action="/">
+                <label style={{fontSize:60}}>Student Registration</label>
+                <Container>
+
                     <div className="info">
-                        <div> <input className="fname" type="text" name="name" placeholder="First name" /></div>
-                        <div><input className="mname" type="text" name="name" placeholder="Middle name" /></div>
-                        <div>  <input className="lname" type="text" name="name" placeholder="Last name" /></div>
-                        <div>   <input className="pid" type="text" name="name" placeholder="Student PID" /></div>
-                        <div>   <input className="gradyear" type="text" name="name" placeholder="Graduation Year" /></div>
-                        <div>   <input type="text" name="name" placeholder="Phone number" /></div>
+                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
+                        <div><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="mname" type="text" name="name" placeholder="Middle name" /></div>
+                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Last name" /></div>
+                        <div>   <input className="pid" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Student PID" /></div>
+                        <div>   <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Graduation Year" /></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="name" placeholder="Phone number" /></div>
 
 
                         <div>  <label htmlFor="majors">Choose a major:</label></div>
-                        <div>   <select name="major" id="major">
+                        <div>   <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}}name="major" id="major">
                             <option value="Computer Science">Computer Science</option>
                             <option value="Computer Engineering">Computer Engineering</option>
                         </select>
                         </div>
 
                         <div>  <label htmlFor="minors">Choose a minor:</label></div>
-                        <div>  <select name="minor" id="minor">
+                        <div>  <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}} name="minor" id="minor">
                             <option value="None">None</option>
                             <option value="Mathematics">Mathematics</option>
                         </select>
                         </div>
 
                         <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
-                        <div>   <input type="text" name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
                         <form id="textfields">
-                            <input type="text" id="textfields" ></input>
+                            <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  id="textfields" ></input>
                         </form>
 
 
 
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
-                        <select name="cars" id="combo" multiple>
+                        <select style={{borderRadius:10,width:300, boxSizing:100, padding:15}}name="cars" id="combo" multiple>
                             <option value="CSa">Computer Science A</option>
                             <option value="micro">Microeconomics</option>
                             <option value="macro">Macroeconomics</option>
@@ -102,16 +107,15 @@ class StudentRegister extends Component {
                             <option value="compgov">Comparative Government & Politics</option>
                         </select>
                         <input type="button" onClick="getAPClasses()"></input>
-
-
-
-
+                        <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
 
                     </div>
-                </form>
+
+                </Container>
+
+            </form >
 
 
-            </Container>
 
 
 

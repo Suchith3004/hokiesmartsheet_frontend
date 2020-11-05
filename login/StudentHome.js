@@ -3,13 +3,17 @@ import { useHistory } from 'react-router-dom';
 import fire from './config/Fire';
 import MentorRegister from './MentorRegister';
 import StudentRegister from './StudentRegister';
-import Back from'./StudentHome';
+import Back from './StudentHome';
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
 text-align: center;
-background-color: lightblue;
+background-color: #a24857;
+position: absolute;
+  top: -450px;
+
+
 `;
 
 
@@ -43,13 +47,13 @@ class StudentHome extends Component {
 
         return (
             <Container>
-                <h1>Welcome to the Student Page</h1>
-                <button onClick={this.back}>Back</button>
-                <button onClick={this.courseEdit}>Edit your courses taken</button>
-                <button onClick={this.logout}>Logout</button>
 
-                <div><text> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
-</text></div>
+                <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
+
+                <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+</label>
+                <div><button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100}} onClick={this.courseEdit}>Edit Courses</button>
+                    <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10 }} onClick={this.logout}>Logout</button></div>
 
 
             </Container>
