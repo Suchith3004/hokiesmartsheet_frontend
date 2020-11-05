@@ -24,14 +24,13 @@ const TaskList = styled.div`
 
 export default class Column extends React.Component{
     render(){
-        console.log("here");
         return (
             <Container>
-                <Title>{this.props.key}</Title>
+                <Title>{this.props.name}</Title>
                 {this.props.showSearch ? (
                     <input style={{width:"50%", margin:"8px"}} type="text" width="90%" placeholder="Search" />
                 ) : ( <span />)}
-                <Droppable droppableId = {this.props.key}>
+                <Droppable droppableId = {this.props.name}>
                     {(provided,snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
@@ -39,9 +38,8 @@ export default class Column extends React.Component{
                             isDraggingOver={snapshot.isDraggingOver}
                         >
                             {
-                                this.props.tasks.forEach((course, index) => {
-                                    console.log(course);
-                                    <Task key={course.courseId} task = {course} index={index}/>
+                                this.props.tasks.map((course, index) => {
+                                    return <Task key={index} task = {course} index={index}/>
                                 })
                             }
                             {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}

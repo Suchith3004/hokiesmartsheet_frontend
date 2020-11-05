@@ -106,7 +106,7 @@ export default class Table extends React.Component{
     };
 
     onDragEnd = result =>{
-        // document.body.style.color = 'inherit';
+        document.body.style.color = 'inherit';
         // const{destination, source, draggableId} = result;
 
         // if(!destination){
@@ -181,11 +181,11 @@ export default class Table extends React.Component{
                 >
                     <Container>
                         {/* <CourseSelector selectorColumns={this.state.selectorColumns} columnData={this.state.columns} tasks={this.state.tasks} /> */}
-                        {this.state.items.semesters.forEach((sem, index) => {
+                        {this.state.items.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;
-                            const name = "Semester " + sem.semNum;
-                            return <Column key={name} column={column} tasks = {tasks} />
+                            const name =  "Semester " + sem.semNum;
+                            return <Column key={index} name = {name} column={column} tasks = {tasks} />
                         })}
                         {/* {this.state.columnOrder.map(columnId => {
                             const column = this.state.columns[columnId];
