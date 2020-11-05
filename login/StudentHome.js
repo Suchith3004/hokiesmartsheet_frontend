@@ -70,7 +70,7 @@ class StudentHome extends Component {
     render() {
         return (
             <div>
-                {/* <Container>
+                <Container>
                     <h1>Welcome to the Student Page</h1>
                     <Link to="/editcourses">
                         <button onClick={this.courseEdit}>Edit your courses taken</button>
@@ -80,7 +80,7 @@ class StudentHome extends Component {
                     <div><text> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
                     </text></div>
 
-                </Container> */}
+                </Container>
                 <CheckSheet/>
             </div>
         );

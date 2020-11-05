@@ -107,14 +107,16 @@ export default class Table extends React.Component{
 
     onDragEnd = result =>{
         document.body.style.color = 'inherit';
-        // const{destination, source, draggableId} = result;
+        const{destination, source, draggableId} = result;
 
-        // if(!destination){
-        //     return;
-        // }
-        // if(destination.draggableId === source.droppableId && destination.index === source.index){
-        //     return;
-        // }
+        if(!destination){
+            return;
+        }
+        if(destination.draggableId === source.droppableId && destination.index === source.index){
+            return;
+        }
+
+
         // const start = this.state.columns[source.droppableId];
         // const finish = this.state.columns[destination.droppableId];
 
