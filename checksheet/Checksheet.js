@@ -63,8 +63,8 @@ const initialData ={
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width: 900px;
-    padding: 65px;
+    width: 1000px;
+    padding: 70px;
     margin: 200px;
     background-color:#b04f5f;
 `;

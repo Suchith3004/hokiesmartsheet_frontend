@@ -10,6 +10,9 @@ const Container = styled.div`
 text-align: center;
 background-color: #a24857;
 padding: 30px;
+height: 100%;
+margin: auto;
+width: 100%;
 `;
 
 function LogoutButton(props) {
@@ -41,18 +44,18 @@ class StudentHome extends Component {
 
                     <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
 </label>
-                    <div>
+                    <div style={{ backgroundColor: '#a24857' }}>
                         <Link to="/editcourses">
-                        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
+                            <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
                         </Link>
-                        <LogoutButton/>
+                        <LogoutButton />
                     </div>
-                    
-                    <CheckSheet/>
+
+                    <CheckSheet />
 
                 </Container>
             </div>
-            
+
 
         );
 

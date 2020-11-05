@@ -7,7 +7,7 @@ const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
-    width: 350px;
+    width: 400px;
     height: 400px;
     display: flex;
     flex-direction: column;
@@ -22,6 +22,7 @@ const TaskList = styled.div`
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
     flex-grow: 1;
+    width: 350px;
     padding-bottom: 30px;
     min-height: 100px;
 `;
