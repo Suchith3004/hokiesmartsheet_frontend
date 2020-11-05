@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import ReactDOM from 'react-dom';
 import Column from "./Semester";
 import CourseSelector from "./CourseSelector";
 import styled from 'styled-components';
@@ -98,7 +99,10 @@ export default class Table extends React.Component{
       }
 
     onDragStart = () =>{
-        document.body.style.color = 'orange';
+        let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
+        for (let elem of classHandles) {
+            elem.style.color = "orange";
+        }
     };
 
     onDragUpdate = () =>{
@@ -106,7 +110,10 @@ export default class Table extends React.Component{
     };
 
     onDragEnd = result =>{
-        document.body.style.color = 'inherit';
+        let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
+        for (let elem of classHandles) {
+            elem.style.color = "inherit";
+        }
         const{destination, source, draggableId} = result;
 
         if(!destination){
