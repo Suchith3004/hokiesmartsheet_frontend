@@ -160,7 +160,7 @@ class StudentRegister extends Component {
 
 
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
-                        <select style={{borderRadius:10,width:300, boxSizing:100, padding:15}}name="cars" id="combo" multiple>
+                        <select style={{ borderRadius: 10, width: 300, boxSizing: 100, padding: 15 }} name="cars" id="combo" multiple>
                             <option value="CSa">Computer Science A</option>
                             <option value="micro">Microeconomics</option>
                             <option value="macro">Macroeconomics</option>
