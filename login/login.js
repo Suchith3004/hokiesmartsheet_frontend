@@ -11,6 +11,7 @@ display: inline-block;
     
     margin-right: auto;
     justify-content: center;
+    color: White;
 `;
 const titlepg = styled.div`
 text-align: center;
@@ -88,15 +89,15 @@ class Login extends Component {
             <Container>
 
                 <div className="col-md-6">
-                    <h1><label style={{ fontSize: 50 }} for="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                    <h1><label style={{ fontSize: 50, color:"white" }} for="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
 
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label style={{position:"relative", left:-215}}for="exampleInputEmail1">Email address</label>
                         <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
+                        <label style={{position:"relative", left:-230}} for="exampleInputPassword1">Password</label>
                         <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
                         <small id="emailHelp" class="form-text text-muted">Password must be at least six digits long</small>
 
