@@ -66,6 +66,9 @@ class App extends Component {
               <Route path="/editcourses" render={() => ( 
                   <StudentRegister />
                 )}/>
+              <Route path="/createUser" render={() => ( 
+                  <Home />
+                )}/>
               <Route path="/login" render={() => (
                 this.state.user ? (
                   <Redirect to="/home"/>

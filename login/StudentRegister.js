@@ -5,6 +5,8 @@ import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
 
+import { useHistory } from 'react-router-dom';
+
 
 const Container = styled.div`
 padding:20px;
@@ -16,6 +18,18 @@ padding:10px;
 border-radius:10px;
 border-top-left-radius: 25px;
 `;
+
+function SubmitButton(props) {
+
+    let history = useHistory();
+    function handleClick() {
+        history.push('/createUser');
+    }
+
+    return (
+        <button onClick={handleClick} style={{ marginLeft: '25px', marginBottom:'20px'}} className="btn btn-success">Create Account</button>
+    );
+}
 
 class StudentRegister extends Component {
 
@@ -163,7 +177,8 @@ class StudentRegister extends Component {
                         </select>
                         <input type="button" onClick="getAPClasses()"></input>
                         <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
-
+                        <br></br>
+                        <SubmitButton/>
                     </div>
 
                 </Container>
