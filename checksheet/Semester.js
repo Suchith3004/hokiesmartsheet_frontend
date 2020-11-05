@@ -1,7 +1,6 @@
-
 import React from "react";
 import styled from 'styled-components';
-import Task from './DSemesterItem'
+import Task from './Class'
 import {Droppable} from "react-beautiful-dnd";
 
 const Container = styled.div`
@@ -23,22 +22,27 @@ const TaskList = styled.div`
     min-height: 100px;
 `;
 
-
-
-
 export default class Column extends React.Component{
     render(){
         return (
             <Container>
-                <Title>{this.props.column.title}</Title>
-                <Droppable droppableId = {this.props.column.id}>
+                <Title>{this.props.name}</Title>
+                {this.props.showSearch ? (
+                    <input style={{width:"50%", margin:"8px"}} type="text" width="90%" placeholder="Search" />
+                ) : ( <span />)}
+                <Droppable droppableId = {this.props.name}>
                     {(provided,snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
-                            {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)}
+                            {
+                                this.props.tasks.map((course, index) => {
+                                    return <Task key={index} task = {course} index={index}/>
+                                })
+                            }
+                            {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}
                             {provided.placeholder}
                         </TaskList>
                     )}
@@ -47,4 +51,3 @@ export default class Column extends React.Component{
         );
     }
 }
-
