@@ -8,80 +8,48 @@ import dbFetch from '../api/dbFetch'
 
 const Container = styled.div`
 text-align: center;
-background-color: lightblue;
+background-color: #a24857;
+position: absolute;
 `;
-
-/*
-const LogoutButton = styled.button`
-   position:fixed;
-   right:10px;
-   top:5px;
-`;
-*/
 
 function LogoutButton(props) {
 
     let history = useHistory();
-  
+
     function handleClick() {
         fire.auth().signOut();
         history.push("/login");
     }
-  
+
     return (
-      <button type="button" style={{position: "fixed", right:"10px", top:"5px"}} onClick={handleClick}>
-        Logout
-      </button>
+        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10 }} onClick={handleClick}>Logout</button>
     );
-  }
+}
 
 class StudentHome extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
     }
-
-    userChecksheet() {
-        var userSheet = {};
-        // const [userSheet, setSheet] = useState({
-        //     hello: 'hi'
-        // });
-        
-
-        // useEffect(() => {
-            dbFetch.get({
-                endpoint: "/getDefaultChecksheet",
-                data: { major: "CS", gradYear: "2022" }
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    userSheet =data;
-                    // setSheet(data)
-                    console.log(userSheet);
-                })
-                .catch(error => console.error("Failed to fetch course. " + error.message));
-        // })
-
-        return (<CheckSheet initialData = {this.state} />);
-    }
-
 
     render() {
         return (
             <div>
                 <Container>
-                    <h1>Welcome to the Student Page</h1>
-                    <Link to="/editcourses">
-                        <button onClick={this.courseEdit}>Edit your courses taken</button>
-                    </Link>
-                    <LogoutButton />
 
-                    <div><text> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
-                    </text></div>
+                    <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
+
+                    <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+</label>
+                    <div>
+                        <Link to="/editcourses">
+                        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
+                        </Link>
+                        <LogoutButton/></div>
+
 
                 </Container>
-                <CheckSheet/>
+                <CheckSheet />
             </div>
         );
 

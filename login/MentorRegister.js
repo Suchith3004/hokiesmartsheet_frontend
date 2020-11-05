@@ -28,4 +28,3 @@ class MentorRegister extends Component {
 }
 
 export default MentorRegister;
-
