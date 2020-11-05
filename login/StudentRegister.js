@@ -53,34 +53,37 @@ class StudentRegister extends Component {
         return (
 
             <form action="/">
-                <label style={{fontSize:60, padding:-40}}>Student Registration</label>
+                <button style={{ borderRadius: 10, width: 100, boxShadow: 10, padding: 10, position:"relative", left:-250, top:-100 }} onClick={this.courseEdit}>Back</button>
+
+                <label style={{ fontSize: 60, padding: -40 }}>Student Registration</label>
                 <Container>
 
+
                     <div className="info">
-                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
-                        <div><input style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}} className="mname" type="text" name="name" placeholder="Middle name" /></div>
-                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Last name" /></div>
-                        <div>   <input className="pid" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Student PID" /></div>
-                        <div>   <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  type="text" name="name" placeholder="Graduation Year" /></div>
-                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="name" placeholder="Phone number" /></div>
+                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
+                        <div><input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="mname" type="text" name="name" placeholder="Middle name" /></div>
+                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Last name" /></div>
+                        <div>   <input className="pid" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Student PID" /></div>
+                        <div>   <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Graduation Year" /></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="name" placeholder="Phone number" /></div>
 
 
                         <div>  <label htmlFor="majors">Choose a major:</label></div>
-                        <div>   <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}}name="major" id="major">
+                        <div>   <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="major" id="major">
                             <option value="Computer Science">Computer Science</option>
                             <option value="Computer Engineering">Computer Engineering</option>
                         </select>
                         </div>
 
                         <div>  <label htmlFor="minors">Choose a minor:</label></div>
-                        <div>  <select style={{borderRadius:10, width:300, padding:10, boxShadow:10}} name="minor" id="minor">
+                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="minor" id="minor">
                             <option value="None">None</option>
                             <option value="Mathematics">Mathematics</option>
                         </select>
                         </div>
 
                         <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
-                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow:10, padding:10}}  name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
                         <form id="textfields">
                             <input type="text" id="textfields" ></input>
                         </form>
@@ -88,7 +91,7 @@ class StudentRegister extends Component {
 
 
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
-                        <select style={{borderRadius:10,width:300, boxSizing:100, padding:15}}name="cars" id="combo" multiple>
+                        <select style={{ borderRadius: 10, width: 300, boxSizing: 100, padding: 15 }} name="cars" id="combo" multiple>
                             <option value="CSa">Computer Science A</option>
                             <option value="micro">Microeconomics</option>
                             <option value="macro">Macroeconomics</option>
