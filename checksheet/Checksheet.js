@@ -76,13 +76,12 @@ export default class Table extends React.Component{
         this.state = {
             error: null,
             isLoaded: false,
-            items: {}
+            items: {},
+            moveClass: {}
           };
         //this.fetchCourseInfo()
     }
-
-    componentDidMount() {
-
+    fetchChecksheet = () => {
         dbFetch.get({
             endpoint: "/getUserChecksheet/92839",
             data: {}
@@ -103,7 +102,12 @@ export default class Table extends React.Component{
             });
 
         
-      }
+    }
+    componentDidMount() {
+        this.fetchChecksheet();
+    }
+
+
 
     onDragStart = () =>{
         let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
@@ -132,9 +136,6 @@ export default class Table extends React.Component{
 
         if(destination.droppableId === source.droppableId)
             return;
-
-        console.log('source ' + source.droppableId);
-        console.log('destination ' + destination.droppableId);
         
         const fromSem = source.droppableId.split(" ")[1];
         const toSem = destination.droppableId.split(' ')[1];
@@ -152,8 +153,15 @@ export default class Table extends React.Component{
             .then((data) => {
                 this.setState({
                   isLoaded: true,
-                  items: data
+                  moveClass: data
                 });
+
+                if(!(this.state.moveClass.prerequisites && this.state.moveClass.corequisites)) {
+                    alert('Prerequisites not met: ' + this.state.moveClass.preReqsNotMet + '\nCorequisites not met: ' + this.state.moveClass.coReqsNotMet)
+                }
+                else {
+                    this.fetchChecksheet();
+                }
             })
             .catch((error) => {
                 console.error("Failed to fetch course. " + error.message);
