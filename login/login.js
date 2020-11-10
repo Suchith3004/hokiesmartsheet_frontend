@@ -87,7 +87,7 @@ class Login extends Component {
 
             <Container>
 
-                <div className="col-md-6" alignItems='center'>
+                <div className="col-md-6" style = {{alignItems:'center'}}>
                     <h1><label style={{ fontSize: 50, color:"white" }} for="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
 
 

@@ -2,7 +2,6 @@
 import React, {Component, useState} from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
-import { CoursePopup, CustomPopup } from '../utilities/CoursePopup';
 
 
 const Container = styled.div`
@@ -28,8 +27,6 @@ const Handle = styled.div`
 `;
 export default class Task extends React.Component {
     render() {
-
-        // const {open, setOpen} = useState(false);
 
         var courseName = this.props.task.name;
         if (courseName.includes('Elective') || courseName.includes('Pathway'))

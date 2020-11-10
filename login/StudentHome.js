@@ -22,7 +22,7 @@ function LogoutButton(props) {
     }
 
     return (
-        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, marginLeft: 150}} onClick={handleClick}>Logout</button>
+        <button style={{ borderRadius: 10, width: 150, boxShadow: 10, padding: 10, marginLeft: 150, position: "absolute", top : 40, right : 40}} onClick={handleClick}>Logout</button>
     );
 }
 
@@ -37,19 +37,16 @@ class StudentHome extends Component {
             <div>
                 <Container >
 
-                    <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
-
-                    <label marginBottom='5s0px'> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
-</label>
+                    <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>My Checksheet </label>
                     <div style={{ backgroundColor: '#a24857' }}>
                         <Link to="/editcourses">
-                            <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
+                            <button style={{ borderRadius: 10, width: 150, boxShadow: 10, padding: 10, align: 100, position: "absolute", top : 90, right : 40 }} onClick={this.courseEdit}>Edit Courses</button>
                         </Link>
                         <LogoutButton />
                     </div>
-
                     <CheckSheet />
-
+                    <label style = {{marginTop :"5s0px"}}> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+                </label>
                 </Container>
             </div>
 

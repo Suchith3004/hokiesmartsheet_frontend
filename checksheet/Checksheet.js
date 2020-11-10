@@ -1,32 +1,29 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import Column from "./Semester";
-import CourseSelector from "./CourseSelector";
 import styled from 'styled-components';
 import '@atlaskit/css-reset'
 import{DragDropContext} from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
-
-
-
+import ApClasses from "./ApClasses";
 
 const initialData ={
     tasks:{
-        'CS2114' : {id: 'CS2114', numCredits: '3', type: 'E'},
-        'CS3114' : {id: 'CS3114', numCredits: '3', type: 'E'},
-        'CS4114' : {id: 'CS4114', numCredits: '3', type: 'E'},
-        'CS2505' : {id: 'CS2505', numCredits: '3', type: 'E'},
-        'CS2506' : {id: 'CS2506', numCredits: '3', type: 'E'},
-        'CS3214' : {id: 'CS3214', numCredits: '3', type: 'E'},
-        'CS1234' : {id: 'CS1234', numCredits: '3', type: 'E'},
-        'CS5678' : {id: 'CS5678', numCredits: '3', type: 'E'},
-        'CS9123' : {id: 'CS9123', numCredits: '3', type: 'E'},
-        'CS9990' : {id: 'CS9990', numCredits: '3', type: 'E'},
-        'CS9991' : {id: 'CS9991', numCredits: '3', type: 'E'},
-        'CS9992' : {id: 'CS9992', numCredits: '3', type: 'E'},
-        'MATH9990' : {id: 'MATH9990', numCredits: '3', type: 'E'},
-        'MATH9991' : {id: 'MATH9991', numCredits: '3', type: 'E'},
-        'MATH9992' : {id: 'MATH9992', numCredits: '3', type: 'E'},
+        'CS2114' : {name: 'CS2114', credits: '3', type: 'E'},
+        'CS3114' : {name: 'CS3114', credits: '3', type: 'E'},
+        'CS4114' : {name: 'CS4114', credits: '3', type: 'E'},
+        'CS2505' : {name: 'CS2505', credits: '3', type: 'E'},
+        'CS2506' : {name: 'CS2506', credits: '3', type: 'E'},
+        'CS3214' : {name: 'CS3214', credits: '3', type: 'E'},
+        'CS1234' : {name: 'CS1234', credits: '3', type: 'E'},
+        'CS5678' : {name: 'CS5678', credits: '3', type: 'E'},
+        'CS9123' : {name: 'CS9123', credits: '3', type: 'E'},
+        'CS9990' : {name: 'CS9990', credits: '3', type: 'E'},
+        'CS9991' : {name: 'CS9991', credits: '3', type: 'E'},
+        'CS9992' : {name: 'CS9992', credits: '3', type: 'E'},
+        'MATH9990' : {name: 'MATH9990', credits: '3', type: 'E'},
+        'MATH9991' : {name: 'MATH9991', credits: '3', type: 'E'},
+        'MATH9992' : {name: 'MATH9992', credits: '3', type: 'E'},
     },
     columns:{
         'column-1':{
@@ -70,6 +67,9 @@ const Container = styled.div`
     margin-left:150px;
     margin-top: 50px;
 `;
+
+
+
 export default class Table extends React.Component{
     constructor(props) {
         super(props);
@@ -133,8 +133,6 @@ export default class Table extends React.Component{
         if(destination.droppableId === source.droppableId)
             return;
 
-        console.log('source ' + source.droppableId);
-        console.log('destination ' + destination.droppableId);
         
         const fromSem = source.droppableId.split(" ")[1];
         const toSem = destination.droppableId.split(' ')[1];
@@ -178,20 +176,18 @@ export default class Table extends React.Component{
                     onDragUpdate = {this.onDragUpdate}
                     onDragEnd={this.onDragEnd}
                 >
+                    {/*Using Sample Data Here*/}
+                    {/*The Searchable list for homeless courses can be un commented here if needed*/}
+                    {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
+                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {this.state.items.major}</label>
                     <Container>
-                        {/* <Column key={'Homeless'} name = {'Major Requirements'} column = {this.state.items.homlessCourses} tasks= {this.state.items.homelessCourses} showSearch={true}/> */}
-                        {/* <CourseSelector selectorColumns={this.state.items.homlessCourses} columnData={this.state.columns} tasks={this.state.tasks} /> */}
+                        <ApClasses  items = {this.state.items}/>
                         {this.state.items.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;
                             const name =  "Semester " + sem.semNum;
                             return <Column key={index} name = {name} column={column} tasks = {tasks} />
                         })}
-                        {/* {this.state.columnOrder.map(columnId => {
-                            const column = this.state.columns[columnId];
-                            const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                            return <Column key={column.id} column={column} tasks = {tasks} />
-                        })} */}
                     </Container>
                 </DragDropContext>
             );
