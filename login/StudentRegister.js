@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
 
 import { useHistory } from 'react-router-dom';
 
@@ -13,11 +15,7 @@ padding:20px;
   border:0;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
 `;
-const roundedInput = styled.div`
-padding:10px;
-border-radius:10px;
-border-top-left-radius: 25px;
-`;
+
 
 function SubmitButton(props) {
 
@@ -40,7 +38,9 @@ class StudentRegister extends Component {
             isLoaded: false,
             error: null,
             apEquivalents: {},
-            courseOptions: {}
+            transferCourseOptions: {},
+            selectedApClasses :[],
+            selectedTransferClasses : [],
         }
 
     }
@@ -51,23 +51,51 @@ class StudentRegister extends Component {
             endpoint: "/getAllAPEquivalents",
             data: {}
         })
-            .then( (response) =>{ 
-                response.json()
-            })
+            .then(response => response.json())
             .then((data) => {
-                console.log(data);
+
+                for (var i = 0; i < data.length; i++) {
+                    data[i].label = "AP Class: " + data[i].apName + ",      " + "AP Score: " +  data[i].apScore + ",     " + "VT Class: " + data[i].vtCourseId;
+                    data[i].value = "AP Class: " + data[i].apName + ",      " + "AP Score: " +  data[i].apScore + ",     " + "VT Class: " + data[i].vtCourseId;
+                }
+
                 this.setState({
                     isLoaded: true,
                     apEquivalents: data
-                })
+                });
+
             })
             .catch((error) => {
-                console.error("Failed to fetch apEquivalents. " + error.message);
+                console.error("Failed to fetch APEquivalents: " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
                 });
             });
+
+
+        dbFetch.get({
+            endpoint: "/getDefaultChecksheet",
+            data: { major: "CS", gradYear: 2022 },
+        })
+            .then(response => response.json())
+            .then((data) => {
+                console.log(data)
+
+                this.setState({
+                    isLoaded: true,
+                    transferCourseOptions: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch Default Checksheet. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+
+
     }
 
     numTextFields(event) {
@@ -80,57 +108,26 @@ class StudentRegister extends Component {
             textfield.value = "";
             document.getElementById('textfields').appendChild(textfield);
         }
-        // console.log("hello");
     }
 
 
     render() {
-        // const { apSearchValue, setAPSearchValue } = useState('');
-        // const { apSearchList, setAPSearchList } = useState();
-        function filterAPClasses( apSearchValue ) {
-            const filteredResults = this.state.apEquivalents.filter(equivalent => {
-                return equivalent.apName.toLowerCase().includes(apSearchValue.toLowerCase());
-            });
 
-            const cleanedResults = filteredResults.map(equivalent => {
-                return equivalent.apName + ' (' + equivalent.apScore + ') => ' + equivalent.vtCourseName;
-            })
-
-            return cleanedResults;
-            
-            // setAPSearchList(cleanedResults);
+        function customTheme(theme){
+            return {
+                ...theme,
+                colors:{
+                    ...theme.colors,
+                    primary25: 'orange',
+                    primary : 'green',
+                }
+            }
         }
-
-
-        // function getAPClasses() {
-        //     var str = "", i;
-        //     for (i = 0; i < asa.cars.options.length; i++) {
-        //         if (asa.cars.options[i].selected) {
-        //             str += asa.cars.options[i].value + ",";
-        //         }
-        //     }
-        //     if (str.charAt(str.length - 1) == ',') {
-        //         str = str.substr(0, str.length - 1);
-        //     }
-
-
-        //     alert("Options selected are " + str);
-
-        // }
-        function cleanDefaultOptions() {
-            return this.state.apEquivalents.map(equivalent => {
-                return equivalent.apName + ' (' + equivalent.apScore + ') => ' + equivalent.vtCourseName;
-            })
-        }
-
         return (
 
             <form action="/">
                 <label style={{ fontSize: 60, padding: -40 }}>Student Registration</label>
                 <Container>
-                    {/* <div> 
-                        <SearchBar filterSearchChange={filterAPClasses} defaultOptions={cleanDefaultOptions}/>   
-                    </div> */}
                     <div className="info">
                         <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
                         <div>  <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="mname" type="text" name="name" placeholder="Middle name" /></div>
@@ -160,34 +157,24 @@ class StudentRegister extends Component {
 
 
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
-                        <select style={{ borderRadius: 10, width: 300, boxSizing: 100, padding: 15 }} name="cars" id="combo" multiple>
-                            <option value="CSa">Computer Science A</option>
-                            <option value="micro">Microeconomics</option>
-                            <option value="macro">Macroeconomics</option>
-                            <option value="engLangComp">English - Language/Composition</option>
-                            <option value="engLitComp">English - Literature/Composition</option>
-                            <option value="hist">U.S. History</option>
-                            <option value="calcab">Calculus AB</option>
-                            <option value="calcbc">Calculus BC</option>
-                            <option value="phy1">Physics 1: Algebra-Based</option>
-                            <option value="phy2">Physics 2: Algebra-Based</option>
-                            <option value="phyc">Physics C - Mechanics</option>
-                            <option value="govpol">U.S. Government & Politics</option>
-                            <option value="compgov">Comparative Government & Politics</option>
-                        </select>
-                        <input type="button" onClick="getAPClasses()"></input>
-                        <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
+                        <Select
+                            theme = {customTheme}
+                            options = {this.state.apEquivalents}
+                            className = "APClasses"
+                            placeholder = "Select All Taken AP Classes"
+                            isMulti
+                            autoFocus
+                            isSearchable
+                        />
                         <br></br>
                         <SubmitButton/>
+
                     </div>
 
                 </Container>
 
+
             </form >
-
-
-
-
 
 
         );
