@@ -27,22 +27,11 @@ function SubmitButton(props) {
     }
 
     return (
-        <button onClick={handleClick} style={{ marginLeft: '25px', marginBottom: '20px', borderRadius: 10, boxShadow: 10 }} className="btn btn-success">Register As Student</button>
-    );
-}
-function SubmitButtonMentor(props) {
-
-    let history = useHistory();
-    function handleClick() {
-        history.push('/createUser');
-    }
-
-    return (
-        <button onClick={handleClick} style={{ marginLeft: '25px', marginBottom: '20px', borderRadius: 10, boxShadow: 10 }} className="btn btn-success">Register As Mentor</button>
+        <button onClick={handleClick} style={{ marginLeft: '25px', marginBottom:'20px',  borderRadius: 10, boxShadow: 10}} className="btn btn-success">Complete Student Registration</button>
     );
 }
 
-class StudentRegister extends Component {
+class ClassesReg extends Component {
 
     constructor(props) {
         super(props);
@@ -62,7 +51,7 @@ class StudentRegister extends Component {
             endpoint: "/getAllAPEquivalents",
             data: {}
         })
-            .then((response) => {
+            .then( (response) =>{ 
                 response.json()
             })
             .then((data) => {
@@ -98,7 +87,7 @@ class StudentRegister extends Component {
     render() {
         // const { apSearchValue, setAPSearchValue } = useState('');
         // const { apSearchList, setAPSearchList } = useState();
-        function filterAPClasses(apSearchValue) {
+        function filterAPClasses( apSearchValue ) {
             const filteredResults = this.state.apEquivalents.filter(equivalent => {
                 return equivalent.apName.toLowerCase().includes(apSearchValue.toLowerCase());
             });
@@ -108,7 +97,7 @@ class StudentRegister extends Component {
             })
 
             return cleanedResults;
-
+            
             // setAPSearchList(cleanedResults);
         }
 
@@ -137,40 +126,62 @@ class StudentRegister extends Component {
         return (
 
             <form action="/">
-                <label style={{ fontSize: 60, padding: -40 }}>Registration</label>
+                <label style={{ fontSize: 60, padding: -40 }}>Student Registration</label>
                 <Container>
                     {/* <div> 
                         <SearchBar filterSearchChange={filterAPClasses} defaultOptions={cleanDefaultOptions}/>   
                     </div> */}
-                    <div className="info">
-                        <roundedInput><input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="name" placeholder="First name" /></roundedInput>
-                        <div>  <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="mname" type="text" name="name" placeholder="Middle name" /></div>
-                        <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Last name" /></div>
-                        <div>  <input className="gradyear" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} type="text" name="name" placeholder="Graduation Year" /></div>
+                    <div className="info">                        
+
+                        <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
+                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
+                        <form id="textfields">
+                            <input type="text" id="textfields" ></input>
+                        </form>
+
+
                         <br></br>
 
-                        <div>  <label htmlFor="majors">Choose a major:</label></div>
-                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="major" id="major">
-                            <option value="Seleect">--Select--</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Computer Engineering">Computer Engineering</option>
+
+                        <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
+                        <select style={{ borderRadius: 10, width: 300, boxSizing: 100, padding: 15, height:200}} name="cars" id="combo" multiple>
+                            <option value="CSa">Computer Science A</option>
+                            <option value="micro">Microeconomics</option>
+                            <option value="macro">Macroeconomics</option>
+                            <option value="engLangComp">English - Language/Composition</option>
+                            <option value="engLitComp">English - Literature/Composition</option>
+                            <option value="hist">U.S. History</option>
+                            <option value="calcab">Calculus AB</option>
+                            <option value="calcbc">Calculus BC</option>
+                            <option value="phy1">Physics 1: Algebra-Based</option>
+                            <option value="phy2">Physics 2: Algebra-Based</option>
+                            <option value="phyc">Physics C - Mechanics</option>
+                            <option value="govpol">U.S. Government & Politics</option>
+                            <option value="compgov">Comparative Government & Politics</option>
                         </select>
-                        </div>
-                        <br></br>
-                        <br></br>
-
-                        <div>  <label htmlFor="minors">Choose a minor:</label></div>
-                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="minor" id="minor">
-                            <  option value="Seleect">--Select--</option>
-                            <option value="None">None</option>
-                            <option value="Mathematics">Mathematics</option>
-                        </select>
-                        </div>
-
+                        <input type="button" onClick="getAPClasses()"></input>
                         <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
                         <br></br>
-                        <SubmitButton />
-                        <SubmitButtonMentor />
+
+
+                        <div>  <label htmlFor="minors">Who is your advisor?</label></div>
+                        <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10}} name="minor" id="minor">
+                            <option value="Select">--Select--</option>
+                            <option value="Tonisha Montgomery">Tonisha Montgomery</option>
+                            <option value="Leigh Anne Byrd">Leigh Anne Byrd</option>
+                            <option value="Jennifer Bradley">Jennifer Bradley</option>
+                            <option value="Ruth Labbe Haley">Ruth Labbe Hale</option>
+                            <option value="Ryan Underwood">Ryan Underwood</option>
+
+
+                        </select>
+                        </div>
+
+                        <br></br>
+                        <br></br>
+                        <br></br>
+
+                        <SubmitButton/>
                     </div>
 
                 </Container>
@@ -187,4 +198,4 @@ class StudentRegister extends Component {
     }
 
 }
-export default StudentRegister;
+export default ClassesReg;

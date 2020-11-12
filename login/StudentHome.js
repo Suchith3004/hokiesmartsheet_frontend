@@ -9,7 +9,8 @@ import dbFetch from '../api/dbFetch'
 const Container = styled.div`
 text-align: center;
 background-color: #a24857;
-padding: 30px;
+position: absolute;
+top:
 `;
 
 function LogoutButton(props) {
@@ -22,7 +23,7 @@ function LogoutButton(props) {
     }
 
     return (
-        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, marginLeft: 150}} onClick={handleClick}>Logout</button>
+        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10 }} onClick={handleClick}>Logout</button>
     );
 }
 
@@ -35,25 +36,22 @@ class StudentHome extends Component {
     render() {
         return (
             <div>
-                <Container >
+                <Container>
 
                     <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
 
-                    <label marginBottom='5s0px'> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+                    <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
 </label>
-                    <div style={{ backgroundColor: '#a24857' }}>
+                    <div>
                         <Link to="/editcourses">
-                            <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
+                        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
                         </Link>
-                        <LogoutButton />
-                    </div>
+                        <LogoutButton/></div>
 
-                    <CheckSheet />
 
                 </Container>
+                <CheckSheet />
             </div>
-
-
         );
 
     }

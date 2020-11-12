@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
+import ClassesReg from "./login/ClassesReg";
 import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
 
