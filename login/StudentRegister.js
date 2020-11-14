@@ -183,7 +183,9 @@ class StudentRegister extends Component {
                         <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
                         <br></br>
 
-                        <input type="checkbox" name="registeringAsStudent" checked={this.state.registeringAsStudent} onChange={this.handleInputChange} />
+                        <label for="registeringAsStudent">Register as a Student</label>
+                        <input type="checkbox" name="registeringAsStudent" checked={this.state.registeringAsStudent} onChange={this.handleInputChange} /><br />
+                        <label for="registeringAsStudent">Register as a Mentor</label>
                         <input type="checkbox" name="registeringAsMentor" checked={this.state.registeringAsMentor} onChange={this.handleInputChange} />
 
                         {this.state.registeringAsStudent ? (
