@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
 import fire from './config/Fire';
 import styled from "styled-components";
+import ClassesReg from "./ClassesReg";
+import MentorRegister from "./MentorRegister";
 import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
@@ -48,11 +50,15 @@ class StudentRegister extends Component {
         super(props);
 
         this.state = {
+            registeringAsStudent: false,
+            registeringAsMentor: false,
             isLoaded: false,
             error: null,
             apEquivalents: {},
             courseOptions: {}
         }
+
+        this.handleInputChange = this.handleInputChange.bind(this);
 
     }
 
@@ -94,6 +100,13 @@ class StudentRegister extends Component {
         // console.log("hello");
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+          [name]: value    });
+    }
 
     render() {
         // const { apSearchValue, setAPSearchValue } = useState('');
@@ -151,7 +164,7 @@ class StudentRegister extends Component {
 
                         <div>  <label htmlFor="majors">Choose a major:</label></div>
                         <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="major" id="major">
-                            <option value="Seleect">--Select--</option>
+                            <option value="Select">--Select--</option>
                             <option value="Computer Science">Computer Science</option>
                             <option value="Computer Engineering">Computer Engineering</option>
                         </select>
@@ -161,7 +174,7 @@ class StudentRegister extends Component {
 
                         <div>  <label htmlFor="minors">Choose a minor:</label></div>
                         <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="minor" id="minor">
-                            <  option value="Seleect">--Select--</option>
+                            <option value="Select">--Select--</option>
                             <option value="None">None</option>
                             <option value="Mathematics">Mathematics</option>
                         </select>
@@ -169,8 +182,22 @@ class StudentRegister extends Component {
 
                         <small id="emailHelp" class="form-text text-muted">Hold down control to select</small>
                         <br></br>
-                        <SubmitButton />
-                        <SubmitButtonMentor />
+
+                        <input type="checkbox" name="registeringAsStudent" checked={this.state.registeringAsStudent} onChange={this.handleInputChange} />
+                        <input type="checkbox" name="registeringAsMentor" checked={this.state.registeringAsMentor} onChange={this.handleInputChange} />
+
+                        {this.state.registeringAsStudent ? (
+                            <ClassesReg />
+                        ) : ( <span />)}
+
+                        {this.state.registeringAsMentor ? (
+                            <MentorRegister />
+                        ) : ( <span />)}
+
+                        {this.state.registeringAsStudent || this.state.registeringAsMentor ? (
+                            <SubmitButton />
+                        ) : ( <span />)}
+
                     </div>
 
                 </Container>
