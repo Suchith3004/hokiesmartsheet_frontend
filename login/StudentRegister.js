@@ -1,8 +1,5 @@
 import React, { Component, useState } from 'react';
-import fire from './config/Fire';
 import styled from "styled-components";
-import { Draggable } from "react-beautiful-dnd";
-import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
@@ -76,7 +73,7 @@ class StudentRegister extends Component {
 
         dbFetch.get({
             endpoint: "/getDefaultChecksheet",
-            data: { major: "CS", gradYear: 2022 },
+            data: {  },
         })
             .then(response => response.json())
             .then((data) => {
@@ -124,7 +121,6 @@ class StudentRegister extends Component {
             }
         }
         return (
-
             <form action="/">
                 <label style={{ fontSize: 60, padding: -40 }}>Student Registration</label>
                 <Container>
@@ -140,22 +136,17 @@ class StudentRegister extends Component {
                             <option value="Computer Engineering">Computer Engineering</option>
                         </select>
                         </div>
-
                         <div>  <label htmlFor="minors">Choose a minor:</label></div>
                         <div>  <select style={{ borderRadius: 10, width: 300, padding: 10, boxShadow: 10 }} name="minor" id="minor">
                             <option value="None">None</option>
                             <option value="Mathematics">Mathematics</option>
                         </select>
                         </div>
-
                         <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
                         <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
                         <form id="textfields">
                             <input type="text" id="textfields" ></input>
                         </form>
-
-
-
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
                         <Select
                             theme = {customTheme}
@@ -168,14 +159,9 @@ class StudentRegister extends Component {
                         />
                         <br></br>
                         <SubmitButton/>
-
                     </div>
-
                 </Container>
-
-
             </form >
-
 
         );
 
