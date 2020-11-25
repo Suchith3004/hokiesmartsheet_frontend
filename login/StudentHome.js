@@ -39,7 +39,7 @@ class StudentHome extends Component {
 
                     <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
 
-                    <label marginBottom='5s0px'> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
+                    <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
 </label>
                     <div style={{ backgroundColor: '#a24857' }}>
                         <Link to="/editcourses">

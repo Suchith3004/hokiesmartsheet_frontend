@@ -1,30 +1,38 @@
 import React, { Component, useState } from 'react';
 
-import  Select  from 'react-select'
-// import AsyncSelect from 'react-select/async';
+import Select from 'react-select'
+import AsyncSelect from 'react-select/async';
 
-// export default class SearchBar extends Component {
 
-export const SearchBar = () => {
+export class SearchBar extends React.Component {
 
-    const { searchValue, setSearchValue } = useState('');
-    const { searchList, setSearchList } = useState();
+    render() {
 
-    const handleInputChange = (newValue) => {
-        const inputValue = newValue.replace(/\W/g, '');
-        setSearchValue(inputValue);
-        setSearchList(this.props.filterSearchChange(searchValue));
-    };
+        const apList = inputValue =>
+            new Promise(resolve => {
+                console.log("called")
 
-    return (
-        <Select
-            isMulti
-            cacheOptions
-            defaultOptions={this.props.defaultOptions}
-            value={searchValue}
-            options={searchList}
-            placeholder="Search..."
-            onChange={handleInputChange}
-        />
-    );
+                // console.log(inputValue)
+                resolve(this.props.options(inputValue))
+            })
+
+        /**
+         * OPTIONS MUST BE RECIEVED IN THE FOLLOWING FORMAT:
+         * {
+         *      value: "unique key",
+         *      lablel: "what user sees as option",
+         *      color: "options hex value"
+         * }
+         */
+        return (
+
+            <AsyncSelect
+                isMulti
+                closeMenuOnSelect={false}
+                cacheOptions
+                defaultOptions={this.props.options('')}
+                loadOptions={apList}
+            />
+        );
+    }
 }

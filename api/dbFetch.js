@@ -21,8 +21,6 @@ function request(params) {
 
     var url = "http://localhost:5001/sec7-4d979/us-central1" + params.endpoint + qs;
 
-    console.log(body);
-
     return fetch(url, { method, headers, body });
 }
 

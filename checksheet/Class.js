@@ -1,8 +1,10 @@
 
-import React, {Component, useState} from "react";
+import React, { Component, useState } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { CoursePopup, CustomPopup } from '../utilities/CoursePopup';
+import dbFetch from '../api/dbFetch'
+
 
 
 const Container = styled.div`
@@ -27,9 +29,51 @@ const Handle = styled.div`
     margin-right: 8px;
 `;
 export default class Task extends React.Component {
-    render() {
 
-        // const {open, setOpen} = useState(false);
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false,
+            courseInfo: props.task
+        }
+    }
+
+    componentDidMount() {
+        if (!(this.props.task.courseId.includes('Pathway') || this.props.task.courseId.includes('Elective') || this.props.task.courseId.includes('XXX'))) {
+            const courseId = this.props.task.courseId.split('-');
+
+            dbFetch.get({
+                endpoint: "/getCourseByPrefix",
+                data: {
+                    category: courseId[0],
+                    number: courseId[1]
+                }
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    this.setState({
+                        courseInfo: data
+                    });
+                    // console.log(this.state.courseInfo)
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch course. " + error.message);
+                    // this.setState({
+                    //     isLoaded: true,
+                    //     error
+                    // });
+                });
+        }
+
+    }
+
+    onClickAction = () => {
+        this.setState({
+            open: !this.state.open
+        })
+    }
+
+    render() {
 
         var courseName = this.props.task.name;
         if (courseName.includes('Elective') || courseName.includes('Pathway'))
@@ -44,14 +88,15 @@ export default class Task extends React.Component {
                         ref={provided.innerRef}
                         isDragging={snapshot.isDragging}
                         className="classHandleText"
+                        onClick={this.onClickAction}
                     >
                         <Handle  {...provided.dragHandleProps} />
 
-                        
-                        {/* <CoursePopup open= {open} setOpen={setOpen}/> */}
-
+                        {/* {this.state.open ? (
+                            <CoursePopup open={this.state.open} setOpen={this.onClickAction} course={this.state.courseInfo} />
+                        ) : (<span />)} */}
                         <div style={{ backgroundColor: 'white' }} >
-                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>s
+                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
                         </div>
                         <div style={{ backgroundColor: 'white' }}>
                             <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>

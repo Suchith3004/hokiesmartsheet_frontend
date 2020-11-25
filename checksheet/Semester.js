@@ -12,7 +12,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     background-color:#a24857;
-    padding-bottom:30px;
+    padding-bottom:10px;
     align-items: center;
 `;
 const Title = styled.h3`
@@ -54,6 +54,8 @@ export default class Column extends React.Component{
                         </TaskList>
                     )}
                 </Droppable>
+
+                <Title>Total Credits:       {this.props.column.totalCredits}</Title>
             </Container>
         );
     }
