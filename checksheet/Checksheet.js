@@ -6,6 +6,7 @@ import '@atlaskit/css-reset'
 import{DragDropContext} from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import ApClasses from "./ApClasses";
+import TransferClasses from "./TransferClasses";
 
 
 const Container = styled.div`
@@ -133,6 +134,7 @@ export default class Table extends React.Component{
                     <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {this.state.items.major}</label>
                     <Container>
                         <ApClasses  items = {this.state.items}/>
+                        <TransferClasses  items = {this.state.items}/>
                         {this.state.items.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;

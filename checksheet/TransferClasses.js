@@ -39,20 +39,17 @@ export default class ApClasses extends React.Component{
     render(){
         return (
             <TaskList>
-                <Title>AP Classes I've Taken</Title>
+                <Title>Transfer Classes I've Taken</Title>
                 <ApClassContainer>
-
                     <b style={{ color: 'black', display: 'inline', alignItems: 'left' }}>VT Class</b>
                     <b style={{ color: 'black', display: 'inline', alignItems: 'right' }}>VT Course Number</b>
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'right' }}>AP Class</b>
                 </ApClassContainer>
-                {this.props.items.apEquivalents.map((apClass, index) => {
-                    if(apClass.used){
+                {this.props.items.transferCourses.map((tClass, index) => {
+                    if(tClass.completed){
                         return(
                             <ApClassContainer>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'right' }}>{apClass.vtCourseName}</label>
-                                <label style={{ color: 'black'}}>{apClass.vtCourseId}</label>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'left' }}>{apClass.apName}</label>
+                                <label style={{ color: 'black', display: 'inline', alignItems: 'left' }}>{tClass.name}</label>
+                                <label style={{ color: 'black', display: 'inline', alignItems: 'right' }}>{tClass.courseId}</label>
                             </ApClassContainer>
                         )
                     }
