@@ -7,55 +7,6 @@ import{DragDropContext} from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import ApClasses from "./ApClasses";
 
-const initialData ={
-    tasks:{
-        'CS2114' : {name: 'CS2114', credits: '3', type: 'E'},
-        'CS3114' : {name: 'CS3114', credits: '3', type: 'E'},
-        'CS4114' : {name: 'CS4114', credits: '3', type: 'E'},
-        'CS2505' : {name: 'CS2505', credits: '3', type: 'E'},
-        'CS2506' : {name: 'CS2506', credits: '3', type: 'E'},
-        'CS3214' : {name: 'CS3214', credits: '3', type: 'E'},
-        'CS1234' : {name: 'CS1234', credits: '3', type: 'E'},
-        'CS5678' : {name: 'CS5678', credits: '3', type: 'E'},
-        'CS9123' : {name: 'CS9123', credits: '3', type: 'E'},
-        'CS9990' : {name: 'CS9990', credits: '3', type: 'E'},
-        'CS9991' : {name: 'CS9991', credits: '3', type: 'E'},
-        'CS9992' : {name: 'CS9992', credits: '3', type: 'E'},
-        'MATH9990' : {name: 'MATH9990', credits: '3', type: 'E'},
-        'MATH9991' : {name: 'MATH9991', credits: '3', type: 'E'},
-        'MATH9992' : {name: 'MATH9992', credits: '3', type: 'E'},
-    },
-    columns:{
-        'column-1':{
-            id: 'column-1',
-            title: 'Semester 1',
-            taskIds: ['CS2114', 'CS3114', 'CS4114',],
-        },
-        'column-2':{
-            id: 'column-2',
-            title: 'Semester 2',
-            taskIds: [ 'CS2505', 'CS2506', 'CS3214'],
-        },
-        'column-3':{
-            id: 'column-3',
-            title: 'Semester 3',
-            taskIds: [ 'CS1234', 'CS5678', 'CS9123'],
-        },
-        'major-selection':{
-            id: 'major-selection',
-            title: 'Major Selection',
-            taskIds: ['CS9990', 'CS9991', 'CS9992',],
-        },
-        'minor-selection':{
-            id: 'minor-selection',
-            title: 'Minor Selection',
-            taskIds: ['MATH9990', 'MATH9991', 'MATH9992',],
-        }
-    },
-    columnOrder:['column-1','column-2','column-3'],
-    selectorColumns:['major-selection', 'minor-selection'],
-};
-
 
 const Container = styled.div`
     display: flex;

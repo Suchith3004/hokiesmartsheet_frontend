@@ -2,8 +2,7 @@ import React, { Component, useState } from 'react';
 import styled from "styled-components";
 import dbFetch from '../api/dbFetch'
 import Select from 'react-select'
-import makeAnimated from 'react-select/animated'
-
+import AsyncSelect from 'react-select/async';
 import { useHistory } from 'react-router-dom';
 
 
@@ -69,44 +68,43 @@ class StudentRegister extends Component {
                     error
                 });
             });
+    }
 
-
+    fetchTransferClassesData = (inputValue, callback) => {
         dbFetch.get({
-            endpoint: "/getDefaultChecksheet",
-            data: {  },
+            endpoint: "/autocompleteCourseName/" + inputValue,
+            data: {}
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(data)
+                for (var i = 0; i < data.length; i++) {
+                    data[i].label = data[i].category + " " +   data[i].number + ": " + data[i].name;
+                    data[i].value = data[i].category + " " +   data[i].number + ": " + data[i].name;
 
+                }
                 this.setState({
                     isLoaded: true,
                     transferCourseOptions: data
                 });
+
+                callback(this.state.transferCourseOptions)
             })
             .catch((error) => {
-                console.error("Failed to fetch Default Checksheet. " + error.message);
+                console.error("Failed to get auto complete courses: " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
                 });
             });
-
-
+        return this.state.transferCourseOptions
     }
 
-    numTextFields(event) {
-        /*Getting the number of text fields*/
-        var no = document.getElementById('numClasses').value;
-        // /*Generating text fields dynamically in the same form itself*/
-        for (var i = 1; i < no; i++) {
-            var textfield = document.createElement('input');
-            textfield.type = "text";
-            textfield.value = "";
-            document.getElementById('textfields').appendChild(textfield);
-        }
-    }
+    onAPChange = (selectedOptions) => {
 
+    };
+    onTransferChange = (selectedOptions) => {
+
+    };
 
     render() {
 
@@ -142,11 +140,6 @@ class StudentRegister extends Component {
                             <option value="Mathematics">Mathematics</option>
                         </select>
                         </div>
-                        <div>   <label htmlFor="numClasses">How many college level classes have you taken? List them below in the following format: EDCI-577</label></div>
-                        <div>   <input type="text" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} name="numClasses" id="numClasses" placeholder="Number of Classes" onChange={this.numTextFields.bind(this)} /></div>
-                        <form id="textfields">
-                            <input type="text" id="textfields" ></input>
-                        </form>
                         <div>  <label htmlFor="apclasses">Select all the AP Classes:</label></div>
                         <Select
                             theme = {customTheme}
@@ -156,6 +149,20 @@ class StudentRegister extends Component {
                             isMulti
                             autoFocus
                             isSearchable
+                            onChange={(e) => {this.onAPChange(e);}}
+                        />
+
+                        <div>  <label htmlFor="apclasses">Select all the Transfer Classes:</label></div>
+                        <AsyncSelect
+                            theme = {customTheme}
+                            className = "APClasses"
+                            placeholder = "Select All Taken Transfer Classes"
+                            isMulti
+                            autoFocus
+                            isSearchable
+                            cacheOptions
+                            loadOptions={this.fetchTransferClassesData}
+                            onChange={(e) => {this.onTransferChange(e);}}
                         />
                         <br></br>
                         <SubmitButton/>
