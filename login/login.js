@@ -28,13 +28,7 @@ function SubmitButton(props) {
     let history = useHistory();
 
     function handleClick() {
-        fire.auth().createUserWithEmailAndPassword(props.email, props.password)
-            .then((u) => {
-                history.push("/editCourses");
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        history.push("/editCourses");
     }
 
     return (

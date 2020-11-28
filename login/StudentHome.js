@@ -5,11 +5,16 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import dbFetch from '../api/dbFetch'
+import 'primereact/resources/themes/rhea/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import { Sidebar } from 'primereact/sidebar';
 
 const Container = styled.div`
 text-align: center;
 background-color: #a24857;
-padding: 30px;
+position: absolute;
+top:
 `;
 
 function LogoutButton(props) {
@@ -22,38 +27,71 @@ function LogoutButton(props) {
     }
 
     return (
-        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, marginLeft: 150}} onClick={handleClick}>Logout</button>
+        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10 }} onClick={handleClick}>Logout</button>
     );
 }
+
 
 class StudentHome extends Component {
 
     constructor(props) {
         super(props);
+
+
+        this.state = {
+            isLoaded: true,
+            error: null,
+            userData: {}
+        }
+    }
+
+    componentDidMount() {
+        dbFetch.get({
+            endpoint: "/getUserChecksheet/" + fire.auth().currentUser.uid,
+            data: {}
+        })
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    isLoaded: true,
+                    userData: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
     }
 
     render() {
         return (
             <div>
-                <Container >
 
+                <Sidebar position="top" visible={true} showCloseIcon={false} dismissable={false} modal={false}
+                    style={{ height: '70px', backgroundColor: '#5D5C61', textAlign: 'center', display:'flex', justifyContent:'space-between'}}>
+                    {/* <img src="../utilities/example.png" alt="Temp Image"></img> */}
+                        <h3 style={{ color: 'white', backgroundColor: '#5D5C61', textAlign:'left', width: '250px', display:'inline'}}>{this.state ? this.state.userData.firstName : ''} {this.state ? this.state.userData.lastName : ''}</h3>
+                        <h2 style={{ color: 'white', backgroundColor: '#5D5C61', width: '500px', display:'inline'}}>Your Checksheet</h2>
+                </Sidebar>
+
+
+                {/* <Container> */}
+                {/* 
                     <label style={{ fontSize: 60, backgroundColor: 10000, textAlign: "center" }}>Welcome to the Student Page </label>
 
-                    <label> Our goal is to provide an efficient way to plan out your semesters here at Virginia Tech. We aim to help organize what courses you will be taking every semester, depending on your major and minor. Additionally, in order to help strengthen the community here, we offer a mentor support system for those who are looking to network and gain new connections based on similar interests.
-</label>
-                    <div style={{ backgroundColor: '#a24857' }}>
+                    <div>
                         <Link to="/editcourses">
-                            <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
+                        <button style={{ borderRadius: 10, width: 200, boxShadow: 10, padding: 10, align: 100 }} onClick={this.courseEdit}>Edit Courses</button>
                         </Link>
-                        <LogoutButton />
-                    </div>
+                        <LogoutButton/></div> */}
 
-                    <CheckSheet />
 
-                </Container>
+                {/* </Container> */}
+                {/* <CheckSheet userId={fire.auth().currentUser.uid} userData={this.state.userData}/> */}
             </div>
-
-
         );
 
     }

@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
 import MentorRegister from "./login/MentorRegister";
+import ClassesReg from "./login/ClassesReg";
 import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
 
@@ -32,13 +33,12 @@ class App extends Component {
   
     authListener() {
       fire.auth().onAuthStateChanged((user) => { //checks if user logged in 
-        console.log(user);
         if (user) {
           this.setState({ user });
-          localStorage.setItem('user', user.uid);
+          localStorage.setItem('userId', user.uid);
         } else {
           this.setState({ user: null });
-          localStorage.removeItem('user');
+          localStorage.removeItem('userId');
         }
       });
     }
@@ -63,9 +63,7 @@ class App extends Component {
                   <Redirect to="/login"/>
                 )
               )}/>
-              <Route path="/editcourses" render={() => ( 
-                  <StudentRegister />
-                )}/>
+              <Route path="/editcourses" component={StudentRegister}/>
               <Route path="/createUser" render={() => ( 
                   <Home />
                 )}/>

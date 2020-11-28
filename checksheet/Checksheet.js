@@ -45,38 +45,11 @@ export default class Table extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            items: {},
+            items: this.props.userData,
             moveClass: {}
         };
         //this.fetchCourseInfo()
     }
-    fetchChecksheet = () => {
-        dbFetch.get({
-            endpoint: "/getUserChecksheet/92839",
-            data: {}
-        })
-            .then(response => response.json())
-            .then((data) => {
-                this.setState({
-                    isLoaded: true,
-                    items: data
-                });
-            })
-            .catch((error) => {
-                console.error("Failed to fetch course. " + error.message);
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            });
-
-
-    }
-    componentDidMount() {
-        this.fetchChecksheet();
-    }
-
-
 
     onDragStart = () => {
         let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
