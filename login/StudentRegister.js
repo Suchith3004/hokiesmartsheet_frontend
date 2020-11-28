@@ -5,8 +5,11 @@ import MentorRegister from "./MentorRegister";
 import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
+import fire from './config/Fire';
 
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 const Container = styled.div`
   padding:20px;
@@ -18,7 +21,7 @@ const Container = styled.div`
 async function createFirebaseAuthUser(email, password) {
     await fire.auth().createUserWithEmailAndPassword(email, password)
         .then((u) => {
-            return 
+            return
         })
         .catch((error) => {
             throw new Error(error.message)
@@ -43,14 +46,15 @@ class StudentRegister extends React.Component {
             firstname: null,
             lastname: null,
             email: null,
-            password: null
+            password: null,
+            visibility: false
         }
     }
 
     createUser(newUser, append) {
         this.appendBasicInfo(newUser)
             .then((updatedUser) => {
-                
+
                 dbFetch.post({
                     endpoint: "/createUser",
                     data: this.state.newUser
@@ -140,10 +144,10 @@ class StudentRegister extends React.Component {
                 return null
             })
     }
-    
+
     render() {
 
-        
+
 
         const handleSubmit = (userInfo, type) => {
             if (!userInfo) {
@@ -162,7 +166,7 @@ class StudentRegister extends React.Component {
             const rStudent = this.state.registeringAsStudent
             const rMentor = this.state.registeringAsMentor
 
-            if(!(rStudent && rMentor && type === 'mentor'))
+            if (!(rStudent && rMentor && type === 'mentor'))
                 this.createUser(newUser, rStudent && rMentor)
 
             this.setState({ newUser: newUser })
@@ -184,6 +188,13 @@ class StudentRegister extends React.Component {
                 submitted: true
             })
         }
+
+        const toggleVisibility = () => {
+            this.setState({
+                visibility: !this.state.visibility
+            })
+        }
+
         return (
 
             <Container>
@@ -196,7 +207,10 @@ class StudentRegister extends React.Component {
                     <br></br>
                     <div>  <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="email" type="text" name="email" onChange={(e) => this.setState({ email: e.target.value })} placeholder="Email" /></div>
                     <br></br>
-                    <div>  <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="password" type="text" name="password" onChange={(e) => this.setState({ password: e.target.value })} placeholder="Password" /></div>
+                    <div>
+                        <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="password" type={this.state.visibility ? "text" : 'password'} name="password" onChange={(e) => this.setState({ password: e.target.value })} placeholder="Password" />
+                        <i onClick={toggleVisibility}>{eye}</i>
+                    </div>
 
                     <h2 style={{ color: 'white' }}>Select all that apply:</h2><br />
 

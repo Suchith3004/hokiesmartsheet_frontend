@@ -46,11 +46,10 @@ export default class Table extends React.Component {
         super(props);
         this.state = {
             error: null,
-            isLoaded: false,
-            items: this.props.userData,
+            isLoaded: true,
+            userData: this.props.userData,
             moveClass: {}
         };
-        //this.fetchCourseInfo()
     }
 
     onDragStart = () => {
@@ -88,7 +87,7 @@ export default class Table extends React.Component {
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
-                userId: '92839',
+                userId: this.props.userData.userId,
                 courseId: draggableId,
                 toSem: parseInt(toSem),
                 fromSem: parseInt(fromSem)
@@ -119,10 +118,11 @@ export default class Table extends React.Component {
 
 
     render() {
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, userData } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
+            console.log(userData)
             return <motion.span
                 style={circleStyle}
                 animate={{ rotate: 360 }}
@@ -138,11 +138,11 @@ export default class Table extends React.Component {
                     {/*Using Sample Data Here*/}
                     {/*The Searchable list for homeless courses can be un commented here if needed*/}
                     {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
-                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {this.state.items.major}</label>
+                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
                     <Container>
-                        <ApClasses  items = {this.state.items}/>
-                        <TransferClasses  items = {this.state.items}/>
-                        {this.state.items.semesters.map((sem, index) => {
+                        {/* <ApClasses  items = {this.state.items}/>
+                        <TransferClasses  items = {this.state.items}/> */}
+                        {userData.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;
                             const name = "Semester " + sem.semNum;

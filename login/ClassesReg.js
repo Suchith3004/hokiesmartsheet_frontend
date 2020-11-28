@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import fire from './config/Fire';
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';

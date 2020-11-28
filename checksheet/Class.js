@@ -2,8 +2,8 @@
 import React, { Component, useState } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
-import { CoursePopup, CustomPopup } from '../utilities/CoursePopup';
 import dbFetch from '../api/dbFetch'
+import { motion } from 'framer-motion'
 
 
 
@@ -92,9 +92,6 @@ export default class Task extends React.Component {
                     >
                         <Handle  {...provided.dragHandleProps} />
 
-                        {/* {this.state.open ? (
-                            <CoursePopup open={this.state.open} setOpen={this.onClickAction} course={this.state.courseInfo} />
-                        ) : (<span />)} */}
                         <div style={{ backgroundColor: 'white' }} >
                             <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
                         </div>

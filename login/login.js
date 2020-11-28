@@ -82,12 +82,12 @@ class Login extends Component {
             <Container>
 
                 <div className="col-md-6" style = {{alignItems:'center'}}>
-                    <h1><label style={{ fontSize: 50, color:"white" }} for="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                    <h1><label style={{ fontSize: 50, color:"white" }} htmlfor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
 
 
                     <div class="form-group">
                         <label style={{position:"relative", left:-215}}for="exampleInputEmail1">Email address</label>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
                     <div class="form-group">
                         <label style={{position:"relative", left:-230}} for="exampleInputPassword1">Password</label>
