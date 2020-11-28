@@ -15,6 +15,7 @@ import MentorRegister from "./login/MentorRegister";
 import ClassesReg from "./login/ClassesReg";
 import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
+import MentorProfile from "./mentor/MentorProfile";
 
 
 
@@ -45,7 +46,6 @@ class App extends Component {
   
     render() {
       return (
-
         <div className="App">
           <Router>
             <Switch>

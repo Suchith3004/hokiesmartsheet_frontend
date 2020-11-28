@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import fire from './config/Fire';
 import styled from "styled-components";
 import ClassesReg from "./ClassesReg";
 import MentorRegister from "./MentorRegister";
@@ -185,7 +184,6 @@ class StudentRegister extends React.Component {
                 submitted: true
             })
         }
-
         return (
 
             <Container>

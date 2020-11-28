@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Column from "./Semester";
-import CourseSelector from "./CourseSelector";
 import styled from 'styled-components';
 import '@atlaskit/css-reset'
 import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
+import ApClasses from "./ApClasses";
+import TransferClasses from "./TransferClasses";
+
 
 const Container = styled.div`
     display: flex;
@@ -79,6 +81,7 @@ export default class Table extends React.Component {
         if (destination.droppableId === source.droppableId)
             return;
 
+        
         const fromSem = source.droppableId.split(" ")[1];
         const toSem = destination.droppableId.split(' ')[1];
 
@@ -132,10 +135,14 @@ export default class Table extends React.Component {
                     onDragUpdate={this.onDragUpdate}
                     onDragEnd={this.onDragEnd}
                 >
+                    {/*Using Sample Data Here*/}
+                    {/*The Searchable list for homeless courses can be un commented here if needed*/}
+                    {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
+                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {this.state.items.major}</label>
                     <Container>
-                        {/* <Column key={'Homeless'} name = {'Major Requirements'} column = {this.state.items.homlessCourses} tasks= {this.state.items.homelessCourses} showSearch={true}/> */}
-                        {/* <CourseSelector selectorColumns={this.state.items.homlessCourses} columnData={this.state.columns} tasks={this.state.tasks} /> */}
-                        {items.semesters.map((sem, index) => {
+                        <ApClasses  items = {this.state.items}/>
+                        <TransferClasses  items = {this.state.items}/>
+                        {this.state.items.semesters.map((sem, index) => {
                             const column = sem;
                             const tasks = sem.semesterCourses;
                             const name = "Semester " + sem.semNum;

@@ -1,24 +1,21 @@
 import React from "react";
-import styled from 'styled-components';
-import Task from './Class'
 import {Droppable} from "react-beautiful-dnd";
+import Task from "./Class";
+import styled from "styled-components";
+
 
 const Container = styled.div`
-    margin: 8px;
+    margin: 2px;
     border: 1px solid lightgrey;
     border-radius: 2px;
-    width: 400px;
+    width: 360px;
     height: 250px;
     display: flex;
     flex-direction: column;
     background-color:#a24857;
-    padding-bottom:10px;
     align-items: center;
 `;
-const Title = styled.h3`
-    padding: 8px;
-    color: aqua
-`;
+
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
@@ -29,7 +26,16 @@ const TaskList = styled.div`
     background-color:#a24857;
 `;
 
-export default class Column extends React.Component{
+const Title = styled.h3`
+    padding: 8px;
+    color: aqua
+`;
+
+const SearchBarStyle = styled.h3`
+    padding-bottom: 5px;
+    color: aqua
+`;
+export default class SearchableList extends React.Component{
     constructor(props) {
         super(props);
         this.state = {displayedCourses: this.props.tasks}
@@ -37,7 +43,6 @@ export default class Column extends React.Component{
     }
 
     searchHandler (event) {
-
         let searcjQery = event.target.value.toLowerCase(),
             displayedCourses = this.props.tasks.filter((el) => {
                 let searchValue = el.name.toLowerCase();
@@ -59,19 +64,20 @@ export default class Column extends React.Component{
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
+                            <SearchBarStyle>
+                            <input type="text" className="search" placeholder="Class Name" onChange={this.searchHandler}/>
+                            </SearchBarStyle>
                             {
                                 this.state.displayedCourses.map((course, index) => {
                                     return <Task key={index} task = {course} index={index}/>
                                 })
                             }
-                            {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}
                             {provided.placeholder}
                         </TaskList>
                     )}
                 </Droppable>
-
-                <Title>Total Credits:       {this.props.column.totalCredits}</Title>
             </Container>
         );
     }
+
 }
