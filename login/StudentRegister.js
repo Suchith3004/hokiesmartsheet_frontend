@@ -53,8 +53,7 @@ class StudentRegister extends React.Component {
 
     createUser(newUser, append) {
         this.appendBasicInfo(newUser)
-            .then((updatedUser) => {
-
+            .then(() => {
                 dbFetch.post({
                     endpoint: "/createUser",
                     data: this.state.newUser
@@ -72,6 +71,33 @@ class StudentRegister extends React.Component {
                     })
                     .catch((error) => {
                         alert("Failed to create new user! " + error.message);
+                        this.setState({
+                            isLoaded: true,
+                            error,
+                            submitted: false
+                        });
+                    });
+            })
+    }
+
+    createMentor(newUser) {
+        this.appendBasicInfo(newUser)
+            .then(() => {
+
+                dbFetch.post({
+                    endpoint: "/createMentor",
+                    data: this.state.newUser
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.setState({
+                            isLoaded: true
+                        })
+                        
+                        this.props.history.push('/createUser')
+                    })
+                    .catch((error) => {
+                        alert("Failed to create new mentor! " + error.message);
                         this.setState({
                             isLoaded: true,
                             error,
@@ -166,10 +192,11 @@ class StudentRegister extends React.Component {
             const rStudent = this.state.registeringAsStudent
             const rMentor = this.state.registeringAsMentor
 
-            if (!(rStudent && rMentor && type === 'mentor'))
-                this.createUser(newUser, rStudent && rMentor)
+            if (!rStudent && rMentor && type === 'mentor')
+                this.createMentor(newUser)
 
-            this.setState({ newUser: newUser })
+            else if (!(rStudent && rMentor && type === 'mentor'))
+                this.createUser(newUser, rStudent && rMentor)
 
         }
 
