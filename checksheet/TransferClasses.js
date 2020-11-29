@@ -37,24 +37,36 @@ export default class ApClasses extends React.Component{
         super(props);
     }
     render(){
-        return (
-            <TaskList>
-                <Title>Transfer Classes I've Taken</Title>
-                <ApClassContainer>
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'left' }}>VT Class</b>
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'right' }}>VT Course Number</b>
-                </ApClassContainer>
-                {this.props.items.transferCourses.map((tClass, index) => {
-                    if(tClass.completed){
-                        return(
-                            <ApClassContainer>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'left' }}>{tClass.name}</label>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'right' }}>{tClass.courseId}</label>
-                            </ApClassContainer>
-                        )
-                    }
-                })}
-            </TaskList>
-        );
+        if(this.props.items.transferCourses.length > 0) {
+            return (
+                <TaskList>
+                    <Title>Transfer Classes I've Taken</Title>
+                    <ApClassContainer>
+                        <b style={{color: 'black', display: 'inline', alignItems: 'left'}}>VT Class</b>
+                        <b style={{color: 'black', display: 'inline', alignItems: 'right'}}>VT Course Number</b>
+                    </ApClassContainer>
+                    {this.props.items.transferCourses.map((tClass, index) => {
+                        if (tClass.completed) {
+                            return (
+                                <ApClassContainer>
+                                    <label style={{
+                                        color: 'black',
+                                        display: 'inline',
+                                        alignItems: 'left'
+                                    }}>{tClass.name}</label>
+                                    <label style={{
+                                        color: 'black',
+                                        display: 'inline',
+                                        alignItems: 'right'
+                                    }}>{tClass.courseId}</label>
+                                </ApClassContainer>
+                            )
+                        }
+                    })}
+                </TaskList>
+            );
+        } else{
+            return <div></div>
+        }
     }
 }

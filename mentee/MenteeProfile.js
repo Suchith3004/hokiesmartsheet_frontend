@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
-import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
 
 const Container = styled.div`
@@ -20,18 +19,17 @@ const FieldsContainer = styled.div`
     padding : 10px
 `;
 
-class MentorProfile extends Component {
+class MenteeProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoaded: false,
             error: null,
-            mentor: {},
+            mentee: {},
         }
     }
 
     componentDidMount() {
-        console.log((localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid))
         let uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
         dbFetch.get({
             endpoint: "/getUserChecksheet/" + uid,
@@ -39,15 +37,15 @@ class MentorProfile extends Component {
         })
             .then(response => response.json())
             .then((data) => {
-
+                console.log(data)
                 this.setState({
                     isLoaded: true,
-                    mentor: data
+                    mentee: data
                 });
 
             })
             .catch((error) => {
-                console.error("Failed to fetch mentor data: " + error.message);
+                console.error("Failed to fetch mentee data: " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
@@ -65,15 +63,12 @@ class MentorProfile extends Component {
                     alt="new"
                     style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
                 />
-
                 <h2
-                style={{margin: 20}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    style={{margin: 20}}>{this.state.mentee.firstName + " " + this.state.mentee.lastName}</h2>
                 <FieldsContainer>
-                <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
-                <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
-                <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                <h5 style = {{display : "inline-block"}}>{"VT Alumni: "}</h5>
-                <Checkbox checked={this.state.mentor.vtAlumni || false}/>
+                    <h5>{"School: " + this.state.mentee.school}</h5>
+                    <h5>{"Major: " + this.state.mentee.major}</h5>
+                    <h5>{"Year: " + this.state.mentee.year}</h5>
                 </FieldsContainer>
             </Container>
         );
@@ -81,4 +76,4 @@ class MentorProfile extends Component {
 
 }
 
-export default MentorProfile;
+export default MenteeProfile;

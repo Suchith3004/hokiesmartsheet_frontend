@@ -130,16 +130,24 @@ export default class Table extends React.Component {
             />
         } else {
             return (
+
                 <DragDropContext
                     onDragStart={this.onDragStart}
                     onDragUpdate={this.onDragUpdate}
                     onDragEnd={this.onDragEnd}
                 >
+
                     {/*Using Sample Data Here*/}
                     {/*The Searchable list for homeless courses can be un commented here if needed*/}
                     {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
                     <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
                     <Container>
+                        <ApClasses
+                            items = {this.state.userData}
+                        />
+                        <TransferClasses
+                            items = {this.state.userData}
+                        />
                         {/* <ApClasses  items = {this.state.items}/>
                         <TransferClasses  items = {this.state.items}/> */}
                         {userData.semesters.map((sem, index) => {

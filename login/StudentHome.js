@@ -79,7 +79,6 @@ class StudentHome extends Component {
                     isLoaded: true,
                     userData: data
                 });
-                console.log(data);
             })
             .catch((error) => {
                 console.error("Failed to fetch course. " + error.message);
