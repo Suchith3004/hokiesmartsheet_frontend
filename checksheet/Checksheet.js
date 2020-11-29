@@ -65,6 +65,23 @@ export default class Table extends React.Component {
         //Implement if need changes while in drag
     };
 
+    adjustChecksheet = (from, to, fromIndex, toIndex) => {
+        //Load semesters in
+        semesters = this.state.userData.semesters
+
+        //Store and remove course
+        courseRef = semesters[from].courseReferences[fromIndex]
+        semesters[from].courseReferences.splice(fromIndex, 1)
+        movingCourse = semesters[from].semesterCourses[fromIndex]
+        semesters[from].semesterCourses.splice(fromIndex, 1)
+
+        //Add course to destination semester
+        semesters[to].semesterCourses.splice(toIndex, 0, movingCourse)
+        semesters[to].courseReferences.splice(toIndex, 0, courseRef)
+
+    }
+
+
     onDragEnd = result => {
         let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
         for (let elem of classHandles) {
@@ -72,27 +89,25 @@ export default class Table extends React.Component {
         }
         const { destination, source, draggableId } = result;
 
-        if (!destination) {
-            return;
-        }
-        if (destination.draggableId === source.droppableId && destination.index === source.index) {
+        if ((destination.droppableId === source.droppableId && destination.index === source.index) || !destination) {
             return;
         }
 
-        if (destination.droppableId === source.droppableId)
+        const fromSem = parseInt(source.droppableId.split(" ")[1]);
+        const toSem = parseInt(destination.droppableId.split(' ')[1]);
+
+        if (destination.droppableId === source.droppableId) {
+            this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
             return;
-
-
-        const fromSem = source.droppableId.split(" ")[1];
-        const toSem = destination.droppableId.split(' ')[1];
+        }
 
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
                 userId: this.props.userData.userId,
                 courseId: draggableId,
-                toSem: parseInt(toSem),
-                fromSem: parseInt(fromSem)
+                toSem: toSem,
+                fromSem: fromSem
             }
         })
             .then(response => response.json())
@@ -106,7 +121,7 @@ export default class Table extends React.Component {
                     alert('Prerequisites not met: ' + this.state.moveClass.preReqsNotMet + '\nCorequisites not met: ' + this.state.moveClass.coReqsNotMet + '\nDependents: ' + this.state.moveClass.dependentCourses)
                 }
                 else {
-                    this.fetchChecksheet();
+                    this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
                 }
             })
             .catch((error) => {
