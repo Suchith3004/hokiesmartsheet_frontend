@@ -24,6 +24,7 @@ class MentorProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            uid : null,
             isLoaded: false,
             error: null,
             mentor: {},
@@ -31,10 +32,14 @@ class MentorProfile extends Component {
     }
 
     componentDidMount() {
-        console.log((localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid))
-        let uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
+        if (this.props.uid == null){
+            this.state.uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
+        }else{
+            this.state.uid = this.props.uid
+        }
+
         dbFetch.get({
-            endpoint: "/getUserChecksheet/" + uid,
+            endpoint: "/getUserChecksheet/" + this.state.uid,
             data: {}
         })
             .then(response => response.json())

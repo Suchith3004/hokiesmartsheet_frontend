@@ -17,6 +17,8 @@ import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
 import MentorProfile from "./mentor/MentorProfile";
 import MenteeProfile from "./mentee/MenteeProfile";
+import MentorItem from "./mentor/MentorItem";
+import MentorList from "./mentor/MentorList";
 
 
 class App extends Component {
@@ -46,37 +48,36 @@ class App extends Component {
   
     render() {
       return (
-        // <div className="App">
-        //   <Router>
-        //     <Switch>
-        //       <Route exact path="/" render={() => (
-        //         this.state.user ? (
-        //           <Redirect to="/home"/>
-        //         ) : (
-        //           <Redirect to="/login"/>
-        //         )
-        //       )}/>
-        //       <Route path="/home" render={() => (
-        //         this.state.user ? (
-        //           <Home />
-        //         ) : (
-        //           <Redirect to="/login"/>
-        //         )
-        //       )}/>
-        //       <Route path="/editcourses" component={StudentRegister}/>
-        //       <Route path="/createUser" render={() => (
-        //           <Home />
-        //         )}/>
-        //       <Route path="/login" render={() => (
-        //         this.state.user ? (
-        //           <Redirect to="/home"/>
-        //         ) : (
-        //           <Login />
-        //         )
-        //       )}/>
-        //     </Switch>
-        //   </Router>        </div>
-          <MenteeProfile/>
+        <div className="App">
+          <Router>
+            <Switch>
+              <Route exact path="/" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home"/>
+                ) : (
+                  <Redirect to="/login"/>
+                )
+              )}/>
+              <Route path="/home" render={() => (
+                this.state.user ? (
+                  <Home />
+                ) : (
+                  <Redirect to="/login"/>
+                )
+              )}/>
+              <Route path="/editcourses" component={StudentRegister}/>
+              <Route path="/createUser" render={() => (
+                  <Home />
+                )}/>
+              <Route path="/login" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home"/>
+                ) : (
+                  <Login />
+                )
+              )}/>
+            </Switch>
+          </Router>        </div>
       );
     }
   }
