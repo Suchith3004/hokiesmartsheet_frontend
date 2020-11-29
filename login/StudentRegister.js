@@ -199,9 +199,10 @@ class StudentRegister extends React.Component {
 
             <Container>
                 <label style={{ fontSize: 60, padding: -40 }}><u style={{ color: 'white', borderRadius: 15 }}>Registration</u></label>
+                
 
                 <div className="info">
-                    <div>  <input className="fname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="fname" onChange={(e) => this.setState({ firstname: e.target.value })} placeholder="Frist name" /></div>
+                    <div>  <input className="fname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="fname" onChange={(e) => this.setState({ firstname: e.target.value })} placeholder="First name" /></div>
                     <br></br>
                     <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="lname" type="text" name="lname" onChange={(e) => this.setState({ lastname: e.target.value })} placeholder="Last name" /></div>
                     <br></br>

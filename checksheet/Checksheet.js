@@ -8,6 +8,7 @@ import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import ApClasses from "./ApClasses";
 import TransferClasses from "./TransferClasses";
+import Logo from './logo_transparent.png';
 
 
 const Container = styled.div`
@@ -17,8 +18,9 @@ const Container = styled.div`
     padding: 70px;
     background-color:#b04f5f;
     align-items: center;
-    margin-left:150px;
+    margin-left:400px;
     margin-top: 50px;
+
 `;
 
 const circleStyle = {
@@ -80,7 +82,7 @@ export default class Table extends React.Component {
         if (destination.droppableId === source.droppableId)
             return;
 
-        
+
         const fromSem = source.droppableId.split(" ")[1];
         const toSem = destination.droppableId.split(' ')[1];
 
@@ -118,11 +120,13 @@ export default class Table extends React.Component {
 
 
     render() {
-        const { error, isLoaded, userData } = this.state;
+
+            const {error, isLoaded, userData} = this.state;
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            console.log(userData)
+                console.log(userData)
             return <motion.span
                 style={circleStyle}
                 animate={{ rotate: 360 }}
@@ -131,27 +135,27 @@ export default class Table extends React.Component {
         } else {
             return (
                 <DragDropContext
-                    onDragStart={this.onDragStart}
-                    onDragUpdate={this.onDragUpdate}
-                    onDragEnd={this.onDragEnd}
-                >
-                    {/*Using Sample Data Here*/}
-                    {/*The Searchable list for homeless courses can be un commented here if needed*/}
-                    {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
-                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
-                    <Container>
-                        {/* <ApClasses  items = {this.state.items}/>
+                onDragStart={this.onDragStart}
+                onDragUpdate={this.onDragUpdate}
+                onDragEnd={this.onDragEnd}
+            >
+                {/*Using Sample Data Here*/}
+                {/*The Searchable list for homeless courses can be un commented here if needed*/}
+                {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
+                <h1><label style={{ fontSize: 50, backgroundColor: 10000, textAlign: "center", color: "white" }}>Major: {userData.major}</label></h1>
+                <Container>
+
+                    {/* <ApClasses  items = {this.state.items}/>
                         <TransferClasses  items = {this.state.items}/> */}
-                        {userData.semesters.map((sem, index) => {
-                            const column = sem;
-                            const tasks = sem.semesterCourses;
-                            const name = "Semester " + sem.semNum;
-                            return <Column key={index} name={name} column={column} tasks={tasks} />
-                        })}
-                    </Container>
-                </DragDropContext>
+                    {userData.semesters.map((sem, index) => {
+                        const column = sem;
+                        const tasks = sem.semesterCourses;
+                        const name = "Semester " + sem.semNum;
+                        return <Column key={index} name={name} column={column} tasks={tasks} />
+                    })}
+                </Container>
+            </DragDropContext>
             );
         }
-
     }
 }
