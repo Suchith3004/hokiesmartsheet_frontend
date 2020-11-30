@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import fire from './config/Fire';
 import styled from "styled-components";
 import { useHistory } from 'react-router-dom';
+import Logo from './logo_transparent.png';
+
 
 
 const Container = styled.div`
@@ -79,28 +81,30 @@ class Login extends Component {
 
         return (
 
-            <Container>
+            <div class="login">
 
                 <div className="col-md-6" style = {{alignItems:'center'}}>
-                    <h1><label style={{ fontSize: 50, color:"white" }} htmlfor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                    <h1><label style={{ fontSize: 50, color:"white" }} htmlFor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                    <br></br>
+                    <img src={Logo} height="200" width="200" alt='website logo'/>
 
 
-                    <div class="form-group">
-                        <label style={{position:"relative", left:-215}}for="exampleInputEmail1">Email address</label>
+                    <div className="form-group">
+                        <label style={{position:"relative", left:-215}} htmlFor="exampleInputEmail1">Email address</label>
                         <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
-                    <div class="form-group">
-                        <label style={{position:"relative", left:-230}} for="exampleInputPassword1">Password</label>
-                        <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                        <small id="emailHelp" class="form-text text-muted">Password must be at least six digits long</small>
+                    <div className="form-group">
+                        <label style={{position:"relative", left:-230}} htmlFor="exampleInputPassword1">Password</label>
+                        <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                        <small id="emailHelp" className="form-text text-muted">Password must be at least six digits long</small>
 
                     </div>
-                    <button onClick={this.login} class="btn btn-primary">Login</button>
+                    <button onClick={this.login} className="btn btn-primary">Login</button>
                     {/* <button onClick={this.signup} style={{ marginLeft: '25px' }} className="btn btn-success">Signup</button> */}
                     <SubmitButton email={this.state.email} password={this.state.password}/>
 
                 </div>
-            </Container>
+            </div>
 
         );
 

@@ -93,3 +93,33 @@ div {
     font-style: 'Tisa';
 }
 
+
+
+.checksheet {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1000px;
+    padding: 70px;
+    align-items: center;
+    margin-left:150px;
+    margin-top: 50px;
+}
+
+
+.semester {
+    margin: 8px;
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color:white;
+    padding-bottom:10px;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.totalcredits {
+    padding: 8px;
+    color: aqua
+}

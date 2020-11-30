@@ -10,17 +10,6 @@ import ApClasses from "./ApClasses";
 import TransferClasses from "./TransferClasses";
 
 
-const Container = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    width: 1000px;
-    padding: 70px;
-    background-color:#b04f5f;
-    align-items: center;
-    margin-left:150px;
-    margin-top: 50px;
-`;
-
 const circleStyle = {
     display: 'block',
     width: '7rem',
@@ -47,8 +36,48 @@ export default class Table extends React.Component {
             error: null,
             isLoaded: true,
             userData: this.props.userData,
-            moveClass: {}
+            maxHeight: 0,
+            pathways: {},
+            viewType: "checksheet"
         };
+    }
+
+    componentDidMount() {
+        this.calculateSemHeight()
+
+        dbFetch.get({
+            endpoint: "/getAllPathways",
+            data: {}
+        })
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    isLoaded: true,
+                    pathways: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+    }
+
+    calculateSemHeight = () => {
+        if (!this.state.userData)
+            return
+
+        var maxHeight = 0;
+        this.state.userData.semesters.forEach(semester => {
+            if (semester.semesterCourses.length > maxHeight)
+                maxHeight = semester.semesterCourses.length
+        })
+
+        this.setState({
+            maxHeight: maxHeight
+        })
     }
 
     onDragStart = () => {
@@ -61,33 +90,6 @@ export default class Table extends React.Component {
     onDragUpdate = () => {
         //Implement if need changes while in drag
     };
-
-    adjustChecksheet = (from, to, fromIndex, toIndex) => {
-        //Load semesters in
-        // console.log(this.state.userData)
-        const { userData } = this.state
-        const semesters = userData.semesters
-
-        console.log("fromSem:" + from + "  toSem:" + to + "   fromIndex:" + fromIndex + "  toIndex:" + toIndex)
-
-        //Store and remove course
-        // courseRef = semesters[from].courseReferences[fromIndex]
-        // semesters[from].courseReferences.splice(fromIndex, 1)
-        const movingCourse = semesters[from].semesterCourses[fromIndex]
-        semesters[from].semesterCourses.splice(fromIndex, 1)
-
-        //Add course to destination semester
-        semesters[to].semesterCourses.splice(toIndex, 0, movingCourse)
-        // semesters[to].courseReferences.splice(toIndex, 0, courseRef)
-        console.log("moved")
-
-        userData.semesters = semesters;
-        this.setState({
-            userData: userData
-        })
-
-    }
-
 
     onDragEnd = result => {
         let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
@@ -107,31 +109,36 @@ export default class Table extends React.Component {
         const toSem = parseInt(destination.droppableId.split(' ')[1]);
 
         if (destination.droppableId === source.droppableId) {
-            this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
             return;
         }
-
+        console.log({
+            userId: this.props.userData.userId,
+            courseId: draggableId,
+            toSem: toSem,
+            fromSem: fromSem,
+            toIndex: destination.index
+        })
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
                 userId: this.props.userData.userId,
                 courseId: draggableId,
                 toSem: toSem,
-                fromSem: fromSem
+                fromSem: fromSem,
+                toIndex: destination.index
             }
         })
             .then(response => response.json())
             .then((data) => {
-                this.setState({
-                    isLoaded: true,
-                    moveClass: data
-                });
-
-                if (!(this.state.moveClass.prerequisites && this.state.moveClass.corequisites && !this.state.moveClass.dependents)) {
-                    alert('Prerequisites not met: ' + this.state.moveClass.preReqsNotMet + '\nCorequisites not met: ' + this.state.moveClass.coReqsNotMet + '\nDependents: ' + this.state.moveClass.dependentCourses)
+                console.log((data.prerequisites && data.corequisites && !data.dependents))
+                if (!(data.prerequisites && data.corequisites && !data.dependents)) {
+                    alert('Prerequisites not met: ' + data.preReqsNotMet + '\nCorequisites not met: ' + data.coReqsNotMet + '\nDependents: ' + data.dependentCourses)
                 }
                 else {
-                    this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
+                    this.setState({
+                        isLoaded: true,
+                        userData: data.userData
+                    })
                 }
             })
             .catch((error) => {
@@ -148,38 +155,45 @@ export default class Table extends React.Component {
         const { error, isLoaded, userData } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
-            console.log(userData)
-            return <div> 
+        }
+        else if (!isLoaded) {
+            return <div>
                 <motion.span
                     style={circleStyle}
                     animate={{ rotate: 360 }}
                     transition={spinTransition}
                 />
             </div>
-        } else {
-            return (
-                <DragDropContext
-                    onDragStart={this.onDragStart}
-                    onDragUpdate={this.onDragUpdate}
-                    onDragEnd={this.onDragEnd}
-                >
-                    {/*Using Sample Data Here*/}
-                    {/*The Searchable list for homeless courses can be un commented here if needed*/}
-                    {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
-                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
-                    <Container>
-                        {/* <ApClasses  items = {this.state.items}/>
+        }
+        else {
+
+
+            return <div>
+                {this.state.viewType === 'checksheet' ? (
+                    <DragDropContext
+                        onDragStart={this.onDragStart}
+                        onDragUpdate={this.onDragUpdate}
+                        onDragEnd={this.onDragEnd}
+                    >
+                        {/*Using Sample Data Here*/}
+                        {/*The Searchable list for homeless courses can be un commented here if needed*/}
+                        {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
+                        <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
+                        <div class="checksheet">
+                            {/* <ApClasses  items = {this.state.items}/>
                         <TransferClasses  items = {this.state.items}/> */}
-                        {userData.semesters.map((sem, index) => {
-                            const column = sem;
-                            const tasks = sem.semesterCourses;
-                            const name = "Semester " + sem.semNum;
-                            return <Column key={index} name={name} column={column} tasks={tasks} />
-                        })}
-                    </Container>
-                </DragDropContext>
-            );
+                            {userData.semesters.map((sem, index) => {
+                                const column = sem;
+                                const tasks = sem.semesterCourses;
+                                const name = "Semester " + sem.semNum;
+                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} />
+                            })}
+                        </div>
+                    </DragDropContext>
+                ) : <span />}
+            </div>
+
+
         }
 
     }

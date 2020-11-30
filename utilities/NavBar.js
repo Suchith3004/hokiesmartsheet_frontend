@@ -42,7 +42,6 @@ export default class NavBar extends Component {
     }
 
     componentDidMount() {
-        console.log((localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid))
         dbFetch.get({
             endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             data: {}
@@ -53,7 +52,6 @@ export default class NavBar extends Component {
                     isLoaded: true,
                     userData: data
                 });
-                console.log(data);
             })
             .catch((error) => {
                 console.error("Failed to fetch course. " + error.message);
