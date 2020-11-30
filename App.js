@@ -72,8 +72,8 @@ class App extends Component {
               ) : (
                   <Login />
                 )
-            )} />
 
+            )} />
             <Route path="/editcourses" component={StudentRegister} />
             <Route path="/chat" component={Chat} />
             <Route path="/requests" componenet={Requests} />

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
-import Checkbox from '@material-ui/core/Checkbox';
-import fire from "../login/config/Fire";
-import Column from "../checksheet/Semester";
 import MentorItem from "./MentorItem";
+import List from 'react-list-select';
+import MentorProfile from "./MentorProfile";
 
 const Container = styled.div`
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
@@ -18,7 +17,10 @@ class MentorList extends Component {
         this.state = {
             isLoaded: false,
             error: null,
-            mentors: {},
+            mentors: [],
+            mentorsR: [],
+            selected: "",
+
         }
     }
 
@@ -29,12 +31,21 @@ class MentorList extends Component {
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(data)
                 this.setState({
                     isLoaded: true,
                     mentors: data
                 });
 
+                this.state.mentorsR = data.map((item, index) => {
+                    return (
+                        <MentorItem
+                            uid = {item.userId}
+                        >
+                        </MentorItem>
+                    );
+                });
+
+                this.state.selected = data[0].userId
             })
             .catch((error) => {
                 console.error("Failed to fetch all mentors data: " + error.message);
@@ -47,13 +58,24 @@ class MentorList extends Component {
 
     }
 
+
     render() {
+        //{console.log((this.state.mentors[this.state.selected]).userId)}
         return (
-            <Container>
-                {self.state.mentors.map((mentor) => {
-                    return <MentorItem uid = {mentor.uid} />
-                })}
-            </Container>
+            <div>
+                <List
+                    items={ this.state.mentorsR}
+                    selected={[0]}
+                    disabled={[4]}
+                    multiple={false}
+                    onChange={(selected) => { this.state.selected = this.state.mentors[selected].userId
+                                                   console.log(this.state.selected)
+                                                }}
+                />
+                <MentorProfile
+                    key =  {this.state.selected}
+                />
+            </div>
         );
     }
 

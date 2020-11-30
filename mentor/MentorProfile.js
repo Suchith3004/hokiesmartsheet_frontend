@@ -31,17 +31,19 @@ class MentorProfile extends Component {
             error: null,
             mentor: {},
         }
-    }
+    }git
 
     componentDidMount() {
-        if (this.props.uid == null) {
+
+        if (this.props.key == null){
             this.state.uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
-        } else {
-            this.state.uid = this.props.uid
+        }else{
+            this.state.uid = this.props.key
+
         }
 
         dbFetch.get({
-            endpoint: "/getUserChecksheet/" + this.state.uid,
+            endpoint: "/getUser/" + this.state.uid,
             data: {}
         })
             .then(response => response.json())
@@ -63,6 +65,7 @@ class MentorProfile extends Component {
 
 
     }
+
 
     render() {
         return (
