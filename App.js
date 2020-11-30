@@ -77,8 +77,9 @@ class App extends Component {
                 )
               )}/>
             </Switch>
-          </Router>       
+          </Router>
            </div>
+
     );
   }
 }

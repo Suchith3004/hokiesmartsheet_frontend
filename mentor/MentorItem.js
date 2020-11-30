@@ -35,7 +35,7 @@ class MentorItem extends Component {
     componentDidMount() {
         let uid = this.props.uid
         dbFetch.get({
-            endpoint: "/getUserChecksheet/" + uid,
+            endpoint: "/getUser/" + uid,
             data: {}
         })
             .then(response => response.json())

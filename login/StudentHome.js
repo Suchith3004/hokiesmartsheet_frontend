@@ -70,7 +70,7 @@ class StudentHome extends Component {
     componentDidMount() {
         console.log((localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid))
         dbFetch.get({
-            endpoint: "/getUserChecksheet/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+            endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             data: {}
         })
             .then(response => response.json())
