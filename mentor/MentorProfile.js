@@ -3,6 +3,8 @@ import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
 import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
+import Logo from './logo_transparent.png';
+
 
 const Container = styled.div`
     width:600px;
@@ -66,7 +68,7 @@ class MentorProfile extends Component {
         return (
             <Container>
                 <img
-                    src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                    src= {Logo}
                     alt="new"
                     style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
                 />

@@ -22,32 +22,32 @@ import MentorList from "./mentor/MentorList";
 
 
 class App extends Component {
-    constructor() {
-      super();
-      this.state = ({ //puts user in a state 
-        user: null,
-      });
-      this.authListener = this.authListener.bind(this);
-    }
-  
-    componentDidMount() {
-      this.authListener();
-    }
-  
-    authListener() {
-      fire.auth().onAuthStateChanged((user) => { //checks if user logged in 
-        if (user) {
-          this.setState({ user });
-          localStorage.setItem('userId', user.uid);
-        } else {
-          this.setState({ user: null });
-          localStorage.removeItem('userId');
-        }
-      });
-    }
-  
-    render() {
-      return (
+  constructor() {
+    super();
+    this.state = ({ //puts user in a state 
+      user: null,
+    });
+    this.authListener = this.authListener.bind(this);
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
+    fire.auth().onAuthStateChanged((user) => { //checks if user logged in 
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem('userId', user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem('userId');
+      }
+    });
+  }
+
+  render() {
+    return (
         <div className="App">
           <Router>
             <Switch>
@@ -77,10 +77,11 @@ class App extends Component {
                 )
               )}/>
             </Switch>
-          </Router>        </div>
-      );
-    }
+          </Router>       
+           </div>
+    );
   }
-  
-  export default App;
-  
+}
+
+export default App;
+

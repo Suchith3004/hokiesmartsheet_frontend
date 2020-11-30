@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import fire from './config/Fire';
 import styled from "styled-components";
 import { useHistory } from 'react-router-dom';
+import Logo from './logo_transparent.png';
+
 
 
 const Container = styled.div`
@@ -83,6 +85,8 @@ class Login extends Component {
 
                 <div className="col-md-6" style = {{alignItems:'center'}}>
                     <h1><label style={{ fontSize: 50, color:"white" }} htmlfor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                    <br></br>
+                    <img src={Logo} height="200" width="200" alt='website logo'/>
 
 
                     <div class="form-group">

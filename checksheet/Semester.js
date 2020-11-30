@@ -1,14 +1,15 @@
 import React from "react";
 import styled from 'styled-components';
 import Task from './Class'
-import {Droppable} from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
     width: 400px;
-    height: 250px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     background-color:#a24857;
@@ -17,7 +18,9 @@ const Container = styled.div`
 `;
 const Title = styled.h3`
     padding: 8px;
-    color: aqua
+    font-weight: bold;
+    color: orange
+
 `;
 const TaskList = styled.div`
     padding: 8px;
@@ -29,14 +32,14 @@ const TaskList = styled.div`
     background-color:#a24857;
 `;
 
-export default class Column extends React.Component{
+export default class Column extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {displayedCourses: this.props.tasks}
+        this.state = { displayedCourses: this.props.tasks }
         this.searchHandler = this.searchHandler.bind(this);
     }
 
-    searchHandler (event) {
+    searchHandler(event) {
 
         let searcjQery = event.target.value.toLowerCase(),
             displayedCourses = this.props.tasks.filter((el) => {
@@ -48,12 +51,13 @@ export default class Column extends React.Component{
         })
     }
 
-    render(){
+    render() {
         return (
             <Container>
                 <Title>{this.props.name}</Title>
-                <Droppable droppableId = {this.props.name}>
-                    {(provided,snapshot) => (
+
+                <Droppable droppableId={this.props.name}>
+                    {(provided, snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
@@ -61,7 +65,7 @@ export default class Column extends React.Component{
                         >
                             {
                                 this.state.displayedCourses.map((course, index) => {
-                                    return <Task key={index} task = {course} index={index}/>
+                                    return <Task key={index} task={course} index={index} />
                                 })
                             }
                             {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}
@@ -70,7 +74,7 @@ export default class Column extends React.Component{
                     )}
                 </Droppable>
 
-                <Title>Total Credits:       {this.props.column.totalCredits}</Title>
+                <Title style={{ fontsize: 0 }}>Total Credits:       {this.props.column.totalCredits}</Title>
             </Container>
         );
     }

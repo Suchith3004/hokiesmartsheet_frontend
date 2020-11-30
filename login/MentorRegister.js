@@ -132,19 +132,22 @@ class MentorRegister extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.submitted != prevProps.submitted && this.props.submitted != false) {
             if (!this.state.chosenOrganization || !this.state.alumni || !this.state.description) {
+                console.log()
                 this.props.submit(null, 'mentor');
             }
             else {
                 const newMentor = {
                     occupation: this.state.occupation,
-                    organization: this.state.chosenOrganization,
+                    organizationId: this.state.chosenOrganization,
                     description: this.state.description,
                     occupation: this.state.occupation ? this.state.occupation : 'N/A',
                     qualities: this.state.qualities,
                     hobbies: this.state.hobbies,
                     clubs: this.state.clubs,
-                    mentorInterests: this.state.interests
+                    mentorInterests: this.state.interests,
+                    alumni: this.state.alumni
                 }
+                console.log(newMentor);
                 this.props.submit(newMentor, 'mentor');
             }
         }
@@ -226,16 +229,7 @@ class MentorRegister extends Component {
                 label: interest
             }));
             return options;
-        }
-
-        const handleInputChange = (event) => {
-            const target = event.target;
-            const value = target.type === 'checkbox' ? target.checked : target.value;
-            const name = target.name;
-            this.setState({
-                [name]: value
-            });
-        }
+        } 
 
         return (
             <form action="/">
@@ -245,13 +239,13 @@ class MentorRegister extends Component {
 
                         <div>
                             <label style={{ fontSize: 20, paddingRight: 10 }}>Occupation:  </label>
-                            <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} onChange={(e) => { this.setState({ occupation: e.value }) }} placeholder="(Leave blank if N/A)" />
+                            <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} onChange={(e) => { this.setState({ occupation: e.target.value }) }} placeholder="(Leave blank if N/A)" />
                         </div>
                         <br></br>
                         <br></br>
 
                         <div>  <label style={{ fontSize: 17 }}>What organization are you mentoring for?</label></div>
-                        <div> <SearchBar multiSelect={false} options={(inputValue) => { return this.state ? this.state.organizations : [] }} handleChange={(e) => this.state.chosenOrganization = e ? e.value : ''} /> </div>
+                        <div> <SearchBar multiSelect={false} options={(inputValue) => { return this.state ? this.state.organizations : [] }} handleChange={(e) => this.state.chosenOrganization = e ? e.value : null} /> </div>
                         <br></br>
 
                         <div>  <label style={{ fontSize: 17 }}>Select the qualities you posses for a good mentor</label></div>
@@ -273,13 +267,13 @@ class MentorRegister extends Component {
                         <br></br>
 
                         <div>  <label style={{ fontSize: 17 }}>Please provide a brief description of yourself and your background to help mentees find you:</label></div>
-                        <div>  <textarea style={{ borderRadius: 10, boxShadow: 10, padding: 10 }} onChange={(e) => this.setState({ description: e.value })} rows="5" cols="80" placeholder='Write your description here...'></textarea></div>
+                        <div>  <textarea style={{ borderRadius: 10, boxShadow: 10, padding: 10 }} onChange={(e) => this.setState({ description: e.target.value })} rows="5" cols="80" placeholder='Write your description here...'></textarea></div>
                         <br></br>
 
                         {!this.props.student ? (
                             <div>
                                 <div>  <label style={{ fontSize: 17 }}>Where did you graduate from?</label></div>
-                                <roundedInput><input style={{ borderRadius: 10, width: 400, boxShadow: 10, padding: 10 }} onChange={(e) => this.setState({ alumni: e.value })} placeholder="Enter college/university here.." /></roundedInput>
+                                <roundedInput><input style={{ borderRadius: 10, width: 400, boxShadow: 10, padding: 10 }} onChange={(e) => this.setState({ alumni: e.target.value })} placeholder="Enter college/university here.." /></roundedInput>
                                 <br></br>
                             </div>
                         ) : (<span />)}

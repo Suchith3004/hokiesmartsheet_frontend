@@ -53,8 +53,7 @@ class StudentRegister extends React.Component {
 
     createUser(newUser, append) {
         this.appendBasicInfo(newUser)
-            .then((updatedUser) => {
-
+            .then(() => {
                 dbFetch.post({
                     endpoint: "/createUser",
                     data: this.state.newUser
@@ -72,6 +71,33 @@ class StudentRegister extends React.Component {
                     })
                     .catch((error) => {
                         alert("Failed to create new user! " + error.message);
+                        this.setState({
+                            isLoaded: true,
+                            error,
+                            submitted: false
+                        });
+                    });
+            })
+    }
+
+    createMentor(newUser) {
+        this.appendBasicInfo(newUser)
+            .then(() => {
+
+                dbFetch.post({
+                    endpoint: "/createMentor",
+                    data: this.state.newUser
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.setState({
+                            isLoaded: true
+                        })
+                        
+                        this.props.history.push('/createUser')
+                    })
+                    .catch((error) => {
+                        alert("Failed to create new mentor! " + error.message);
                         this.setState({
                             isLoaded: true,
                             error,
@@ -166,10 +192,11 @@ class StudentRegister extends React.Component {
             const rStudent = this.state.registeringAsStudent
             const rMentor = this.state.registeringAsMentor
 
-            if (!(rStudent && rMentor && type === 'mentor'))
-                this.createUser(newUser, rStudent && rMentor)
+            if (!rStudent && rMentor && type === 'mentor')
+                this.createMentor(newUser)
 
-            this.setState({ newUser: newUser })
+            else if (!(rStudent && rMentor && type === 'mentor'))
+                this.createUser(newUser, rStudent && rMentor)
 
         }
 
@@ -199,9 +226,10 @@ class StudentRegister extends React.Component {
 
             <Container>
                 <label style={{ fontSize: 60, padding: -40 }}><u style={{ color: 'white', borderRadius: 15 }}>Registration</u></label>
+                
 
                 <div className="info">
-                    <div>  <input className="fname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="fname" onChange={(e) => this.setState({ firstname: e.target.value })} placeholder="Frist name" /></div>
+                    <div>  <input className="fname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="fname" onChange={(e) => this.setState({ firstname: e.target.value })} placeholder="First name" /></div>
                     <br></br>
                     <div>  <input className="lname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="lname" type="text" name="lname" onChange={(e) => this.setState({ lastname: e.target.value })} placeholder="Last name" /></div>
                     <br></br>

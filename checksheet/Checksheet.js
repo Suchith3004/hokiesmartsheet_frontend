@@ -8,6 +8,7 @@ import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import ApClasses from "./ApClasses";
 import TransferClasses from "./TransferClasses";
+import Logo from './logo_transparent.png';
 
 
 const Container = styled.div`
@@ -17,8 +18,11 @@ const Container = styled.div`
     padding: 70px;
     background-color:#b04f5f;
     align-items: center;
-    margin-left:150px;
     margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto; 
+
+
 `;
 
 const circleStyle = {
@@ -63,6 +67,23 @@ export default class Table extends React.Component {
         //Implement if need changes while in drag
     };
 
+    adjustChecksheet = (from, to, fromIndex, toIndex) => {
+        //Load semesters in
+        semesters = this.state.userData.semesters
+
+        //Store and remove course
+        courseRef = semesters[from].courseReferences[fromIndex]
+        semesters[from].courseReferences.splice(fromIndex, 1)
+        movingCourse = semesters[from].semesterCourses[fromIndex]
+        semesters[from].semesterCourses.splice(fromIndex, 1)
+
+        //Add course to destination semester
+        semesters[to].semesterCourses.splice(toIndex, 0, movingCourse)
+        semesters[to].courseReferences.splice(toIndex, 0, courseRef)
+
+    }
+
+
     onDragEnd = result => {
         let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
         for (let elem of classHandles) {
@@ -70,27 +91,25 @@ export default class Table extends React.Component {
         }
         const { destination, source, draggableId } = result;
 
-        if (!destination) {
-            return;
-        }
-        if (destination.draggableId === source.droppableId && destination.index === source.index) {
+        if ((destination.droppableId === source.droppableId && destination.index === source.index) || !destination) {
             return;
         }
 
-        if (destination.droppableId === source.droppableId)
-            return;
+        const fromSem = parseInt(source.droppableId.split(" ")[1]);
+        const toSem = parseInt(destination.droppableId.split(' ')[1]);
 
-        
-        const fromSem = source.droppableId.split(" ")[1];
-        const toSem = destination.droppableId.split(' ')[1];
+        if (destination.droppableId === source.droppableId) {
+            this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
+            return;
+        }
 
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
                 userId: this.props.userData.userId,
                 courseId: draggableId,
-                toSem: parseInt(toSem),
-                fromSem: parseInt(fromSem)
+                toSem: toSem,
+                fromSem: fromSem
             }
         })
             .then(response => response.json())
@@ -104,7 +123,7 @@ export default class Table extends React.Component {
                     alert('Prerequisites not met: ' + this.state.moveClass.preReqsNotMet + '\nCorequisites not met: ' + this.state.moveClass.coReqsNotMet + '\nDependents: ' + this.state.moveClass.dependentCourses)
                 }
                 else {
-                    this.fetchChecksheet();
+                    this.adjustChecksheet(fromSem, toSem, source.index, destination.index)
                 }
             })
             .catch((error) => {
@@ -118,11 +137,13 @@ export default class Table extends React.Component {
 
 
     render() {
-        const { error, isLoaded, userData } = this.state;
+
+            const {error, isLoaded, userData} = this.state;
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            console.log(userData)
+                console.log(userData)
             return <motion.span
                 style={circleStyle}
                 animate={{ rotate: 360 }}
@@ -132,34 +153,28 @@ export default class Table extends React.Component {
             return (
 
                 <DragDropContext
-                    onDragStart={this.onDragStart}
-                    onDragUpdate={this.onDragUpdate}
-                    onDragEnd={this.onDragEnd}
-                >
 
-                    {/*Using Sample Data Here*/}
-                    {/*The Searchable list for homeless courses can be un commented here if needed*/}
-                    {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
-                    <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
-                    <Container>
-                        <ApClasses
-                            items = {this.state.userData}
-                        />
-                        <TransferClasses
-                            items = {this.state.userData}
-                        />
-                        {/* <ApClasses  items = {this.state.items}/>
+                onDragStart={this.onDragStart}
+                onDragUpdate={this.onDragUpdate}
+                onDragEnd={this.onDragEnd}
+            >
+                {/*Using Sample Data Here*/}
+                {/*The Searchable list for homeless courses can be un commented here if needed*/}
+                {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
+                <h1><label style={{ fontSize: 50, backgroundColor: 10000, textAlign: "center", color: "white" }}>Major: {userData.major}</label></h1>
+                <Container>
+
+                    {/* <ApClasses  items = {this.state.items}/>
                         <TransferClasses  items = {this.state.items}/> */}
-                        {userData.semesters.map((sem, index) => {
-                            const column = sem;
-                            const tasks = sem.semesterCourses;
-                            const name = "Semester " + sem.semNum;
-                            return <Column key={index} name={name} column={column} tasks={tasks} />
-                        })}
-                    </Container>
-                </DragDropContext>
+                    {userData.semesters.map((sem, index) => {
+                        const column = sem;
+                        const tasks = sem.semesterCourses;
+                        const name = "Semester " + sem.semNum;
+                        return <Column key={index} name={name} column={column} tasks={tasks} />
+                    })}
+                </Container>
+            </DragDropContext>
             );
         }
-
     }
 }
