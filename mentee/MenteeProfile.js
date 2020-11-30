@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
-import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
-import Logo from './logo_transparent.png';
-
 
 const Container = styled.div`
     width:600px;
@@ -22,39 +19,33 @@ const FieldsContainer = styled.div`
     padding : 10px
 `;
 
-class MentorProfile extends Component {
+class MenteeProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid : null,
             isLoaded: false,
             error: null,
-            mentor: {},
+            mentee: {},
         }
     }
 
     componentDidMount() {
-        if (this.props.uid == null){
-            this.state.uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
-        }else{
-            this.state.uid = this.props.uid
-        }
-
+        let uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
         dbFetch.get({
-            endpoint: "/getUserChecksheet/" + this.state.uid,
+            endpoint: "/getUserChecksheet/" + uid,
             data: {}
         })
             .then(response => response.json())
             .then((data) => {
-
+                console.log(data)
                 this.setState({
                     isLoaded: true,
-                    mentor: data
+                    mentee: data
                 });
 
             })
             .catch((error) => {
-                console.error("Failed to fetch mentor data: " + error.message);
+                console.error("Failed to fetch mentee data: " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
@@ -68,19 +59,16 @@ class MentorProfile extends Component {
         return (
             <Container>
                 <img
-                    src= {Logo}
+                    src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
                     alt="new"
                     style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
                 />
-
                 <h2
-                style={{margin: 20}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    style={{margin: 20}}>{this.state.mentee.firstName + " " + this.state.mentee.lastName}</h2>
                 <FieldsContainer>
-                <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
-                <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
-                <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                <h5 style = {{display : "inline-block"}}>{"VT Alumni: "}</h5>
-                <Checkbox checked={this.state.mentor.vtAlumni || false}/>
+                    <h5>{"School: " + this.state.mentee.school}</h5>
+                    <h5>{"Major: " + this.state.mentee.major}</h5>
+                    <h5>{"Year: " + this.state.mentee.year}</h5>
                 </FieldsContainer>
             </Container>
         );
@@ -88,4 +76,4 @@ class MentorProfile extends Component {
 
 }
 
-export default MentorProfile;
+export default MenteeProfile;

@@ -151,7 +151,9 @@ export default class Table extends React.Component {
             />
         } else {
             return (
+
                 <DragDropContext
+
                 onDragStart={this.onDragStart}
                 onDragUpdate={this.onDragUpdate}
                 onDragEnd={this.onDragEnd}

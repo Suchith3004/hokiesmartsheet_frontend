@@ -37,27 +37,40 @@ export default class ApClasses extends React.Component{
         super(props);
     }
     render(){
-        return (
-            <TaskList>
-                <Title>AP Classes I've Taken</Title>
-                <ApClassContainer>
+        if(this.props.items.transferCourses.length > 0) {
+            return (
+                <TaskList>
+                    <Title>AP Classes I've Taken</Title>
+                    <ApClassContainer>
 
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'left' }}>VT Class</b>
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'right' }}>VT Course Number</b>
-                    <b style={{ color: 'black', display: 'inline', alignItems: 'right' }}>AP Class</b>
-                </ApClassContainer>
-                {this.props.items.apEquivalents.map((apClass, index) => {
-                    if(apClass.used){
-                        return(
-                            <ApClassContainer>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'right' }}>{apClass.vtCourseName}</label>
-                                <label style={{ color: 'black'}}>{apClass.vtCourseId}</label>
-                                <label style={{ color: 'black', display: 'inline', alignItems: 'left' }}>{apClass.apName}</label>
-                            </ApClassContainer>
-                        )
-                    }
-                })}
-            </TaskList>
-        );
+                        <b style={{color: 'black', display: 'inline', alignItems: 'left'}}>VT Class</b>
+                        <b style={{color: 'black', display: 'inline', alignItems: 'right'}}>VT Course Number</b>
+                        <b style={{color: 'black', display: 'inline', alignItems: 'right'}}>AP Class</b>
+                    </ApClassContainer>
+                    {this.props.items.apEquivalents.map((apClass, index) => {
+                        if (apClass.used) {
+                            return (
+                                <ApClassContainer>
+                                    <label style={{
+                                        color: 'black',
+                                        display: 'inline',
+                                        alignItems: 'right'
+                                    }}>{apClass.vtCourseName}</label>
+                                    <label style={{color: 'black'}}>{apClass.vtCourseId}</label>
+                                    <label style={{
+                                        color: 'black',
+                                        display: 'inline',
+                                        alignItems: 'left'
+                                    }}>{apClass.apName}</label>
+                                </ApClassContainer>
+                            )
+                        }
+                    })}
+                </TaskList>
+            );
+        }
+        else {
+            return <div></div>
+        }
     }
 }

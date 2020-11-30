@@ -16,7 +16,9 @@ import ClassesReg from "./login/ClassesReg";
 import DSemesterItem from "./checksheet/Class";
 import Checksheet from "./checksheet/Checksheet";
 import MentorProfile from "./mentor/MentorProfile";
-
+import MenteeProfile from "./mentee/MenteeProfile";
+import MentorItem from "./mentor/MentorItem";
+import MentorList from "./mentor/MentorList";
 
 
 class App extends Component {
@@ -64,7 +66,7 @@ class App extends Component {
                 )
               )}/>
               <Route path="/editcourses" component={StudentRegister}/>
-              <Route path="/createUser" render={() => ( 
+              <Route path="/createUser" render={() => (
                   <Home />
                 )}/>
               <Route path="/login" render={() => (
