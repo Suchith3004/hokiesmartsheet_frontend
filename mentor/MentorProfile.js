@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
 import Checkbox from '@material-ui/core/Checkbox';
+import NavBar from '../utilities/NavBar'
 
 const Container = styled.div`
     width:600px;
@@ -56,23 +57,26 @@ class MentorProfile extends Component {
 
     render() {
         return (
-            <Container>
-                <img
-                    src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
-                    alt="new"
-                    style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
-                />
+            <div>
+                <NavBar current="mentorSearch"/>
+                <Container>
+                    <img
+                        src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                        alt="new"
+                        style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
+                    />
 
-                <h2
-                style={{margin: 20}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
-                <FieldsContainer>
-                <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
-                <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
-                <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                <h5 style = {{display : "inline-block"}}>{"VT Alumni: "}</h5>
-                <Checkbox checked={this.state.mentor.vtAlumni || false}/>
-                </FieldsContainer>
-            </Container>
+                    <h2
+                        style={{ margin: 20 }}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    <FieldsContainer>
+                        <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
+                        <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
+                        <h5>{"My Bio: " + this.state.mentor.description}</h5>
+                        <h5 style={{ display: "inline-block" }}>{"VT Alumni: "}</h5>
+                        <Checkbox checked={this.state.mentor.vtAlumni || false} />
+                    </FieldsContainer>
+                </Container>
+            </div>
         );
     }
 

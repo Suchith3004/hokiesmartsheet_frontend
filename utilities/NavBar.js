@@ -1,10 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
-import fire from './config/Fire';
-import CheckSheet from '../checksheet/Checksheet'
-import Chat from '../utilities/Chat'
+import React, { Component } from 'react';
+import fire from '../login/config/Fire';
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
-import NavBar from '../utilities/NavBar'
+import { Link } from "react-router-dom"
 
 const circleStyle = {
     display: 'block',
@@ -29,7 +27,8 @@ const spinTransition = {
     duration: 1,
 }
 
-class StudentHome extends Component {
+
+export default class NavBar extends Component {
 
     constructor(props) {
         super(props);
@@ -65,9 +64,11 @@ class StudentHome extends Component {
             });
     }
 
+
     render() {
         const { error, isLoaded, userData } = this.state;
         const { firstName, lastName } = userData
+
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -78,25 +79,30 @@ class StudentHome extends Component {
             />
         } else {
             return (
-                <div>
+                <div class="topnav" id="myTopnav" >
+                    <a class="hokiesheetname" >HokieSmartSheet</a>
                     {userData.semesters ? (
                         <div>
-                            <NavBar current="checksheet" />
-                            <CheckSheet userData={userData} />
+                            <Link to="/home" className={(this.props.current === "checksheet") ? "active" : ''}>Checksheet</Link>
+                            <Link to="/chat" className={(this.props.current === "chat") ? "active" : ''}>Chat</Link>
+                            <Link to="/requests" className={(this.props.current === "requests") ? "active" : ''}>Requests</Link>
+                            <Link to="/mentorSearch" className={(this.props.current === "mentorSearch") ? "active" : ''}>Mentor Search</Link>
                         </div>
                     ) : (
-                        <div>
-                            <NavBar current="chat" />
-                            <Chat/>
-                        </div>
-                    )}
+                            <div>
+                                <Link to="/chat" className={(this.props.current === "chat") ? "active" : ''}>Chat</Link>
+                                <Link to="/requests" className={(this.props.current === "requests") ? "active" : ''}>Requests</Link>
+                            </div>
+                        )}
+
+                
+                    <Link style={{ float: "right" }} class="logout" to="/login" onClick={()=>fire.auth().signOut()}>Logout</Link>
+                    <a style={{ float: "right" }} class="username" >{firstName} {lastName}</a>
                 </div>
             );
         }
-
     }
 
 }
 
-export default StudentHome;
-
+// export default NavBar;

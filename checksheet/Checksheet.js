@@ -28,7 +28,6 @@ const circleStyle = {
     border: '0.5rem solid #e9e9e9',
     borderTop: '0.5rem solid #3498db',
     borderRadius: '50%',
-    position: 'absolute',
     boxSizing: 'border-box',
     top: 0,
     left: 0
@@ -65,17 +64,27 @@ export default class Table extends React.Component {
 
     adjustChecksheet = (from, to, fromIndex, toIndex) => {
         //Load semesters in
-        semesters = this.state.userData.semesters
+        // console.log(this.state.userData)
+        const { userData } = this.state
+        const semesters = userData.semesters
+
+        console.log("fromSem:" + from + "  toSem:" + to + "   fromIndex:" + fromIndex + "  toIndex:" + toIndex)
 
         //Store and remove course
-        courseRef = semesters[from].courseReferences[fromIndex]
-        semesters[from].courseReferences.splice(fromIndex, 1)
-        movingCourse = semesters[from].semesterCourses[fromIndex]
+        // courseRef = semesters[from].courseReferences[fromIndex]
+        // semesters[from].courseReferences.splice(fromIndex, 1)
+        const movingCourse = semesters[from].semesterCourses[fromIndex]
         semesters[from].semesterCourses.splice(fromIndex, 1)
 
         //Add course to destination semester
         semesters[to].semesterCourses.splice(toIndex, 0, movingCourse)
-        semesters[to].courseReferences.splice(toIndex, 0, courseRef)
+        // semesters[to].courseReferences.splice(toIndex, 0, courseRef)
+        console.log("moved")
+
+        userData.semesters = semesters;
+        this.setState({
+            userData: userData
+        })
 
     }
 
@@ -86,6 +95,9 @@ export default class Table extends React.Component {
             elem.style.color = "inherit";
         }
         const { destination, source, draggableId } = result;
+
+        if (!destination || !source || !destination.droppableId || !source.droppableId || !draggableId)
+            return
 
         if ((destination.droppableId === source.droppableId && destination.index === source.index) || !destination) {
             return;
@@ -138,11 +150,13 @@ export default class Table extends React.Component {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             console.log(userData)
-            return <motion.span
-                style={circleStyle}
-                animate={{ rotate: 360 }}
-                transition={spinTransition}
-            />
+            return <div> 
+                <motion.span
+                    style={circleStyle}
+                    animate={{ rotate: 360 }}
+                    transition={spinTransition}
+                />
+            </div>
         } else {
             return (
                 <DragDropContext
