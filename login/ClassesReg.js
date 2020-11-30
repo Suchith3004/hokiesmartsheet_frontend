@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react';
 import styled from "styled-components";
-import { Draggable } from "react-beautiful-dnd";
 import { SearchBar } from '../utilities/SearchBar';
 import dbFetch from '../api/dbFetch'
 
@@ -32,7 +31,7 @@ class ClassesReg extends Component {
             chosenMajor: null,
             schools: [],
             chosenSchool: null,
-            gradYear: 2020
+            gradYear: 2022
         }
 
     }

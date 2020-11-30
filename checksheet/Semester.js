@@ -4,24 +4,6 @@ import Task from './Class'
 import { Droppable } from "react-beautiful-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Container = styled.div`
-    margin: 8px;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
-    width: 400px;
-    height: 350px;
-    display: flex;
-    flex-direction: column;
-    background-color:#a24857;
-    padding-bottom:10px;
-    align-items: center;
-`;
-const Title = styled.h3`
-    padding: 8px;
-    font-weight: bold;
-    color: orange
-
-`;
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
@@ -29,7 +11,7 @@ const TaskList = styled.div`
     flex-grow: 1;
     width: 350px;x
     min-height: 100px;
-    background-color:#a24857;
+    background-color:white;
 `;
 
 export default class Column extends React.Component {
@@ -51,13 +33,14 @@ export default class Column extends React.Component {
         })
     }
 
-    render() {
-        return (
-            <Container>
-                <Title>{this.props.name}</Title>
+    render(){
 
-                <Droppable droppableId={this.props.name}>
-                    {(provided, snapshot) => (
+        const height = (this.props.height) * 30 + 200
+        return (
+            <div class='semester' height={height}>
+                <h2 id="totalcredits">{this.props.name}</h2 >
+                <Droppable droppableId = {this.props.name}>
+                    {(provided,snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
@@ -73,9 +56,8 @@ export default class Column extends React.Component {
                         </TaskList>
                     )}
                 </Droppable>
-
-                <Title style={{ fontsize: 0 }}>Total Credits:       {this.props.column.totalCredits}</Title>
-            </Container>
+                <h3 id='totalcredits'>Total Credits:       {this.props.column.totalCredits}</h3>
+            </div>
         );
     }
 }
