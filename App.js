@@ -11,10 +11,8 @@ import {
   Redirect
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
-import MentorRegister from "./login/MentorRegister";
-import ClassesReg from "./login/ClassesReg";
-import DSemesterItem from "./checksheet/Class";
-import Checksheet from "./checksheet/Checksheet";
+import Chat from "./utilities/Chat"
+import Requests from "./utilities/Requests"
 import MentorProfile from "./mentor/MentorProfile";
 import MenteeProfile from "./mentee/MenteeProfile";
 import MentorItem from "./mentor/MentorItem";
@@ -48,37 +46,42 @@ class App extends Component {
 
   render() {
     return (
-        <div className="App">
-          <Router>
-            <Switch>
-              <Route exact path="/" render={() => (
-                this.state.user ? (
-                  <Redirect to="/home"/>
-                ) : (
-                  <Redirect to="/login"/>
+      <div className="App">
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => (
+              this.state.user ? (
+                <Redirect to="/home" />
+              ) : (
+                  <Redirect to="/login" />
                 )
-              )}/>
-              <Route path="/home" render={() => (
-                this.state.user ? (
-                  <Home />
-                ) : (
-                  <Redirect to="/login"/>
+            )} />
+            <Route path="/home" render={() => (
+              this.state.user ? (
+                <Home />
+              ) : (
+                  <Redirect to="/login" />
                 )
-              )}/>
-              <Route path="/editcourses" component={StudentRegister}/>
-              <Route path="/createUser" render={() => (
-                  <Home />
-                )}/>
-              <Route path="/login" render={() => (
-                this.state.user ? (
-                  <Redirect to="/home"/>
-                ) : (
+            )} />
+            <Route path="/createUser" render={() => (
+              <Home />
+            )} />
+            <Route path="/login" render={() => (
+              this.state.user ? (
+                <Redirect to="/home" />
+              ) : (
                   <Login />
                 )
-              )}/>
-            </Switch>
-          </Router>       
-           </div>
+            )} />
+
+            <Route path="/editcourses" component={StudentRegister} />
+            <Route path="/chat" component={Chat} />
+            <Route path="/requests" componenet={Requests} />
+            <Route path="/mentorSearch" component={MentorProfile} />
+
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }

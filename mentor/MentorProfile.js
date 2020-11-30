@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
 import Logo from './logo_transparent.png';
-
+import NavBar from '../utilities/NavBar'
 
 const Container = styled.div`
     width:600px;
@@ -26,7 +26,7 @@ class MentorProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid : null,
+            uid: null,
             isLoaded: false,
             error: null,
             mentor: {},
@@ -34,9 +34,9 @@ class MentorProfile extends Component {
     }
 
     componentDidMount() {
-        if (this.props.uid == null){
+        if (this.props.uid == null) {
             this.state.uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
-        }else{
+        } else {
             this.state.uid = this.props.uid
         }
 
@@ -66,23 +66,25 @@ class MentorProfile extends Component {
 
     render() {
         return (
-            <Container>
-                <img
-                    src= {Logo}
-                    alt="new"
-                    style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
-                />
-
-                <h2
-                style={{margin: 20}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
-                <FieldsContainer>
-                <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
-                <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
-                <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                <h5 style = {{display : "inline-block"}}>{"VT Alumni: "}</h5>
-                <Checkbox checked={this.state.mentor.vtAlumni || false}/>
-                </FieldsContainer>
-            </Container>
+            <div>
+                <NavBar current="mentorSearch" />
+                <Container>
+                    <img
+                        src={Logo}
+                        alt="new"
+                        style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
+                    />
+                    <h2
+                        style={{ margin: 20 }}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    <FieldsContainer>
+                        <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
+                        <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
+                        <h5>{"My Bio: " + this.state.mentor.description}</h5>
+                        <h5 style={{ display: "inline-block" }}>{"VT Alumni: "}</h5>
+                        <Checkbox checked={this.state.mentor.vtAlumni || false} />
+                    </FieldsContainer>
+                </Container>
+            </div>
         );
     }
 
