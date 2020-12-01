@@ -118,5 +118,48 @@ div {
 
 .totalcredits {
     padding: 8px;
-    color: aqua
+    color: rgb(66, 252, 252)
+}
+
+
+.checksheetNav {
+    display: inline-block;
+    margin: 0 auto;
+    background-color: #000000;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.inpageNav button {
+    text-decoration: none;
+    padding:8px 15px;
+    background-color: #00aeba;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    margin: 0px 1px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border: 2px;
+}
+
+.inpageNav button:hover {
+    background-color: #148bb3;
+    text-decoration: none;
+    color: white;
+}
+
+#firstbtn {
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+#lastbtn {
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.checksheetNav button.active {
+    background-color:#3191ff;
 }

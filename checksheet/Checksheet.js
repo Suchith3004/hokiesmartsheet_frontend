@@ -151,8 +151,8 @@ export default class Table extends React.Component {
 
     render() {
 
-            const {error, isLoaded, userData} = this.state;
-        
+        const { error, isLoaded, userData } = this.state;
+
         if (error) {
             return <div>Error: {error.message}</div>;
         }
@@ -169,22 +169,23 @@ export default class Table extends React.Component {
 
 
             return <div>
+                <div class="inpageNav">
+                    <button id="firstbtn" onClick={() => this.setState({ viewType: "checksheet" })} class={this.state.viewType === "checksheet" ? "active" : ''}>Checksheet</button>
+                    <button onClick={() => this.setState({ viewType: "ap-transfer" })} class={this.state.viewType === "ap-transfer" ? "active" : ''}>AP/Transfer</button>
+                    <button id="lastbtn" onClick={() => this.setState({ viewType: "pathway" })} class={this.state.viewType === "pathway" ? "active" : ''}>Pathways</button>
+                </div>
+
                 {this.state.viewType === 'checksheet' ? (
                     <DragDropContext
                         onDragStart={this.onDragStart}
                         onDragUpdate={this.onDragUpdate}
                         onDragEnd={this.onDragEnd}
                     >
-                        {/*Using Sample Data Here*/}
-                        {/*The Searchable list for homeless courses can be un commented here if needed*/}
-                        {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
                         <h2 style={{ color: "white", textAlign: "center", marginTop: "40px" }}>School : {userData.school}</h2>
                         <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Major : {userData.major}</h2>
                         <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Credits : {userData.totalCredits}</h2>
 
                         <div class="checksheet">
-                            {/* <ApClasses  items = {this.state.items}/>
-                        <TransferClasses  items = {this.state.items}/> */}
                             {userData.semesters.map((sem, index) => {
                                 const column = sem;
                                 const tasks = sem.semesterCourses;
@@ -193,6 +194,13 @@ export default class Table extends React.Component {
                             })}
                         </div>
                     </DragDropContext>
+                ) : <span />}
+
+                {this.state.viewType === 'ap-transfer' ? (
+                    <div>
+                        <ApClasses items={userData.apEquivalents} />
+                        <TransferClasses items={userData.transferCourses} />
+                    </div>
                 ) : <span />}
             </div>
 
