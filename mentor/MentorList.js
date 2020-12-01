@@ -29,7 +29,6 @@ class MentorList extends Component {
             mentors: [],
             mentorsR: [],
             selected: null,
-
         }
     }
 
@@ -42,19 +41,24 @@ class MentorList extends Component {
             .then((data) => {
                 this.setState({
                     isLoaded: true,
-                    mentors: data
+                    mentors: data,
+                    mentorsR : data.map((item) => {
+                        return (
+                            <MentorItem
+                                uid = {item.userId}
+                                name = {item.name}
+                                occupation = {item.occupation}
+                                organizationName = {item.organizationName}
+                            >
+                            </MentorItem>
+                        );
+                    }),
                 });
-
-                this.state.mentorsR = data.map((item, index) => {
-                    return (
-                        <MentorItem
-                            uid = {item.userId}
-                        >
-                        </MentorItem>
-                    );
-                });
-
-                this.state.selected = data[0].userId
+                if(data.length >0) {
+                    this.setState({
+                        selected: data[0].userId,
+                    });
+                }
             })
             .catch((error) => {
                 console.error("Failed to fetch all mentors data: " + error.message);
@@ -63,13 +67,10 @@ class MentorList extends Component {
                     error
                 });
             });
-
-
     }
 
 
     render() {
-        //{console.log((this.state.mentors[this.state.selected]).userId)}
         return (
            <div>
                 <NavBar current="mentorSearch" />
@@ -78,16 +79,18 @@ class MentorList extends Component {
                 <List
                     items={ this.state.mentorsR}
                     selected={[0]}
-                    disabled={[4]}
                     multiple={false}
-                    onChange={(selected) => { this.state.selected = this.state.mentors[selected].userId
-                                                   console.log(this.state.selected)
-                                                }}
+                    onChange={(selected) => {
+                        this.setState({
+                            selected: this.state.mentors[selected].userId,
+                        })
+                    }}
                 />
                 </Container2>
                 <Container3>
                 <MentorProfile
-                    uid =  "ScC1yLxp24WhitlyiY2UVhvOXWm1"
+                    //uid =  {this.state.selected}
+                    uid = {"ScC1yLxp24WhitlyiY2UVhvOXWm1"}
                 />
                 </Container3>
             </Container>

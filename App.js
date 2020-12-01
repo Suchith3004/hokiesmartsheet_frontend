@@ -12,11 +12,8 @@ import {
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
 import Chat from "./utilities/Chat"
-import Requests from "./utilities/Requests"
-import MentorProfile from "./mentor/MentorProfile";
-import MenteeProfile from "./mentee/MenteeProfile";
-import MentorItem from "./mentor/MentorItem";
 import MentorList from "./mentor/MentorList";
+import Requests from "./requests/Requests";
 
 
 class App extends Component {
@@ -78,7 +75,6 @@ class App extends Component {
             <Route path="/chat" component={Chat} />
             <Route path="/requests" componenet={Requests} />
             <Route path="/mentorSearch" component={MentorList} />
-
           </Switch>
         </Router>
       </div>
