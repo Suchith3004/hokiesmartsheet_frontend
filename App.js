@@ -11,8 +11,8 @@ import {
   Redirect
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
-// import Chat from "./utilities/Chat"
-import Chat from "./chat/ChatPage"
+ import Chat from "./utilities/Chat"
+//import Chat from "./chat/ChatPage"
 import MentorList from "./mentor/MentorList";
 import Requests from "./requests/Requests";
 

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from 'styled-components';
 import List from '../utilities/List'
 
 export default class ApClasses extends React.Component {
@@ -26,7 +25,9 @@ export default class ApClasses extends React.Component {
     render() {
         return <div>
             <h2 className="title">AP Classes</h2>
+            <div className='list-container'>
             <List elements={this.props.equivalents} getListElem={this.classItem} />
+            </div>
         </div>
     }
 }
