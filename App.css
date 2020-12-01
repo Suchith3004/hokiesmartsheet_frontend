@@ -97,10 +97,9 @@ div {
     display: flex;
     flex-wrap: wrap;
     width: 1000px;
-    padding: 70px;
+    padding: 50px;
     align-items: center;
-    margin-left:150px;
-    margin-top: 50px;
+    margin:0 auto;
 }
 
 

@@ -77,7 +77,7 @@ class App extends Component {
             <Route path="/editcourses" component={StudentRegister} />
             <Route path="/chat" component={Chat} />
             <Route path="/requests" componenet={Requests} />
-            <Route path="/mentorSearch" component={MentorProfile} />
+            <Route path="/mentorSearch" component={MentorList} />
 
           </Switch>
         </Router>
