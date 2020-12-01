@@ -1,4 +1,3 @@
-
 import React, { Component, useState } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
@@ -12,7 +11,7 @@ const Container = styled.div`
     border-radius: 2px;
     padding: 4px;
     margin-bottom: 4px;
-    background-color: ${props => (props.isDragging ? '#ff7878' : '#b30000')};
+    background-color: ${props => (props.isDragging ? '#00aeba' : '#00aeba')};
     display: flex;               
     flex-direction: row;          
     flex-wrap: nowrap;            
@@ -78,10 +77,9 @@ export default class Task extends React.Component {
 
     render() {
 
-        var courseId = this.props.task.courseId
         var courseName = this.props.task.name;
         if (courseName.includes('Elective') || courseName.includes('Pathway'))
-            courseId = '';
+            courseName = '';
 
         return (
             <Draggable draggableId={this.props.task.courseId} index={this.props.index}>
@@ -96,11 +94,11 @@ export default class Task extends React.Component {
                     >
                         <Handle  {...provided.dragHandleProps} />
 
-                        <div style={{ backgroundColor: '#b30000' }} >
-                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
+                        <div style={{ backgroundColor: '#00aeba' }} >
+                            <p style={{ color: 'white', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
                         </div>
-                        <div style={{ backgroundColor: '#b30000' }}>
-                            <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
+                        <div style={{ backgroundColor: '#00aeba' }}>
+                            <p style={{ color: 'white', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
                         </div>
 
                     </Container>

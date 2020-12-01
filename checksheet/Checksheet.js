@@ -8,7 +8,6 @@ import { motion } from 'framer-motion'
 import ApClasses from './ApClasses'
 
 
-
 const circleStyle = {
     display: 'block',
     width: '7rem',
@@ -200,6 +199,7 @@ export default class Table extends React.Component {
                 {this.state.viewType === 'ap-transfer' ? (
                     <div>
                         <ApClasses equivalents={userData.apEquivalents} />
+                        {/* <TransferClasses items={userData.transferCourses} /> */}
                     </div>
                 ) : <span />}
             </div>

@@ -4,18 +4,14 @@ import Task from './Class'
 import { Droppable } from "react-beautiful-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Container = styled.div`
-    margin: 8px;
-    width: 400px;
-    height: 370px;
-    display: flex;
-    background-color:white;
-    padding-bottom:10px;
-    align-items: center;
-`;
 const TaskList = styled.div`
     padding: 8px;
-   
+    transition: background-color 0.2s ease;
+    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+    flex-grow: 1;
+    width: 350px;x
+    min-height: 100px;
+    background-color:white;
 `;
 
 export default class Column extends React.Component {
@@ -41,7 +37,6 @@ export default class Column extends React.Component {
 
         const height = (this.props.height) * 30 + 200
         return (
-            <Container>
             <div class='semester' height={height}>
                 <h2 id="totalcredits">{this.props.name}</h2 >
                 <Droppable droppableId = {this.props.name}>
@@ -63,7 +58,6 @@ export default class Column extends React.Component {
                 </Droppable>
                 <h3 id='totalcredits'>Total Credits:       {this.props.column.totalCredits}</h3>
             </div>
-            </Container>
         );
     }
 }
