@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
     margin: 2px;
-    border: 1px solid lightgrey;
+    border: 1px solid white;
     border-radius: 2px;
     width: 360px;
     height: 250px;

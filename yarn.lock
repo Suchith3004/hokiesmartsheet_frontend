@@ -4046,7 +4046,7 @@ depd@~1.1.2:
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
 
-dependencies@0.0.1:
+dependencies@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/dependencies/-/dependencies-0.0.1.tgz#f882327b18b42842ead3f4f08624dd3e99f15b25"
   integrity sha1-+IIyexi0KELq0/TwhiTdPpnxWyU=

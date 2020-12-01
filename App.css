@@ -2,7 +2,7 @@
 
 
 :root {
-    --offWhite:  #fafafa;
+    --offWhite: white;
     --title-font: 1.5em/1 'Montserrat';
     --raleway-font: 'Raleway', sans-serif;
     --box-shadow: 0 0 15px 4px rgba(192,192,192,0.3);
@@ -27,7 +27,7 @@ div {
 .topnav a:not(.hokiesheetname):not(.username):not(.logout) {
     float: left;
     display: block;
-    color: #f2f2f2;
+    color: white;
     text-align: center;
     padding: 10px 16px;
     margin: 2px 2px;
@@ -63,7 +63,7 @@ div {
     text-align: center;
     padding: 10px 16px;
     text-decoration: none;
-    font-size: 19px;
+    font-size: 22px;
     font-weight: 400;
     font-family: var(--raleway-font)
 }

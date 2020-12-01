@@ -78,9 +78,11 @@ export default class NavBar extends Component {
             />
         } else {
             return (
-                
+
                 <div class="topnav" id="myTopnav" >
+                    <img src={Logo} height="70" width="60" style={{ float: "left" }}alt='website logo' />
                     <a class="hokiesheetname" >HokieSmartSheet</a>
+
                     {userData.semesters ? (
                         <div>
                             <Link to="/home" className={(this.props.current === "checksheet") ? "active" : ''}>Checksheet</Link>
