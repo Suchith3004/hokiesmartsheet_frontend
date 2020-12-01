@@ -12,7 +12,7 @@ const Container = styled.div`
     border-radius: 2px;
     padding: 4px;
     margin-bottom: 4px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : '#33e8d0')};
+    background-color: ${props => (props.isDragging ? '#ff7878' : '#b30000')};
     display: flex;               
     flex-direction: row;          
     flex-wrap: nowrap;            
@@ -96,10 +96,10 @@ export default class Task extends React.Component {
                     >
                         <Handle  {...provided.dragHandleProps} />
 
-                        <div style={{ backgroundColor: '#33e8d0' }} >
-                            <p style={{ color: 'black', display: 'inline' }}>{courseId}   {courseName}</p>
+                        <div style={{ backgroundColor: '#b30000' }} >
+                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
                         </div>
-                        <div style={{ backgroundColor: '#33e8d0' }}>
+                        <div style={{ backgroundColor: '#b30000' }}>
                             <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
                         </div>
 

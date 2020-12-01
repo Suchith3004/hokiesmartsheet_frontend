@@ -6,7 +6,7 @@ const ApClassContainer = styled.div`
     border-radius: 2px;
     padding: 4px;
     margin-bottom: 4px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+    background-color: white;
     display: flex;               
     flex-direction: row;          
     flex-wrap: nowrap;            
@@ -29,7 +29,7 @@ const TaskList = styled.div`
 
 const Title = styled.h3`
     padding: 8px;
-    color: aqua
+    color: white;
 `;
 
 export default class ApClasses extends React.Component{

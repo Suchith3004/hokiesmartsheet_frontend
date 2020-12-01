@@ -3,6 +3,7 @@ import fire from '../login/config/Fire';
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import { Link } from "react-router-dom"
+import Logo from './logo_transparent.png';
 
 const circleStyle = {
     display: 'block',
@@ -77,6 +78,7 @@ export default class NavBar extends Component {
             />
         } else {
             return (
+                
                 <div class="topnav" id="myTopnav" >
                     <a class="hokiesheetname" >HokieSmartSheet</a>
                     {userData.semesters ? (
