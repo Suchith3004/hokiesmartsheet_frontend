@@ -12,7 +12,6 @@ const Container = styled.div`
     background-color:white;
     width:600px;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
-    border-radius: 15px;
 `;
 
 const FieldsContainer = styled.div`
@@ -37,7 +36,7 @@ class MentorProfile extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.uid)
+
         dbFetch.get({
             endpoint: "/getUser/" + this.props.uid,
             data: {}
