@@ -122,7 +122,7 @@ div {
 }
 
 
-.checksheetNav {
+.inpageNav {
     display: inline-block;
     margin: 0 auto;
     background-color: #000000;
@@ -160,6 +160,6 @@ div {
     border-top-right-radius: 10px;
 }
 
-.checksheetNav button.active {
+.inpageNav button.active {
     background-color:#3191ff;
 }
