@@ -20,7 +20,7 @@ const Container3 = styled.div`
     margin : 40px;
 `;
 
-class MentorList extends Component {
+class ChatPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -99,4 +99,4 @@ class MentorList extends Component {
 
 }
 
-export default MentorList;
+export default ChatPage;

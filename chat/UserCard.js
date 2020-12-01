@@ -74,4 +74,4 @@ class UserCard extends Component {
 
 }
 
-export default MentorItem;
+export default UserCard;
