@@ -30,18 +30,16 @@ class MentorProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: null,
             isLoaded: false,
             error: null,
             mentor: {},
         }
-    }git
+    }
 
     componentDidMount() {
-        this.state.uid = this.props.uid
-
+        console.log(this.props.uid)
         dbFetch.get({
-            endpoint: "/getUser/" + this.state.uid,
+            endpoint: "/getUser/" + this.props.uid,
             data: {}
         })
             .then(response => response.json())
@@ -60,8 +58,28 @@ class MentorProfile extends Component {
                     error
                 });
             });
+    }
 
-
+    sendMentorRequest(){
+        let menteeUid = fire.auth().currentUser.uid;
+        let mentorUid = this.props.uid;
+        
+        dbFetch.post({
+            endpoint: "/sendMenteeRequest",
+            data: {
+                menteeId : menteeUid,
+                mentorId : mentorUid,
+            }
+        })
+            .then((response) => response.json())
+            .catch((error) => {
+                alert("Failed to send mentor request! " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error,
+                    submitted: false
+                });
+            });
     }
 
 
@@ -74,7 +92,6 @@ class MentorProfile extends Component {
                         alt="new"
                         style={{ borderRadius: 200, height: 170, width: 170, boxShadow: 10, padding: 10 }}
                     />
-                    {console.log(this.state)}
 
                     <h2
                         style={{ margin: 20 }}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
@@ -87,8 +104,11 @@ class MentorProfile extends Component {
                         <h5>{"My Hobbies: " + this.state.mentor.description}</h5>
                         <h5>{"My Qualities: " + this.state.mentor.description}</h5>
                     </FieldsContainer>
-                    <Button onClick={() => {alert('Your Request Has Been Submitted') }}
-                            variant="contained" size = "Large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
+                    <Button onClick={() => {
+                        this.sendMentorRequest()
+                        alert('Your Request Has Been Submitted')
+                    }}
+                            variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
                         Request Help
                     </Button>
                 </Container>
