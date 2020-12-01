@@ -3,6 +3,13 @@ import NavBar from '../utilities/NavBar'
 
 class Pathways extends Component {
 
+    listItem() {
+
+        return ( <div>
+            
+        </div>)
+    }
+
     render() {
         return (
             <div>
@@ -14,3 +21,5 @@ class Pathways extends Component {
 }
 
 export default Pathways;
+
+

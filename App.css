@@ -1,3 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:900|Raleway:400,400i,700,700i);
+
+
+:root {
+    --offWhite:  #fafafa;
+    --title-font: 1.5em/1 'Montserrat';
+    --raleway-font: 'Raleway', sans-serif;
+    --box-shadow: 0 0 15px 4px rgba(192,192,192,0.3);
+    --list-item-shadow: 0 0 15px 4px rgba(27, 27, 27, 0.3);
+}
+
 div {
     background-color: #212121;
     color: white;
@@ -42,7 +53,8 @@ div {
     text-decoration: none;
     font-size: 22px;
     font-weight: 500;
-    font-style: "Tisa";
+    margin-top: 6px;
+    font: var(--title-font);
 }
 
 .username, .username:hover {
@@ -53,7 +65,7 @@ div {
     text-decoration: none;
     font-size: 19px;
     font-weight: 400;
-    font-style: "Tisa";
+    font-family: var(--raleway-font)
 }
 
 
@@ -84,7 +96,7 @@ div {
 .logout:hover {
     text-decoration: none;
     color: white;
-    box-shadow: 0 16px 18px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: var(--box-shadow);
 }
 
 .topnav h2 {
@@ -110,7 +122,7 @@ div {
     width: 400px;
     display: flex;
     flex-direction: column;
-    background-color:white;
+    background-color:rgb(243, 243, 243);
     padding-bottom:10px;
     align-items: center;
     border-radius: 8px;
@@ -128,6 +140,7 @@ div {
     background-color: #000000;
     border-radius: 10px;
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .inpageNav button {
@@ -142,12 +155,14 @@ div {
     transition-duration: 0.4s;
     cursor: pointer;
     border: 2px;
+    font-family: var(--raleway-font);
 }
 
 .inpageNav button:hover {
     background-color: #148bb3;
     text-decoration: none;
     color: white;
+    box-shadow: var(--box-shadow);
 }
 
 #firstbtn {
@@ -163,3 +178,58 @@ div {
 .inpageNav button.active {
     background-color:#3191ff;
 }
+
+.list-container {
+    background-color: var(--offWhite);
+    box-shadow: var(--box-shadow);
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.list-container ul{
+    color: black;
+    list-style-type: none;
+    display: inline-block;
+}
+
+.list-container li {
+    background: white;
+    border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+    box-shadow: var(--list-item-shadow);
+    counter-increment: gradient-counter;
+    margin: 1rem 3rem 1rem 1rem;
+    min-height: 3rem;
+    padding: 1rem 1rem 1rem 1rem;
+    position: relative;
+}
+
+.list-item div{
+    color: black;
+    background-color: white;
+    float: left;
+    margin: 0px 20px;
+}
+
+.course p:not(.credits) {
+    color: black;
+    float: left;
+}
+
+#credits {
+    float: right;
+    margin: 0px 15px;
+}
+
+.title {
+    color: white;
+    font-family: var(--raleway-font);
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.checksheet-title {
+    color: white;
+    font-family: var(--raleway-font);
+    font-weight: 400;
+}
+

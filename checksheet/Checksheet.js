@@ -5,6 +5,7 @@ import '@atlaskit/css-reset'
 import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
+import ApClasses from './ApClasses'
 
 
 
@@ -198,8 +199,7 @@ export default class Table extends React.Component {
 
                 {this.state.viewType === 'ap-transfer' ? (
                     <div>
-                        <ApClasses items={userData.apEquivalents} />
-                        <TransferClasses items={userData.transferCourses} />
+                        <ApClasses equivalents={userData.apEquivalents} />
                     </div>
                 ) : <span />}
             </div>

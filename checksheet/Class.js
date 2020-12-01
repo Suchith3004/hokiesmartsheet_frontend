@@ -78,9 +78,10 @@ export default class Task extends React.Component {
 
     render() {
 
+        var courseId = this.props.task.courseId
         var courseName = this.props.task.name;
         if (courseName.includes('Elective') || courseName.includes('Pathway'))
-            courseName = '';
+            courseId = '';
 
         return (
             <Draggable draggableId={this.props.task.courseId} index={this.props.index}>
@@ -96,7 +97,7 @@ export default class Task extends React.Component {
                         <Handle  {...provided.dragHandleProps} />
 
                         <div style={{ backgroundColor: '#33e8d0' }} >
-                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
+                            <p style={{ color: 'black', display: 'inline' }}>{courseId}   {courseName}</p>
                         </div>
                         <div style={{ backgroundColor: '#33e8d0' }}>
                             <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
