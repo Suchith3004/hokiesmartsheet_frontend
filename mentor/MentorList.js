@@ -4,12 +4,21 @@ import styled from "styled-components";
 import MentorItem from "./MentorItem";
 import List from 'react-list-select';
 import MentorProfile from "./MentorProfile";
+import NavBar from "../utilities/NavBar";
 
 const Container = styled.div`
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-    text-align: center;
+    display: flex;
+    margin:0 auto;
 `;
 
+const Container2 = styled.div`
+    width : 40%;
+    margin : 20px;
+`;
+
+const Container3 = styled.div`
+    margin : 40px;
+`;
 
 class MentorList extends Component {
     constructor(props) {
@@ -19,7 +28,7 @@ class MentorList extends Component {
             error: null,
             mentors: [],
             mentorsR: [],
-            selected: "",
+            selected: null,
 
         }
     }
@@ -62,7 +71,10 @@ class MentorList extends Component {
     render() {
         //{console.log((this.state.mentors[this.state.selected]).userId)}
         return (
-            <div>
+           <div>
+                <NavBar current="mentorSearch" />
+            <Container>
+                <Container2>
                 <List
                     items={ this.state.mentorsR}
                     selected={[0]}
@@ -72,10 +84,14 @@ class MentorList extends Component {
                                                    console.log(this.state.selected)
                                                 }}
                 />
+                </Container2>
+                <Container3>
                 <MentorProfile
-                    key =  {this.state.selected}
+                    uid =  "ScC1yLxp24WhitlyiY2UVhvOXWm1"
                 />
-            </div>
+                </Container3>
+            </Container>
+           </div>
         );
     }
 

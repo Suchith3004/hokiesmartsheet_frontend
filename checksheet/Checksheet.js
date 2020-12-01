@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Column from "./Semester";
-import styled from 'styled-components';
 import '@atlaskit/css-reset'
 import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
-import ApClasses from "./ApClasses";
-import TransferClasses from "./TransferClasses";
-import Logo from './logo_transparent.png';
+
 
 
 const circleStyle = {
@@ -181,7 +178,10 @@ export default class Table extends React.Component {
                         {/*Using Sample Data Here*/}
                         {/*The Searchable list for homeless courses can be un commented here if needed*/}
                         {/*<SearchableList key={0} name = {"Unused Major Courses"} column={this.state.items.semesters[0]} tasks = {this.state.items.semesters[0].semesterCourses} showSearch = 'true' />*/}
-                        <label style={{ fontSize: 24, backgroundColor: 10000, textAlign: "center" }}>Major : {userData.major}</label>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop: "40px" }}>School : {userData.school}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Major : {userData.major}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Credits : {userData.totalCredits}</h2>
+
                         <div class="checksheet">
                             {/* <ApClasses  items = {this.state.items}/>
                         <TransferClasses  items = {this.state.items}/> */}

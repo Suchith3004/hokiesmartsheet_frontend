@@ -4,22 +4,28 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
-    width:65%;
-    height: 200px;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    width:100%;
+    height: 150px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
 `;
 
 const FieldsContainer1 = styled.div`
-  width: 25%;
-  height: 190px;
+  background-color:white;
+  width: 35%;
+  height: 150px;
   float: left;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+   border-radius: 15px;
 `;
 
 const FieldsContainer2 = styled.div`
-    margin-top: 75px;
+    background-color:white;
+    height: 150px;
+    margin-top: 10px;
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-    padding : 10px
+    padding : 10px;
+    border-radius: 15px;
 `;
 
 class MentorItem extends Component {
@@ -68,10 +74,11 @@ class MentorItem extends Component {
                         alt="new"
                         style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 5 }}
                     />
-                    <h2
-                        style={{margin: 5}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+
                 </FieldsContainer1>
                 <FieldsContainer2>
+                    <h2
+                        style={{margin: 5}}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
                     <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
                     <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
                 </FieldsContainer2>

@@ -5,21 +5,25 @@ import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
 import Logo from './logo_transparent.png';
 import NavBar from '../utilities/NavBar'
+import {cos} from "react-native-reanimated";
+import Button from "@material-ui/core/Button";
 
 const Container = styled.div`
+    background-color:white;
     width:600px;
-    height: 400px;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-    text-align: center;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
 `;
 
 const FieldsContainer = styled.div`
+    background-color:white;
     width:400px;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
     text-align: center;
     width: 50%;
     margin: 0 auto;
-    padding : 10px
+    padding : 10px;
 `;
 
 class MentorProfile extends Component {
@@ -34,13 +38,7 @@ class MentorProfile extends Component {
     }git
 
     componentDidMount() {
-
-        if (this.props.key == null){
-            this.state.uid = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
-        }else{
-            this.state.uid = this.props.key
-
-        }
+        this.state.uid = this.props.uid
 
         dbFetch.get({
             endpoint: "/getUser/" + this.state.uid,
@@ -70,22 +68,29 @@ class MentorProfile extends Component {
     render() {
         return (
             <div>
-                <NavBar current="mentorSearch" />
                 <Container>
                     <img
                         src={Logo}
                         alt="new"
-                        style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 10 }}
+                        style={{ borderRadius: 200, height: 170, width: 170, boxShadow: 10, padding: 10 }}
                     />
+                    {console.log(this.state)}
+
                     <h2
                         style={{ margin: 20 }}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
                     <FieldsContainer>
                         <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
                         <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
+                        <h5>{"Alumni: " + this.state.mentor.alumni}</h5>
                         <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                        <h5 style={{ display: "inline-block" }}>{"VT Alumni: "}</h5>
-                        <Checkbox checked={this.state.mentor.vtAlumni || false} />
+                        <h5>{"My Interests: " + this.state.mentor.description}</h5>
+                        <h5>{"My Hobbies: " + this.state.mentor.description}</h5>
+                        <h5>{"My Qualities: " + this.state.mentor.description}</h5>
                     </FieldsContainer>
+                    <Button onClick={() => {alert('Your Request Has Been Submitted') }}
+                            variant="contained" size = "Large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
+                        Request Help
+                    </Button>
                 </Container>
             </div>
         );
