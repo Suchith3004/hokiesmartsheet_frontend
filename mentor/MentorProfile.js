@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
-import Checkbox from '@material-ui/core/Checkbox';
 import fire from "../login/config/Fire";
-import Logo from './logo_transparent.png';
-import NavBar from '../utilities/NavBar'
-import {cos} from "react-native-reanimated";
+import Logo from '../utilities/logo_transparent_2.png';
 import Button from "@material-ui/core/Button";
+
 
 const Container = styled.div`
     background-color:white;
@@ -22,7 +20,8 @@ const FieldsContainer = styled.div`
     text-align: center;
     width: 50%;
     margin: 0 auto;
-    padding : 10px;
+    padding : 5px;
+    margin-top: 7px;
 `;
 
 class MentorProfile extends Component {
@@ -80,7 +79,22 @@ class MentorProfile extends Component {
                 });
             });
     }
-
+    getString(array){
+        console.log(array)
+        if(array != null) {
+            let i;
+            let string = "";
+             for (i = 0; i< array.length; i++){
+                 if(i === array.length-1){
+                     string = string + array[i]
+                 }else {
+                     string = string + array[i] + ", "
+                 }
+             }
+            return string
+        }
+        return "Not Rendered"
+    }
 
     render() {
         return (
@@ -89,19 +103,38 @@ class MentorProfile extends Component {
                     <img
                         src={Logo}
                         alt="new"
-                        style={{ borderRadius: 200, height: 170, width: 170, boxShadow: 10, padding: 10 }}
+                        style={{ borderRadius: 200, height: 120, width: 170, boxShadow: 10, padding : 5, }}
                     />
-
-                    <h2
-                        style={{ margin: 20 }}>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
                     <FieldsContainer>
-                        <h5>{"Occupation: " + this.state.mentor.occupation}</h5>
-                        <h5>{"Organization: " + this.state.mentor.organizationName}</h5>
-                        <h5>{"Alumni: " + this.state.mentor.alumni}</h5>
-                        <h5>{"My Bio: " + this.state.mentor.description}</h5>
-                        <h5>{"My Interests: " + this.state.mentor.description}</h5>
-                        <h5>{"My Hobbies: " + this.state.mentor.description}</h5>
-                        <h5>{"My Qualities: " + this.state.mentor.description}</h5>
+                        <h2>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Occupation: "}</h5>
+                        <h5>{this.state.mentor.occupation}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Organization: "}</h5>
+                        <h5>{this.state.mentor.organizationName}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Alumni: "}</h5>
+                        <h5>{this.state.mentor.alumni}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Bio: "}</h5>
+                        <h5>{this.state.mentor.description}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Interests: "}</h5>
+                        <h5>{this.getString(this.state.mentor.mentorInterests)}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Hobbies: "}</h5>
+                        <h5>{this.getString(this.state.mentor.hobbies)}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Qualities: "}</h5>
+                        <h5>{this.getString(this.state.mentor.qualities)}</h5>
                     </FieldsContainer>
                     <Button onClick={() => {
                         this.sendMentorRequest()
@@ -114,7 +147,6 @@ class MentorProfile extends Component {
             </div>
         );
     }
-
 }
 
 export default MentorProfile;

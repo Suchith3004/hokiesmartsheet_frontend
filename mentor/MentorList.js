@@ -133,7 +133,7 @@ class MentorList extends Component {
                         style = {{paddingBottom : 20}}
                     > Selected Mentor</h1>
                     <MentorProfile
-                    uid =  {this.state.selected}
+                    uid =  "ScC1yLxp24WhitlyiY2UVhvOXWm1"//{this.state.selected}
                     />
                 </Container3>
             </Container>

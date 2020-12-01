@@ -3,7 +3,7 @@ import fire from '../login/config/Fire';
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import { Link } from "react-router-dom"
-import Logo from './logo_transparent.png';
+import Logo from './logo_transparent_2.png';
 
 const circleStyle = {
     display: 'block',
@@ -80,7 +80,7 @@ export default class NavBar extends Component {
             return (
 
                 <div class="topnav" id="myTopnav" >
-                    <img src={Logo} height="70" width="60" style={{ float: "left" }}alt='website logo' />
+                    <img src={Logo} height="40" width="70" style={{ float: "left", paddingTop: 5 }}alt='website logo' />
                     <a class="hokiesheetname" >HokieSmartSheet</a>
 
                     {userData.semesters ? (
