@@ -6,20 +6,19 @@ import styled from "styled-components";
 
 const Container = styled.div`
     margin: 2px;
-    border: 1px solid lightgrey;
+    border: 1px solid white;
     border-radius: 2px;
     width: 360px;
     height: 250px;
     display: flex;
     flex-direction: column;
-    background-color:#a24857;
     align-items: center;
 `;
 
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+    background-color: ${props => (props.isDraggingOver ? 'red' : 'white')};
     flex-grow: 1;
     width: 350px;x
     min-height: 100px;
@@ -28,12 +27,12 @@ const TaskList = styled.div`
 
 const Title = styled.h3`
     padding: 8px;
-    color: aqua
+    color: aqua;
 `;
 
 const SearchBarStyle = styled.h3`
     padding-bottom: 5px;
-    color: aqua
+    color: aqua;
 `;
 export default class SearchableList extends React.Component{
     constructor(props) {

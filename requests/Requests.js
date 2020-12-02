@@ -1,12 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
-import fire from './config/Fire';
-import CheckSheet from '../checksheet/Checksheet'
-import Chat from '../utilities/Chat'
-import dbFetch from '../api/dbFetch'
-import { motion } from 'framer-motion'
+import React, { Component } from 'react';
 import NavBar from '../utilities/NavBar'
-import Requests from "../requests/Requests";
-import MentorHome from "./MentorHome";
+import dbFetch from "../api/dbFetch";
+import fire from "../login/config/Fire";
+import RecievedRequestsList from "./RecievedRequestsList";
+import SentRequestsList from "./SentRequestsList";
+import {motion} from "framer-motion";
 
 const circleStyle = {
     display: 'block',
@@ -31,18 +29,16 @@ const spinTransition = {
     duration: 1,
 }
 
-class StudentHome extends Component {
-
+class Requests extends Component {
     constructor(props) {
         super(props);
-
-
         this.state = {
             isLoaded: false,
             error: null,
-            userData: {}
+            userData: null,
         }
     }
+
 
     componentDidMount() {
         dbFetch.get({
@@ -65,38 +61,31 @@ class StudentHome extends Component {
             });
     }
 
+
     render() {
-        const { error, isLoaded, userData } = this.state;
-        const { firstName, lastName } = userData
+        const {error, isLoaded} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <motion.span
                 style={circleStyle}
-                animate={{ rotate: 360 }}
+                animate={{rotate: 360}}
                 transition={spinTransition}
             />
         } else {
             return (
                 <div>
-                    {userData.semesters ? (
-                        <div>
-                            <NavBar current="checksheet" />
-                            <CheckSheet userData={userData} />
-                        </div>
+                    <NavBar current="requests"/>
+                    {this.state.userData.semesters ?(
+                        <SentRequestsList userData = {this.state.userData}/>
                     ) : (
-                        <div>
-                            <NavBar current="myprofile" />
-                            <MentorHome/>
-                        </div>
+                        <RecievedRequestsList userData = {this.state.userData}/>
                     )}
                 </div>
-            );
-        }
+            )
+        };
 
     }
 
 }
-
-export default StudentHome;
-
+export default Requests;

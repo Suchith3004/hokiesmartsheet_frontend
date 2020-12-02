@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
-import MentorItem from "./MentorItem";
-import List from 'react-list-select';
+import List from '../utilities/List'
 import MentorProfile from "./MentorProfile";
 import NavBar from "../utilities/NavBar";
+import fire from "../login/config/Fire";
 
 const Container = styled.div`
     display: flex;
@@ -12,12 +12,45 @@ const Container = styled.div`
 `;
 
 const Container2 = styled.div`
+    background-color:white;
     width : 40%;
     margin : 20px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
+    padding-right : 40px;
 `;
 
 const Container3 = styled.div`
+    background-color:white;
     margin : 40px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
+    padding : 40px;
+`;
+
+const Cont = styled.div`
+    width:100%;
+    height: 150px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
+`;
+
+const FieldsContainer1 = styled.div`
+  background-color:white;
+  width: 35%;
+  height: 150px;
+  float: left;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+   border-radius: 15px;
+`;
+
+const FieldsContainer2 = styled.div`
+    background-color:white;
+    height: 150px;
+    margin-top: 10px;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    padding : 10px;
+    border-radius: 15px;
 `;
 
 class MentorList extends Component {
@@ -29,32 +62,26 @@ class MentorList extends Component {
             mentors: [],
             mentorsR: [],
             selected: null,
-
         }
     }
 
     componentDidMount() {
         dbFetch.get({
-            endpoint: "/getAllMentors/",
+            endpoint: "/getAllMentors/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             data: {}
         })
             .then(response => response.json())
             .then((data) => {
                 this.setState({
                     isLoaded: true,
-                    mentors: data
+                    mentors: data,
                 });
+                if(data.length >0) {
+                    this.setState({
+                        selected: data[0].userId,
+                    });
 
-                this.state.mentorsR = data.map((item, index) => {
-                    return (
-                        <MentorItem
-                            uid = {item.userId}
-                        >
-                        </MentorItem>
-                    );
-                });
-
-                this.state.selected = data[0].userId
+                }
             })
             .catch((error) => {
                 console.error("Failed to fetch all mentors data: " + error.message);
@@ -64,37 +91,57 @@ class MentorList extends Component {
                 });
             });
 
-
     }
 
+    handleClick = (e) =>{
+        this.setState({
+            selected: e.userId,
+        })
+    }
+
+    mentorItem(mentor) {
+        return <Cont>
+                <FieldsContainer1>
+                    <img
+                        src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                        alt="new"
+                        style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 5 }}
+                    />
+                </FieldsContainer1>
+                <FieldsContainer2>
+                    <h2
+                        style={{margin: 5}}>{mentor.name }</h2>
+                    <h5>{"Occupation: " + mentor.occupation}</h5>
+                    <h5>{"Organization: " + mentor.organizationName}</h5>
+                </FieldsContainer2>
+            </Cont>
+    }
 
     render() {
-        //{console.log((this.state.mentors[this.state.selected]).userId)}
         return (
            <div>
                 <NavBar current="mentorSearch" />
             <Container>
                 <Container2>
-                <List
-                    items={ this.state.mentorsR}
-                    selected={[0]}
-                    disabled={[4]}
-                    multiple={false}
-                    onChange={(selected) => { this.state.selected = this.state.mentors[selected].userId
-                                                   console.log(this.state.selected)
-                                                }}
-                />
+                    <h1
+                        style = {{padding : 15}}
+                    > Available Mentors</h1>
+                    <List elements={this.state.mentors}
+                          getListElem={this.mentorItem}
+                          handleClick = {this.handleClick}/>
                 </Container2>
                 <Container3>
-                <MentorProfile
-                    uid =  "ScC1yLxp24WhitlyiY2UVhvOXWm1"
-                />
+                    <h1
+                        style = {{paddingBottom : 20}}
+                    > Selected Mentor</h1>
+                    <MentorProfile
+                    uid =  {this.state.selected}
+                    />
                 </Container3>
             </Container>
            </div>
         );
     }
-
 }
 
 export default MentorList;

@@ -1,4 +1,3 @@
-
 import React, { Component, useState } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
@@ -12,7 +11,7 @@ const Container = styled.div`
     border-radius: 2px;
     padding: 4px;
     margin-bottom: 4px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : '#33e8d0')};
+    background-color: ${props => (props.isDragging ? '#00aeba' : '#00aeba')};
     display: flex;               
     flex-direction: row;          
     flex-wrap: nowrap;            
@@ -95,11 +94,11 @@ export default class Task extends React.Component {
                     >
                         <Handle  {...provided.dragHandleProps} />
 
-                        <div style={{ backgroundColor: '#33e8d0' }} >
-                            <p style={{ color: 'black', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
+                        <div style={{ backgroundColor: '#00aeba' }} >
+                            <p style={{ color: 'white', display: 'inline' }}>{this.props.task.courseId}   {courseName}</p>
                         </div>
-                        <div style={{ backgroundColor: '#33e8d0' }}>
-                            <p style={{ color: 'black', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
+                        <div style={{ backgroundColor: '#00aeba' }}>
+                            <p style={{ color: 'white', display: 'inline', alignItems: 'right' }}> {this.props.task.credits}</p>
                         </div>
 
                     </Container>

@@ -2,7 +2,6 @@ import React from "react";
 import styled from 'styled-components';
 import Task from './Class'
 import { Droppable } from "react-beautiful-dnd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TaskList = styled.div`
     padding: 8px;

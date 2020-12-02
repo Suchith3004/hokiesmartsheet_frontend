@@ -3,6 +3,7 @@ import fire from '../login/config/Fire';
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import { Link } from "react-router-dom"
+import Logo from './logo_transparent_2.png';
 
 const circleStyle = {
     display: 'block',
@@ -77,19 +78,25 @@ export default class NavBar extends Component {
             />
         } else {
             return (
+
                 <div class="topnav" id="myTopnav" >
+                    <img src={Logo} height="40" width="70" style={{ float: "left", paddingTop: 5 }}alt='website logo' />
                     <a class="hokiesheetname" >HokieSmartSheet</a>
+
                     {userData.semesters ? (
                         <div>
                             <Link to="/home" className={(this.props.current === "checksheet") ? "active" : ''}>Checksheet</Link>
                             <Link to="/chat" className={(this.props.current === "chat") ? "active" : ''}>Chat</Link>
                             <Link to="/requests" className={(this.props.current === "requests") ? "active" : ''}>Requests</Link>
-                            <Link to="/mentorSearch" className={(this.props.current === "mentorSearch") ? "active" : ''}>Mentor Search</Link>
+                            <Link to="/mentorsearch" className={(this.props.current === "mentorSearch") ? "active" : ''}>Mentor Search</Link>
+                            <Link to="/about" className={(this.props.current === "about") ? "active" : ''}>About</Link>
                         </div>
                     ) : (
                             <div>
+                                <Link to="/home" className={(this.props.current === "myprofile") ? "active" : ''}>My Profile</Link>
                                 <Link to="/chat" className={(this.props.current === "chat") ? "active" : ''}>Chat</Link>
                                 <Link to="/requests" className={(this.props.current === "requests") ? "active" : ''}>Requests</Link>
+                                <Link to="/about" className={(this.props.current === "about") ? "active" : ''}>About</Link>
                             </div>
                         )}
 

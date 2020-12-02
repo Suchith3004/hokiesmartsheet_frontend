@@ -20,6 +20,7 @@ function request(params) {
         body = JSON.stringify(params.data);
 
     var url = "https://us-central1-sec7-4d979.cloudfunctions.net" + params.endpoint + qs;
+    // var url = "http://localhost:5001/sec7-4d979/us-central1" + params.endpoint + qs;
 
     return fetch(url, { method, headers, body });
 }
