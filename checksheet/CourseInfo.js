@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavBar from '../utilities/NavBar'
 import { motion } from 'framer-motion'
+import dbFetch from '../api/dbFetch'
+
 
 const circleStyle = {
     display: 'block',
@@ -40,7 +42,7 @@ class CourseInfo extends Component {
     }
 
     componentDidMount() {
-        const { courseId } = this.props.location.state
+        const courseId = this.props.courseId
 
         const splitCourse = courseId.split("-");
         console.log(splitCourse)
@@ -84,6 +86,7 @@ class CourseInfo extends Component {
         } else {
             return (
                 <div>
+                    <h2 className="title">Course Info</h2>
                     <div className="courseInfo">
                         <div>
                             <p className="label">Couse ID: </p>
@@ -108,10 +111,10 @@ class CourseInfo extends Component {
                         <div>
                             <p className="label">Prerequisites: </p>
                             {
-                                courseInfo.prerequisites.forEach((req, index) => {
+                                courseInfo.prerequisites.map((req, index) => {
                                     var expandedReq = req.replace("|", " or ");
-                                    if (index != courseInfo.prerequisites.length)
-                                        explandedReq += ',';
+                                    if (index != courseInfo.prerequisites.length - 1)
+                                        expandedReq += ',';
 
                                     return <p className="info">{expandedReq}</p>
                                 })
@@ -120,26 +123,30 @@ class CourseInfo extends Component {
                         <div>
                             <p className="label">Corequisites: </p>
                             {
-                                courseInfo.corequisites.forEach((req, index) => {
+                                courseInfo.corequisites.map((req, index) => {
                                     var expandedReq = req.replace("|", " or ");
-                                    if (index != courseInfo.corequisites.length)
-                                        explandedReq += ',';
+                                    if (index != courseInfo.corequisites.length - 1)
+                                        expandedReq += ',';
 
                                     return <p className="info">{expandedReq}</p>
                                 })
                             }
                         </div>
                         <div>
-                            <p className="label">Pathways: </p>
-                            {
-                                courseInfo.pathways.forEach((Pathway, index) => {
-                                    var expandedPathway = Pathway + ": " + this.state.pathways[Pathway];
-                                    if (index != courseInfo.pathways.length)
-                                        explandedPathway += ',';
+                            {courseInfo.pathways ? (
+                                <div>
+                                    <p className="label">Pathways: </p>
+                                    {
+                                        courseInfo.pathways.map((Pathway, index) => {
+                                            var expandedPathway = Pathway + ": " + this.state.pathways[Pathway];
+                                            if (index != courseInfo.pathways.length - 1)
+                                                expandedPathway += ','
 
-                                    return <p className="info">{expandedPathway}</p>
-                                })
-                            }
+                                            return <p className="info">{expandedPathway}</p>
+                                        })
+                                    }
+                                </div>
+                            ) : (<span />)}
                         </div>
                     </div>
                 </div>

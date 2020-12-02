@@ -6,7 +6,9 @@ import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import ApClasses from './ApClasses'
-
+import TransferClasses from './TransferClasses'
+import CourseInfo from './CourseInfo'
+import PathwaySelector from './PathwaySelector'
 
 const circleStyle = {
     display: 'block',
@@ -36,6 +38,7 @@ export default class Table extends React.Component {
             userData: this.props.userData,
             maxHeight: 0,
             pathways: {},
+            currCourse: null,
             viewType: "checksheet"
         };
     }
@@ -109,13 +112,13 @@ export default class Table extends React.Component {
         if (destination.droppableId === source.droppableId) {
             return;
         }
-        console.log({
-            userId: this.props.userData.userId,
-            courseId: draggableId,
-            toSem: toSem,
-            fromSem: fromSem,
-            toIndex: destination.index
-        })
+        // console.log({
+        //     userId: this.props.userData.userId,
+        //     courseId: draggableId,
+        //     toSem: toSem,
+        //     fromSem: fromSem,
+        //     toIndex: destination.index
+        // })
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
@@ -147,6 +150,28 @@ export default class Table extends React.Component {
                 });
             });
     };
+
+
+    handleCourseClick = (courseId, semNum) => {
+
+        var viewType = 'course-info'
+        if (courseId.includes("Pathway")) {
+            viewType = 'Pathway'
+        }
+        if (courseId.includes("Elective")) {
+            viewType = 'Elective'
+        }
+        if (courseId.includes("XXX")) {
+            viewType = 'XXXElective'
+        }
+
+
+        this.setState({
+            currCourse: courseId,
+            viewType: viewType,
+            semNum: semNum
+        })
+    }
 
 
     render() {
@@ -182,24 +207,39 @@ export default class Table extends React.Component {
                         onDragEnd={this.onDragEnd}
                     >
                         <h2 style={{ color: "white", textAlign: "center", marginTop: "40px" }}>School : {userData.school}</h2>
-                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Major : {userData.major}</h2>
-                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Credits : {userData.totalCredits}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop: "10px" }}>Major : {userData.major}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop: "10px" }}>Credits : {userData.totalCredits}</h2>
 
                         <div class="checksheet">
                             {userData.semesters.map((sem, index) => {
                                 const column = sem;
                                 const tasks = sem.semesterCourses;
                                 const name = "Semester " + sem.semNum;
-                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} />
+                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} semNum={sem.semNum} courseClick={this.handleCourseClick} />
                             })}
                         </div>
                     </DragDropContext>
                 ) : <span />}
 
                 {this.state.viewType === 'ap-transfer' ? (
-                    <div>
+                    <div style={{ marginBottom: 100 }}>
                         <ApClasses equivalents={userData.apEquivalents} />
-                        {/* <TransferClasses items={userData.transferCourses} /> */}
+                        <br />
+                        <br />
+                        <TransferClasses transfers={userData.transferCourses} />
+                    </div>
+                ) : <span />}
+
+
+                {this.state.viewType === 'course-info' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <CourseInfo courseId={this.state.currCourse} pathways={this.state.pathways} />
+                    </div>
+                ) : <span />}
+
+                {this.state.viewType === 'Pathway' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <PathwaySelector pathwayId={this.state.currCourse} semNum={this.state.semNum} pathways={this.state.pathways} changeViewBack={()=>this.setState({viewType:'checkseet'})}/>
                     </div>
                 ) : <span />}
             </div>

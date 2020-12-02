@@ -9,9 +9,10 @@ const TaskList = styled.div`
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
     flex-grow: 1;
-    width: 350px;x
+    width: 400px;
     min-height: 100px;
     background-color:white;
+    margin-top: 15px;
 `;
 
 export default class Column extends React.Component {
@@ -48,7 +49,7 @@ export default class Column extends React.Component {
                         >
                             {
                                 this.state.displayedCourses.map((course, index) => {
-                                    return <Task key={index} task={course} index={index} />
+                                    return <Task key={index} task={course} index={index} semNum={this.props.semNum} courseClick={this.props.courseClick}/>
                                 })
                             }
                             {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}

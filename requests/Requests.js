@@ -33,8 +33,9 @@ class Requests extends Component {
     render() {
         return (
             <div>
-                <NavBar current="chat"/>
-                <RecievedRequestsList userData = {this.state.userData}/>
+                <NavBar current="requests"/>
+                <h2>REQUESTS</h2>
+                {/* <RecievedRequestsList userData = {this.state.userData}/> */}
                 {/*<SentRequestsList userData = {this.state.userData}/>*/}
             </div>
         );

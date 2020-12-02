@@ -7,17 +7,27 @@ export default class ApClasses extends React.Component {
     }
 
     classItem(apEquivalent) {
-        return <div class="list-item">
+        return <div class="ap-item">
             <div class="course">
-                <p>{apEquivalent.apAbreviation} {apEquivalent.apName}</p>
+                <p id="courseId">{apEquivalent.apAbreviation}</p>
+                <p>{apEquivalent.apName}</p>
                 <p id="credits">{apEquivalent.apScore}</p>
             </div>
-            <div>
-                <p> ={">"} </p>
+            <div id='transition'>
+                <p> {"<"}={">"} </p>
             </div>
             <div class="course">
-                <p>{apEquivalent.vtCourseId} {apEquivalent.vtCourseName}</p>
+                <input type="checkbox" checked={apEquivalent.used} />
+                <p id="courseId">{apEquivalent.vtCourseId}</p>
                 <p id="credits">3</p>
+                <p>{apEquivalent.vtCourseName}</p>
+                {apEquivalent.elective ? (
+                    <p id="elective-icon">E</p>) : (
+                        <span />
+                    )}
+                {apEquivalent.pathway ? (
+                    <p id="pathway-icon">P</p>
+                ) : <span />}
             </div>
         </div>
     }
@@ -26,7 +36,7 @@ export default class ApClasses extends React.Component {
         return <div>
             <h2 className="title">AP Classes</h2>
             <div className='list-container'>
-            <List elements={this.props.equivalents} getListElem={this.classItem} />
+                <List elements={this.props.equivalents} getListElem={this.classItem} double={true} />
             </div>
         </div>
     }

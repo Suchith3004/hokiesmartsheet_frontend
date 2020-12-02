@@ -54,56 +54,60 @@ class StudentRegister extends React.Component {
     createUser(newUser, append) {
         this.appendBasicInfo(newUser)
             .then(() => {
-                dbFetch.post({
-                    endpoint: "/createUser",
-                    data: this.state.newUser
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        this.setState({
-                            isLoaded: true
-                        })
 
-                        if (append)
-                            this.appendMentorToUser(newUser)
-                        else
-                            this.props.history.push('/createUser')
+                if (this.state.submitted) {
+                    dbFetch.post({
+                        endpoint: "/createUser",
+                        data: this.state.newUser
                     })
-                    .catch((error) => {
-                        alert("Failed to create new user! " + error.message);
-                        this.setState({
-                            isLoaded: true,
-                            error,
-                            submitted: false
+                        .then((response) => response.json())
+                        .then((data) => {
+                            this.setState({
+                                isLoaded: true
+                            })
+
+                            if (append)
+                                this.appendMentorToUser(newUser)
+                            else
+                                this.props.history.push('/createUser')
+                        })
+                        .catch((error) => {
+                            alert("Failed to create new user! " + error.message);
+                            this.setState({
+                                isLoaded: true,
+                                error,
+                                submitted: false
+                            });
                         });
-                    });
+                }
             })
     }
 
     createMentor(newUser) {
         this.appendBasicInfo(newUser)
             .then(() => {
-
-                dbFetch.post({
-                    endpoint: "/createMentor",
-                    data: this.state.newUser
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        this.setState({
-                            isLoaded: true
-                        })
-                        
-                        this.props.history.push('/createUser')
+                if (this.state.submitted) {
+                    dbFetch.post({
+                        endpoint: "/createMentor",
+                        data: this.state.newUser
                     })
-                    .catch((error) => {
-                        alert("Failed to create new mentor! " + error.message);
-                        this.setState({
-                            isLoaded: true,
-                            error,
-                            submitted: false
+                        .then((response) => response.json())
+                        .then((data) => {
+                            this.setState({
+                                isLoaded: true
+                            })
+
+                            this.props.history.push('/createUser')
+                        })
+                        .catch((error) => {
+                            alert("Failed to create new mentor! " + error.message);
+                            this.setState({
+                                isLoaded: true,
+                                error,
+                                submitted: false
+                            });
                         });
-                    });
+                }
             })
     }
 
@@ -226,7 +230,7 @@ class StudentRegister extends React.Component {
 
             <Container>
                 <label style={{ fontSize: 60, padding: -40 }}><u style={{ color: 'white', borderRadius: 15 }}>Registration</u></label>
-                
+
 
                 <div className="info">
                     <div>  <input className="fname" style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="fname" type="text" name="fname" onChange={(e) => this.setState({ firstname: e.target.value })} placeholder="First name" /></div>

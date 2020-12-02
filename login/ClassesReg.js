@@ -256,11 +256,13 @@ class ClassesReg extends Component {
         }
 
         const cleanCourses = async (inputValue) => {
-            if (!this.state || !inputValue || inputValue === '') {
+            if (!this.state ) {
                 return [];
             }
-
-            const options = await this.autocompleteCourse(inputValue);
+            
+            var options;
+            if(inputValue && inputValue !== '')
+                options = await this.autocompleteCourse(inputValue);
 
             const cleanedCourses = [];
             this.state.courseOptions.forEach(course => {

@@ -6,15 +6,23 @@ class List extends Component {
         const elements = this.props.elements;
         return (
 
-                <ul>
-                    {
+            <ul class={this.props.double ? "double-list" : "single-list"}>
+                {
+                    this.props.handleClick ? (
                         elements.map(elem => {
-                            return <li
-                            onClick={() => {this.props.handleClick(elem)}}
+                            return <li id={this.props.double ? '' : 'single'}
+                                onClick={() => { this.props.handleClick(elem) }}
                             >{this.props.getListElem(elem)}</li>
                         })
-                    }
-                </ul>
+                    ) : (
+                            elements.map(elem => {
+                                return <li id={this.props.double ? '' : 'single'}>
+                                    {this.props.getListElem(elem)}
+                                </li>
+                            })
+                        )
+                }
+            </ul>
 
         );
     }
