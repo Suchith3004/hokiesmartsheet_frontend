@@ -47,7 +47,7 @@ class MentorProfile extends Component {
         super(props);
         this.state = {
             isLoaded: false,
-            error: null,
+            error: "",
             mentor: {},
         }
     }
@@ -117,6 +117,7 @@ class MentorProfile extends Component {
             });
     }
     getString(array){
+
         if(array != null) {
             let i;
             let string = "";

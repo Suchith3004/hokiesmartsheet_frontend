@@ -1,7 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import fire from './config/Fire';
 import CheckSheet from '../checksheet/Checksheet'
-import Chat from '../utilities/Chat'
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import NavBar from '../utilities/NavBar'
