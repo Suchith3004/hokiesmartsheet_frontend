@@ -100,12 +100,7 @@ class MentorList extends Component {
                     isLoaded: true,
                     mentors: data,
                 });
-                if(data.length >0) {
-                    this.setState({
-                        selected: data[0].userId,
-                    });
 
-                }
             })
             .catch((error) => {
                 console.error("Failed to fetch all mentors data: " + error.message);
@@ -115,6 +110,14 @@ class MentorList extends Component {
                 });
             });
 
+    }
+
+    deleteMentor = (uid) =>{
+        this.setState({
+            mentors: this.state.mentors.filter(function( obj ) {
+                return obj.userId !== uid;
+            }),
+        })
     }
 
     handleClick = (e) =>{
@@ -163,6 +166,7 @@ class MentorList extends Component {
 
                             {this.state.mentors.length > 0 ? (
                                 <List elements={this.state.mentors}
+                                      key = {0}
                                       getListElem={this.mentorItem}
                                       handleClick={this.handleClick}/>
                             ) : (
@@ -172,14 +176,19 @@ class MentorList extends Component {
                             )}
 
                         </Container2>
-                        <Container3>
-                            <h1
-                                style={{paddingBottom: 20}}
-                            > Selected Mentor</h1>
-                            <MentorProfile
-                                uid={this.state.selected}
-                            />
-                        </Container3>
+                        {this.state.mentors.length > 0 || this.state.selected!= null ? (
+                            <Container3>
+                                <h1
+                                    style={{paddingBottom: 20}}
+                                > Selected Mentor</h1>
+                                <MentorProfile
+                                    uid= {this.state.selected}
+                                    deleteMentor = {this.deleteMentor}
+                                />
+                            </Container3>
+                        ) : (
+                            <span/>
+                        )}
                     </Container>
                 </div>
             );

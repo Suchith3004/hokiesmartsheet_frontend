@@ -79,7 +79,6 @@ class Login extends Component {
                         </div>
                         <div className="form-group">
                             <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-                            <small id="emailHelp" className="form-text text-muted">Password must be at least six digits long</small>
 
                         </div>
                         <button onClick={this.login} className="btn btn-primary">Login</button>

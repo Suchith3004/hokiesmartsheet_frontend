@@ -159,7 +159,7 @@ class SentRequestsList extends Component {
                                 <Container>
                                     <h1
                                         style = {{paddingBottom : 15}}
-                                    > Denyed Requests</h1>
+                                    > Denied Requests</h1>
                                     <h3
                                         style = {{paddingBottom : 15}}
                                     >You Have No Denied Mentor Requests</h3>
