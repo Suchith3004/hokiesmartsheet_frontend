@@ -4,6 +4,7 @@ import styled from "styled-components";
 import List from '../utilities/List'
 import MentorProfile from "./MentorProfile";
 import NavBar from "../utilities/NavBar";
+import fire from "../login/config/Fire";
 
 const Container = styled.div`
     display: flex;
@@ -66,7 +67,7 @@ class MentorList extends Component {
 
     componentDidMount() {
         dbFetch.get({
-            endpoint: "/getAllMentors/",
+            endpoint: "/getAllMentors/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             data: {}
         })
             .then(response => response.json())
@@ -89,6 +90,7 @@ class MentorList extends Component {
                     error
                 });
             });
+
     }
 
     handleClick = (e) =>{
@@ -133,7 +135,7 @@ class MentorList extends Component {
                         style = {{paddingBottom : 20}}
                     > Selected Mentor</h1>
                     <MentorProfile
-                    uid =  "ScC1yLxp24WhitlyiY2UVhvOXWm1"//{this.state.selected}
+                    uid =  {this.state.selected}
                     />
                 </Container3>
             </Container>

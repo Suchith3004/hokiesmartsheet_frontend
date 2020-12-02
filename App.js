@@ -15,6 +15,9 @@ import Chat from "./utilities/Chat"
 // import Chat from "./chat/ChatPage"
 import MentorList from "./mentor/MentorList";
 import Requests from "./requests/Requests";
+import SentRequestsList from "./requests/SentRequestsList";
+import MentorHome from "./login/MentorHome";
+import About from "./login/About";
 
 
 class App extends Component {
@@ -70,12 +73,13 @@ class App extends Component {
               ) : (
                   <Login />
                 )
-
             )} />
             <Route path="/editcourses" component={StudentRegister} />
+            <Route path="/myprofile" component={MentorHome} />
             <Route path="/chat" component={Chat} />
-            <Route path="/requests" componenet={Requests} />
-            <Route path="/mentorSearch" component={MentorList} />
+            <Route path="/requests" component={Requests} />
+            <Route path="/mentorsearch" component={MentorList} />
+            <Route path="/about" component={About} />
           </Switch>
         </Router>
       </div>

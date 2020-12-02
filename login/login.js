@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import fire from './config/Fire';
 import styled from "styled-components";
 import { useHistory } from 'react-router-dom';
-import Logo from './logo_transparent.png';
+import Logo from '../utilities/logo_transparent.png';
 
 
 
