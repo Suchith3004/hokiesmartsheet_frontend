@@ -237,7 +237,7 @@ class StudentRegister extends React.Component {
                     <br></br>
                     <div>
                         <input style={{ borderRadius: 10, width: 300, boxShadow: 10, padding: 10 }} className="password" type={this.state.visibility ? "text" : 'password'} name="password" onChange={(e) => this.setState({ password: e.target.value })} placeholder="Password" />
-                        {/* <i onClick={toggleVisibility}>{eye}</i> */}
+                        <small id="emailHelp" className="form-text text-muted">Password must be at least six digits long</small>
                     </div>
 
                     <h2 style={{ color: 'white' }}>Select all that apply:</h2><br />
