@@ -7,24 +7,11 @@ import Logo from '../utilities/logo_transparent.png';
 
 
 const Container = styled.div`
-height: 100vh; 
-display: flex;
-justify-content: center;
-align-items: center;
-color: White;
-margin-right:auto;
-margin-top:auto; 
+    margin-left : 33%;
+    margin-right : 4%;
+    margin-top : 5%;
+`;
 
-`;
-const titlepg = styled.div`
-text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 1em;
-  margin-bottom: 2em;
-  color: #fff;
-`;
 
 function SubmitButton(props) {
 
@@ -43,9 +30,6 @@ class Login extends Component {
 
     constructor(props) {
         super(props);
-        <div
-
-        />
         this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.signup = this.signup.bind(this);
@@ -99,7 +83,6 @@ class Login extends Component {
 
                         </div>
                         <button onClick={this.login} className="btn btn-primary">Login</button>
-                        {/* <button onClick={this.signup} style={{ marginLeft: '25px' }} className="btn btn-success">Signup</button> */}
                         <SubmitButton email={this.state.email} password={this.state.password} />
 
                     </div>

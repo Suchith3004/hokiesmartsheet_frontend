@@ -25,7 +25,7 @@ const spinTransition = {
 const Container = styled.div`
     width:100%;
     background-color:white;
-    height: 200px;
+    height: 150px;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
 `;
@@ -33,7 +33,7 @@ const Container = styled.div`
 const FieldsContainer1 = styled.div`
   background-color:white;
   width: 35%;
-  height: 200px;
+  height: 150px;
   float: left;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
   border-radius: 15px;
@@ -41,7 +41,7 @@ const FieldsContainer1 = styled.div`
 
 const FieldsContainer2 = styled.div`
     background-color:white;
-    height: 200px;
+    height: 150px;
     margin-top: 10px;
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
     padding : 10px;

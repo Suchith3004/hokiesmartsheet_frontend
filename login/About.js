@@ -6,8 +6,9 @@ import Logo from '../utilities/logo_transparent.png';
 
 const Container = styled.div`
     background-color:white;
-    width : 50%;
-    margin : 20px;
+    margin-left : 25%;
+    margin-right : 25%;
+    margin-top : 5%;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
     text-color: black;

@@ -4,10 +4,11 @@ import List from 'react-list-select';
 import RecievedRequestsItem from "./RecievedRequestsItem";
 
 const Container = styled.div`
-    width : 50%;
-    margin : 20px;
+    margin-left : 25%;
+    margin-right : 25%;
+    margin-top : 5%;
     background-color:white;
-    padding : 50px;
+    padding : 25px;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
 `;
