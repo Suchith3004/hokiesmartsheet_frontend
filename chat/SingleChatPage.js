@@ -5,6 +5,8 @@ import fire from "../login/config/Fire";
 import {Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons, deleteMessages} from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
+import './override.css'
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -19,14 +21,13 @@ const firedb = fire.firestore();
 
 class Chat extends Component {
 
-    let 
-
     constructor(props) {
         super(props);
 
         this.state = {
             isLoaded: false,
             error: null,
+            subtitle: "",
             userData: {}
         }
     }
@@ -78,6 +79,15 @@ class Chat extends Component {
             return;
         }
 
+        var usertitle;
+
+        if(this.props.location.data.isUsersMentor) {
+            usertitle = this.props.location.data.occupation + " at " + this.props.location.data.organizationName;
+        }else {
+            usertitle = this.props.location.data.major + " class of " + this.props.location.data.year;
+        }
+
+        this.setState({subtitle: usertitle});
 
         toggleWidget();
         deleteMessages();
@@ -143,7 +153,7 @@ class Chat extends Component {
           handleQuickButtonClicked={this.handleQuickButtonClicked}
           launcher={handleToggle => this.getCustomLauncher(handleToggle)}
           title={this.props.location.data.firstName + " " + this.props.location.data.lastName}
-           subtitle={this.props.location.data.occupation + " at " + this.props.location.data.organizationName}
+           subtitle={this.state.subtitle}
            fullScreenMode={true}
             showCloseButton={false}
         />
