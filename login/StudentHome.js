@@ -5,6 +5,8 @@ import Chat from '../utilities/Chat'
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import NavBar from '../utilities/NavBar'
+import Requests from "../requests/Requests";
+import MentorHome from "./MentorHome";
 
 const circleStyle = {
     display: 'block',
@@ -84,7 +86,8 @@ class StudentHome extends Component {
                         </div>
                     ) : (
                         <div>
-                            <Chat/>
+                            <NavBar current="myprofile" />
+                            <MentorHome/>
                         </div>
                     )}
                 </div>

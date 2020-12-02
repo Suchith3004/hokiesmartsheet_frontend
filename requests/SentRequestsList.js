@@ -5,19 +5,15 @@ import List from 'react-list-select';
 import NavBar from "../utilities/NavBar";
 import fire from "../login/config/Fire";
 import SentRequestsItem from "./SentRequestsItem";
+import RecievedRequestsItem from "./RecievedRequestsItem";
 
 const Container = styled.div`
-    display: flex;
-    margin:0 auto;
-`;
-
-const Container2 = styled.div`
-    width : 40%;
+    width : 50%;
     margin : 20px;
-`;
-
-const Container3 = styled.div`
-    margin : 40px;
+    background-color:white;
+    padding : 50px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
 `;
 
 class SentRequestsList extends Component {
@@ -32,36 +28,50 @@ class SentRequestsList extends Component {
     }
 
     componentDidMount() {
-                this.setState({
-                    isLoaded: true,
-                    userData: this.props.userData,
-                    requestsR: this.props.userData.mentorRequests.map((item) => {
-                        return (
-                            <SentRequestsItem
-                                uid = {item.userId}
-                            >
-                            </SentRequestsItem>
-                        );
-                    }),
-                });
+        this.setState({
+            isLoaded: true,
+            userData: this.props.userData,
+            requestsR:
+                Object.keys(this.props.userData.mentorRequests).map(function(key) {
+                    return (
+                        <SentRequestsItem
+                            uid = {key}
+                        >
+                        </SentRequestsItem>
+                    );
+                })
+        });
     }
 
 
     render() {
+        if (this.state.requestsR.length == 0) {
+            return (
+                <div>
+                    <Container>
+                        <h1
+                            style = {{paddingBottom : 15}}
+                        > Student Requests</h1>
+                        <h3
+                            style = {{paddingBottom : 15}}
+                        >You Have Not Sent Any Mentor Requests</h3>
+                    </Container>
+                </div>
+            )
+        }
         return (
             <div>
-                <NavBar current="mentorSearch" />
                 <Container>
-                    <Container2>
-                        <List
-                            items={ this.state.requestsR}
-                        />
-                    </Container2>
+                    <h1
+                        style = {{paddingBottom : 15}}
+                    > Mentor Requests</h1>
+                    <List
+                        items={this.state.requestsR}
+                    />
                 </Container>
             </div>
         );
     }
-
 }
 
 export default SentRequestsList;
