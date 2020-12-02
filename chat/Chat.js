@@ -10,6 +10,9 @@ var collectionName;
 const firedb = fire.firestore();
 
 class Chat extends Component {
+
+    let 
+
     constructor(props) {
         super(props);
 
@@ -33,7 +36,8 @@ class Chat extends Component {
             name: displayName,
             id: currentUser.uid,
             message: newMessage,
-            created: Date.now()
+            created: Date.now(),
+            invisible: false
         })
         .then(function() {
             console.log("Document successfully written!");
@@ -53,35 +57,53 @@ class Chat extends Component {
         toggleWidget();
     }
 
-    getCustomLauncher = (handleToggle) =>
-    <span></span>
+    getCustomLauncher = (handleToggle) => <span />
 
     componentDidMount() {
 
-        collectionName = "chats/" + this.props.mentor.uid + "---" + this.props.student.uid + "/messages";
+        // let localId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
 
-        console.log("getting first messages");
+        // let superCollection;
 
-        firedb.collection(collectionName)
-        .onSnapshot(function(querySnapshot) {
-            let orderedMessages = [];
-            querySnapshot.docChanges().forEach(function(change) {
-                let doc = change.doc;
-                let messageData = doc.data();
-                console.log("new doc ", doc.id, " =>", doc.data());
-                if(messageData.id && messageData.message && messageData.created && !doc.metadata.hasPendingWrites) {
-                    orderedMessages.push(messageData);
-                }
-            });
-            orderedMessages.sort(function(a, b){return a.created - b.created});
-            orderedMessages.forEach(function(m){
-                if (m.id === fire.auth().currentUser.uid) {
-                    addUserMessage(m.message);
-                }else {
-                    addResponseMessage(m.message);
-                }
-            });
-        });
+        // if(this.props.otherUserData.isUsersMentor) {
+        //     superCollection = "chats/" + this.props.otherUserData.userId + "---" + localId + "/";
+        // }else {
+        //     superCollection = "chats/" + localId + "---" + this.props.otherUserData.userId + "/";
+        // }
+
+        // collectionName = superCollection + "messages";
+
+        // console.log("determining if chat exists")
+
+
+        // const query = firedb.doc(superCollection);
+        // if(query.empty) {
+        //     console.log("chat doesn't exist");
+        // }
+
+        // console.log("getting first messages");
+
+        // firedb.collection(collectionName)
+        // .onSnapshot(function(querySnapshot) {
+        //     console.log("snapshot set");
+        //     let orderedMessages = [];
+        //     querySnapshot.docChanges().forEach(function(change) {
+        //         let doc = change.doc;
+        //         let messageData = doc.data();
+        //         console.log("new doc ", doc.id, " =>", doc.data());
+        //         if(messageData.id && messageData.message && messageData.created && !doc.metadata.hasPendingWrites && !doc.invisible) {
+        //             orderedMessages.push(messageData);
+        //         }
+        //     });
+        //     orderedMessages.sort(function(a, b){return a.created - b.created});
+        //     orderedMessages.forEach(function(m){
+        //         if (m.id === fire.auth().currentUser.uid) {
+        //             addUserMessage(m.message);
+        //         }else {
+        //             addResponseMessage(m.message);
+        //         }
+        //     });
+        // });
 
     }
 
@@ -89,13 +111,15 @@ class Chat extends Component {
         return (
             // <Container>
 
-<Widget
-          handleNewUserMessage={this.handleNewUserMessage}
-          handleQuickButtonClicked={this.handleQuickButtonClicked}
-          launcher={handleToggle => this.getCustomLauncher(handleToggle)}
-          title={this.props.mentor.firstName + " " + this.props.mentor.lastName}
-          subtitle={this.props.mentor.occupation + " at " + this.props.mentor.organizationName}
-        />
+            <span />
+
+// {/* <Widget
+//         //   handleNewUserMessage={this.handleNewUserMessage}
+//         //   handleQuickButtonClicked={this.handleQuickButtonClicked}
+//         //   launcher={handleToggle => this.getCustomLauncher(handleToggle)}
+//         //   title={this.props.otherUserData.firstName + " " + this.props.otherUserData.lastName}
+//         //    subtitle={this.props.otherUserData.occupation + " at " + this.props.otherUserData.organizationName}
+//         /> */}
 
         );
     }

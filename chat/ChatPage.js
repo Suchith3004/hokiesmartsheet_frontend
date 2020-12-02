@@ -6,6 +6,8 @@ import fire from "../login/config/Fire";
 import { View } from 'react-native';
 import UserCard from "./UserCard";
 
+import {Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons} from 'react-chat-widget';
+
 const Container = styled.div`
     display: flex;
     margin:0 auto;
@@ -26,46 +28,30 @@ class ChatPage extends Component {
         this.state = {
             isLoaded: false,
             error: null,
-            mentors: [],
-            mentees: [],
-            combo: [],
+            connections: [],
             selected: null,
 
         }
     }
 
     componentDidMount() {
-        dbFetch.get({
-            endpoint: "/getAllUserMentors/",
+        dbFetch.post({
+            endpoint: "/getAllUserConnections/",
             data: {
-                userId: fire.auth().currentUser.uid
+                userId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
             }
         })
             .then(response => response.json())
             .then((data) => {
-                data.forEach((datum) => datum.isMyMentor = true);
                 this.setState({
-                    mentors: data
+                    connections: data
                 });
 
-                dbFetch.get({
-                    endpoint: "/getAllUserMentees/",
-                    data: {
-                        userId: fire.auth().currentUser.uid
-                    }
-                })
-                    .then(response => response.json())
-                    .then((data) => {
-                        data.forEach((datum) => datum.isMyMentor = false);
-                        this.setState({
-                            isLoaded: true,
-                            mentees: data,
-                            combo: mentors.concat(mentees)
-                        });                        
-                    })
+                console.log(data);
+
             })
             .catch((error) => {
-                console.error("Failed to fetch all mentors data: " + error.message);
+                console.error("Failed to fetch all connections data: " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
@@ -82,14 +68,10 @@ class ChatPage extends Component {
             <Container>
                 <View style={{flex: 1, flexDirection:'row'}}>
                     <>
-                        {this.state.combo.map(user => (
-                        user.isMyMentor ? (
-                                <UserCard userData={user} mentor={user} student={fire.auth().currentUser} />
-                            ) : (
-                                <UserCard userData={user} mentor={fire.auth().currentUser} student={user} />
-                                )
-
-                        ))}
+                        {this.state.connections.map(user => (
+                                <UserCard otherUserData={user}/>
+                            )
+                        )}
                     </>
                 </View>
             </Container>

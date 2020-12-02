@@ -11,7 +11,8 @@ import {
   Redirect
 } from "react-router-dom";
 import StudentRegister from "./login/StudentRegister";
-import Chat from "./utilities/Chat"
+import ChatPage from "./chat/ChatPage"
+import SingleChatPage from "./chat/SingleChatPage"
 // import Chat from "./chat/ChatPage"
 import MentorList from "./mentor/MentorList";
 import Requests from "./requests/Requests";
@@ -76,10 +77,11 @@ class App extends Component {
             )} />
             <Route path="/editcourses" component={StudentRegister} />
             <Route path="/myprofile" component={MentorHome} />
-            <Route path="/chat" component={Chat} />
+            <Route path="/chat" component={ChatPage} />
             <Route path="/requests" component={Requests} />
             <Route path="/mentorsearch" component={MentorList} />
             <Route path="/about" component={About} />
+            <Route path="/singleChat/" component={SingleChatPage} />
           </Switch>
         </Router>
       </div>
