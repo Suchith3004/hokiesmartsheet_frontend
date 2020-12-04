@@ -6,7 +6,11 @@ import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import ApClasses from './ApClasses'
-
+import TransferClasses from './TransferClasses'
+import CourseInfo from './CourseInfo'
+import PathwaySelector from './PathwaySelector'
+import ElectiveSelector from './ElectiveSelector'
+import Pathways from './Pathways'
 
 const circleStyle = {
     display: 'block',
@@ -36,12 +40,42 @@ export default class Table extends React.Component {
             userData: this.props.userData,
             maxHeight: 0,
             pathways: {},
-            viewType: "checksheet"
+            categories: ["Capstone", "Natural Science", "Professional Writing", "Communications", "CS Theory", "Statistics"],
+            currCourse: null,
+            viewType: "checksheet",
+            isPathway: false,
+            isElective: false,
+            xxxElecive: false
         };
     }
 
+    updateUserChecksheet = () => {
+        console.log("called")
+        dbFetch.get({
+            endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+            data: {}
+        })
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    isLoaded: true,
+                    userData: data
+                });
+                console.log("GOT HERE FIRST")
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+    }
+
     componentDidMount() {
-        this.calculateSemHeight()
+        this.calculateSemHeight();
+        // this.setState({isLoaded: false})
+        // this.updateUserChecksheet();
 
         dbFetch.get({
             endpoint: "/getAllPathways",
@@ -61,6 +95,7 @@ export default class Table extends React.Component {
                     error
                 });
             });
+        
     }
 
     calculateSemHeight = () => {
@@ -109,13 +144,8 @@ export default class Table extends React.Component {
         if (destination.droppableId === source.droppableId) {
             return;
         }
-        console.log({
-            userId: this.props.userData.userId,
-            courseId: draggableId,
-            toSem: toSem,
-            fromSem: fromSem,
-            toIndex: destination.index
-        })
+
+
         dbFetch.put({
             endpoint: "/moveClass",
             data: {
@@ -148,6 +178,59 @@ export default class Table extends React.Component {
             });
     };
 
+    changeCompletionStatus = (courseId, semNum) => {
+        const semester = this.state.userData.semesters[semNum];
+
+        semester.semesterCourses.forEach((course, index) => {
+            if (courseId === course.courseId) {
+                semester.semesterCourses[index].completed = false;
+                const userSheet = this.state.userData;
+                userSheet.semesters[semNum] = semester;
+                this.setState({
+                    userData: userSheet
+                })
+            }
+        })
+    }
+
+
+    handleCourseClick = (courseId, semNum, isPathway, isElective, fromCourseInfo) => {
+
+        this.setState({isLoading: false})
+        this.updateUserChecksheet();
+
+        var viewType = 'course-info'
+        if (courseId.includes("Pathway") || (isPathway && fromCourseInfo)) {
+            viewType = 'pathway-selector'
+        }
+        if (courseId.includes("Elective") || (isElective && fromCourseInfo)) {
+            viewType = 'elective-selector'
+        }
+        if (courseId.includes("XXX")) {
+            this.setState({ xxxElective: true})
+            viewType = 'elective-selector'
+        }
+
+
+        this.setState({
+            currCourse: courseId,
+            semNum: semNum ? semNum : this.state.semNum,
+            isPathway: isPathway ? isPathway : this.state.isPathway,
+            isElective: isElective
+        })
+
+        this.changeViewType(viewType)
+    }
+
+    changeViewType = (newView) => {
+
+        this.setState({isLoading: false})
+        this.updateUserChecksheet()
+        
+        this.setState({ viewType: newView })
+
+    }
+
 
     render() {
 
@@ -167,12 +250,11 @@ export default class Table extends React.Component {
         }
         else {
 
-
             return <div>
                 <div class="inpageNav">
-                    <button id="firstbtn" onClick={() => this.setState({ viewType: "checksheet" })} class={this.state.viewType === "checksheet" ? "active" : ''}>Checksheet</button>
-                    <button onClick={() => this.setState({ viewType: "ap-transfer" })} class={this.state.viewType === "ap-transfer" ? "active" : ''}>AP/Transfer</button>
-                    <button id="lastbtn" onClick={() => this.setState({ viewType: "pathway" })} class={this.state.viewType === "pathway" ? "active" : ''}>Pathways</button>
+                    <button id="firstbtn" onClick={() => this.changeViewType("checksheet")} class={this.state.viewType === "checksheet" ? "active" : ''}>Checksheet</button>
+                    <button onClick={() => this.changeViewType("ap-transfer")} class={this.state.viewType === "ap-transfer" ? "active" : ''}>AP/Transfer</button>
+                    <button id="lastbtn" onClick={() => this.changeViewType("pathway")} class={this.state.viewType === "pathway" ? "active" : ''}>Pathways</button>
                 </div>
 
                 {this.state.viewType === 'checksheet' ? (
@@ -182,26 +264,54 @@ export default class Table extends React.Component {
                         onDragEnd={this.onDragEnd}
                     >
                         <h2 style={{ color: "white", textAlign: "center", marginTop: "40px" }}>School : {userData.school}</h2>
-                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Major : {userData.major}</h2>
-                        <h2 style={{ color: "white", textAlign: "center", marginTop : "10px" }}>Credits : {userData.totalCredits}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop: "10px" }}>Major : {userData.major}</h2>
+                        <h2 style={{ color: "white", textAlign: "center", marginTop: "10px" }}>Credits : {userData.totalCredits}</h2>
 
                         <div class="checksheet">
                             {userData.semesters.map((sem, index) => {
                                 const column = sem;
                                 const tasks = sem.semesterCourses;
                                 const name = "Semester " + sem.semNum;
-                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} />
+                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} semNum={sem.semNum} courseClick={this.handleCourseClick} alertCompleteHandler={this.changeCompletionStatus} />
                             })}
                         </div>
                     </DragDropContext>
                 ) : <span />}
 
                 {this.state.viewType === 'ap-transfer' ? (
-                    <div>
+                    <div style={{ marginBottom: 100 }}>
                         <ApClasses equivalents={userData.apEquivalents} />
-                        {/* <TransferClasses items={userData.transferCourses} /> */}
+                        <br />
+                        <br />
+                        <TransferClasses transfers={userData.transferCourses} />
                     </div>
                 ) : <span />}
+
+                {this.state.viewType === 'pathway' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <Pathways userPathways={userData.pathways} pathways={this.state.pathways} />
+                    </div>
+                ) : <span />}
+
+                {this.state.viewType === 'course-info' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <CourseInfo courseId={this.state.currCourse} pathways={this.state.pathways} handleClick={this.handleCourseClick} isPathway={this.state.isPathway} isElective={this.state.isElective} />
+                    </div>
+                ) : <span />}
+
+                {this.state.viewType === 'pathway-selector' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <PathwaySelector pathwayId={this.state.currCourse} semNum={this.state.semNum} pathways={this.state.pathways} changeViewBack={() => this.changeViewType("checksheet")} apOptions={this.state.userData.apEquivalents} transferOptions={this.state.userData.transferCourses} />
+                    </div>
+                ) : <span />}
+
+                {this.state.viewType === 'elective-selector' ? (
+                    <div style={{ marginBottom: 100 }}>
+                        <ElectiveSelector electiveId={this.state.currCourse} semNum={this.state.semNum} pathways={this.state.pathways} changeViewBack={() => this.changeViewType("checksheet")} apOptions={this.state.userData.apEquivalents} transferOptions={this.state.userData.transferCourses} categories={this.state.categories} xxxElective={this.state.xxxElective}/>
+                    </div>
+                ) : <span />}
+
+                
             </div>
 
 

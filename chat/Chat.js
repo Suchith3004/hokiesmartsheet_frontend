@@ -34,7 +34,7 @@ class Chat extends Component {
         console.log("setting ref");
         firedb.collection(collectionName).add({
             name: displayName,
-            id: currentUser.uid,
+            id: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             message: newMessage,
             created: Date.now(),
             invisible: false

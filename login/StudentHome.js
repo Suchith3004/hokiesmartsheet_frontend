@@ -66,7 +66,7 @@ class StudentHome extends Component {
 
     render() {
         const { error, isLoaded, userData } = this.state;
-        const { firstName, lastName } = userData
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {

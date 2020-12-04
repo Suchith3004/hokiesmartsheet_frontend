@@ -7,12 +7,12 @@ const customStyles = {
     option: (provided, state) => ({
         ...provided,
         borderBottom: '1px solid white',
-        color: state.isSelected ? 'black' : 'white',
+        color: 'black',
         backgroundColor: state.isSelected
             ? 'lightgrey'
             : state.isFocused
                 ? 'lightblue'
-                : null
+                : 'rgb(228, 228, 228)'
     }),
     menu: (provided, state) => ({
         ...provided,
@@ -77,7 +77,7 @@ export class SearchBar extends React.Component {
          * }
          */
         return (
-            <div>
+            <div className="search-bar">
                 {this.props.multiSelect ?
                     (<AsyncSelect
                         isMulti

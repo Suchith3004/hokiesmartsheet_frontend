@@ -122,7 +122,7 @@ class ClassesReg extends Component {
         }
     }
 
-    async autocompleteCourse(coursePrefix) {
+    autocompleteCourse = async(coursePrefix) => {
 
         const abbreviation = coursePrefix.split(' ')[0].split('-');
         const query = {
@@ -256,11 +256,13 @@ class ClassesReg extends Component {
         }
 
         const cleanCourses = async (inputValue) => {
-            if (!this.state || !inputValue || inputValue === '') {
+            if (!this.state) {
                 return [];
             }
 
-            const options = await this.autocompleteCourse(inputValue);
+            var options;
+            if (inputValue && inputValue !== '')
+                options = await this.autocompleteCourse(inputValue);
 
             const cleanedCourses = [];
             this.state.courseOptions.forEach(course => {
@@ -274,11 +276,10 @@ class ClassesReg extends Component {
         }
 
         const handleChosenCourses = (e) => {
-            if (!e)
-                return
             const chosenCourses = [];
 
-            e.forEach(item => chosenCourses.push(item.value));
+            if (e)
+                e.forEach(item => chosenCourses.push(item.value));
 
             this.state.chosenCourses = chosenCourses;
         }
