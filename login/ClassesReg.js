@@ -31,7 +31,8 @@ class ClassesReg extends Component {
             chosenMajor: null,
             schools: [],
             chosenSchool: null,
-            gradYear: 2022
+            gradYear: 2022,
+            gradSeason: "Fall"
         }
 
     }
@@ -114,6 +115,7 @@ class ClassesReg extends Component {
                     major: this.state.chosenMajor,
                     school: this.state.chosenSchool,
                     gradYear: this.state.gradYear,
+                    gradSeason: this.state.gradSeason,
                     apEquivalents: this.state.chosenAP,
                     transferCredits: this.state.chosenCourses
                 }
@@ -122,7 +124,7 @@ class ClassesReg extends Component {
         }
     }
 
-    async autocompleteCourse(coursePrefix) {
+    autocompleteCourse = async(coursePrefix) => {
 
         const abbreviation = coursePrefix.split(' ')[0].split('-');
         const query = {
@@ -256,12 +258,12 @@ class ClassesReg extends Component {
         }
 
         const cleanCourses = async (inputValue) => {
-            if (!this.state ) {
+            if (!this.state) {
                 return [];
             }
-            
+
             var options;
-            if(inputValue && inputValue !== '')
+            if (inputValue && inputValue !== '')
                 options = await this.autocompleteCourse(inputValue);
 
             const cleanedCourses = [];
@@ -276,11 +278,10 @@ class ClassesReg extends Component {
         }
 
         const handleChosenCourses = (e) => {
-            if (!e)
-                return
             const chosenCourses = [];
 
-            e.forEach(item => chosenCourses.push(item.value));
+            if (e)
+                e.forEach(item => chosenCourses.push(item.value));
 
             this.state.chosenCourses = chosenCourses;
         }
@@ -310,6 +311,28 @@ class ClassesReg extends Component {
             });
         }
 
+        const cleanGradSeason = (inputValue) => {
+            const seasons = ["Fall", "Spring"]
+            const seasonOptions = []
+
+            seasons.forEach(season => {
+                seasonOptions.push({
+                    value: season,
+                    label: season
+                })
+            })
+
+            return yearOptions;
+        }
+
+        const handleChosenSeason = (e) => {
+            if (!e)
+                return
+
+            this.setState({
+                gradSeason: e.value
+            });
+        }
 
         return (
 
@@ -328,8 +351,9 @@ class ClassesReg extends Component {
                         <br></br>
 
                         <br></br>
-                        <div> <label style={{ fontSize: 15 }}>Graduation Year:</label></div>
-                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>
+                        <div> <label style={{ fontSize: 15 }}>Graduation Year & Season:</label></div>
+                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>                        
+                        <div> <SearchBar multiSelect={false} options={cleanGradSeason} handleChange={handleChosenSeason} /> </div>
                         <br></br>
 
                         <br></br>

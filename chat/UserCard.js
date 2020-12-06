@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 import Chat from "./Chat";
+import Button from "@material-ui/core/Button";
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
     width:100%;
@@ -27,10 +29,26 @@ const FieldsContainer2 = styled.div`
     border-radius: 15px;
 `;
 
+function OpenChatButton(props) {
+
+    let history = useHistory();
+
+    function handleClick() {
+        history.push({
+            pathname:"/singleChat", 
+            data:props.otherUserData
+        });
+    }
+
+    return (
+        <button onClick={handleClick} style={{ marginLeft: '25px' }} className="btn btn-success">Chat</button>
+    );
+}
+
 class UserCard extends Component {
     constructor(props) {
         super(props);
-        this.chatChild = react.createRef();
+        this.chatChild = React.createRef();
         this.state = {
             isLoaded: false,
             error: null,
@@ -43,13 +61,14 @@ class UserCard extends Component {
     }
 
     openChat() {
+        console.log("trying to open chat with " + this.props.otherUserData.firstName);
         this.chatChild.handleChatButtonClicked();
     }
 
     render() {
         return (
             <Container>
-                <Chat ref={this.chatChild} mentor={this.props.mentor} student={this.props.student}/>
+                {/* <Chat ref={this.chatChild} mentor={this.props.mentor} student={this.props.student}/> */}
                 <FieldsContainer1>
                     <img
                         src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
@@ -59,14 +78,18 @@ class UserCard extends Component {
 
                 </FieldsContainer1>
                 <FieldsContainer2>
-                    <h2
-                        style={{margin: 5}}>{this.props.userData.firstName + " " + this.props.userData.lastName}</h2>
+                    <h2 style={{margin: 5}}>{this.props.otherUserData.firstName + " " + this.props.otherUserData.lastName}</h2>
+
+                    <OpenChatButton otherUserData={this.props.otherUserData} />
+
+                    {/* <Button onClick={this.openChat}
+                            variant="contained" size = "Large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
+                        Chat
+                    </Button> */}
+
                 </FieldsContainer2>
 
-                <Button onClick={this.openChat}
-                            variant="contained" size = "Large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
-                        Request Help
-                    </Button>
+                {/* <Chat ref={this.chatChild} otherUserData={this.props.otherUserData} /> */}
 
             </Container>
         );
@@ -74,4 +97,4 @@ class UserCard extends Component {
 
 }
 
-export default MentorItem;
+export default UserCard;

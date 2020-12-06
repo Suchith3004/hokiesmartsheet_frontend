@@ -10,7 +10,7 @@ export default class ApClasses extends React.Component {
         return <div class="ap-item">
             <div class="course">
                 <p id="courseId">{apEquivalent.apAbreviation}</p>
-                <p>{apEquivalent.apName}</p>
+                <p>AP {apEquivalent.apName}</p>
                 <p id="credits">{apEquivalent.apScore}</p>
             </div>
             <div id='transition'>
@@ -19,7 +19,7 @@ export default class ApClasses extends React.Component {
             <div class="course">
                 <input type="checkbox" checked={apEquivalent.used} />
                 <p id="courseId">{apEquivalent.vtCourseId}</p>
-                <p id="credits">3</p>
+                <p id="credits">{apEquivalent.credits ? apEquivalent.credits : 3}</p>
                 <p>{apEquivalent.vtCourseName}</p>
                 {apEquivalent.elective ? (
                     <p id="elective-icon">E</p>) : (

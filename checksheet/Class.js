@@ -39,11 +39,6 @@ export default class Task extends React.Component {
     }
 
     changeCompleteStatus() {
-        console.log({
-            userId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
-            semester: this.props.semNum,
-            courseId: this.props.task.courseId
-        })
         dbFetch.put({
             endpoint: "/changeCourseStatus",
             data: {
@@ -67,36 +62,42 @@ export default class Task extends React.Component {
 
     render() {
         var courseName = this.props.task.name;
-        if (courseName.includes('Elective') || courseName.includes('Pathway'))
-            courseName = '';
+        var courseId = this.props.task.courseId
+        if (courseName.includes('Elective')){
+            courseId = '';
+        }
 
+        if(courseId.includes('Pathway')) {
+            courseId = 'Pathway';
+            courseName = '';
+        }
         return (
             <Draggable draggableId={this.props.task.courseId} index={this.props.index}>
                 {(provided, snapshot) => (
 
                     <div
-                        {...provided.draggableProps}
+                        {...provided.draggableProps}                        
+                        {...provided.dragHandleProps} 
                         ref={provided.innerRef}
+                        // isdragging="false"
                         isDragging={snapshot.isDragging}
                         className="classHandleText"
-                        onClick={() => { this.props.courseClick(this.props.task.courseId, this.props.semNum) }}
                     >
 
-                        <input
-                            {...provided.draggableProps} type="checkbox" checked={this.state.completed} onClick={() => { this.changeCompleteStatus() }} />
-                        <p id="courseId">{this.props.task.courseId}</p>
-                        <p>{courseName}</p>
-                        <p id="course-credits"> {this.props.task.credits}</p>
-                        {this.props.task.elective ? (
-                            <p id="elective-icon">E</p>) : (
-                                <span />
-                            )}
-                        {this.props.task.pathway ? (
-                            <p id="pathway-icon">P</p>) : (
-                                <span />
-                            )}
-
-
+                        <input type="checkbox" checked={this.state.completed} onClick={() => {this.props.alertCompleteHandler ? this.props.alertCompleteHandler(this.props.task.courseId, this.props.semNum) : null}} onChange={() => { this.changeCompleteStatus() }} />
+                        <div onClick={() => { this.props.courseClick(this.props.task.courseId, this.props.semNum, this.props.task.pathway, this.props.task.elective) }}>
+                            <p id="courseId">{courseId}</p>
+                            <p>{courseName}</p>
+                            <p id="course-credits"> {this.props.task.credits}</p>
+                            {this.props.task.elective ? (
+                                <p id="elective-icon">E</p>) : (
+                                    <span />
+                                )}
+                            {this.props.task.pathway ? (
+                                <p id="pathway-icon">P</p>) : (
+                                    <span />
+                                )}
+                        </div>
                     </div>
                 )}
             </Draggable>

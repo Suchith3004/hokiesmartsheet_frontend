@@ -45,7 +45,6 @@ class CourseInfo extends Component {
         const courseId = this.props.courseId
 
         const splitCourse = courseId.split("-");
-        console.log(splitCourse)
 
         dbFetch.get({
             endpoint: "/getCourseByPrefix",
@@ -74,6 +73,7 @@ class CourseInfo extends Component {
     render() {
 
         const { error, isLoaded, courseInfo } = this.state;
+        console.log(courseInfo);
 
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -109,33 +109,42 @@ class CourseInfo extends Component {
                             <p className="info">{courseInfo.minGrade ? courseInfo.minGrade : 'N/A'}</p>
                         </div>
                         <div>
-                            <p className="label">Prerequisites: </p>
-                            {
-                                courseInfo.prerequisites.map((req, index) => {
-                                    var expandedReq = req.replace("|", " or ");
-                                    if (index != courseInfo.prerequisites.length - 1)
-                                        expandedReq += ',';
 
-                                    return <p className="info">{expandedReq}</p>
-                                })
-                            }
+                            {courseInfo.prerequisites && courseInfo.prerequisites.length > 0 ? (
+                                <div>
+                                    <p className="label">Prerequisites: </p>
+                                    <span className='info' />
+                                    {
+                                        courseInfo.prerequisites.map((req, index) => {
+                                            var expandedReq = req.replace("|", " or ");
+                                            if (index != courseInfo.prerequisites.length - 1)
+                                                expandedReq += ',';
+
+                                            return <p className="info">{expandedReq}</p>
+                                        })
+                                    }
+                                </div>) : <span />}
                         </div>
                         <div>
-                            <p className="label">Corequisites: </p>
-                            {
-                                courseInfo.corequisites.map((req, index) => {
-                                    var expandedReq = req.replace("|", " or ");
-                                    if (index != courseInfo.corequisites.length - 1)
-                                        expandedReq += ',';
+                            {courseInfo.corequisites && courseInfo.corequisites.length > 0 ? (
+                                <div>
+                                    <p className="label">Corequisites: </p>
+                                    <span className='info' />
+                                    {courseInfo.corequisites.map((req, index) => {
+                                        var expandedReq = req.replace("|", " or ");
+                                        if (index != courseInfo.corequisites.length - 1)
+                                            expandedReq += ',';
 
-                                    return <p className="info">{expandedReq}</p>
-                                })
-                            }
+                                        return <p className="info">{expandedReq}</p>
+                                    })
+                                    }
+                                </div>) : <span />}
                         </div>
                         <div>
                             {courseInfo.pathways ? (
                                 <div>
                                     <p className="label">Pathways: </p>
+                                    <span className='info' />
                                     {
                                         courseInfo.pathways.map((Pathway, index) => {
                                             var expandedPathway = Pathway + ": " + this.state.pathways[Pathway];
@@ -146,6 +155,22 @@ class CourseInfo extends Component {
                                         })
                                     }
                                 </div>
+                            ) : (<span />)}
+                        </div>
+                    </div>
+                    <div>
+                        <div className='inpageNav'>
+                            {this.props.isPathway ? (
+                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.isElective, true)}>
+                                    Change Pathway
+                                </button>
+                            ) : (<span />)}
+                        </div>
+                        <div className='inpageNav'>
+                            {this.props.isElective ? (
+                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.isElective, true)}>
+                                    Change Elective
+                                </button>
                             ) : (<span />)}
                         </div>
                     </div>

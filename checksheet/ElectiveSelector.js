@@ -12,6 +12,7 @@ const circleStyle = {
     borderTop: '0.5rem solid #3498db',
     borderRadius: '50%',
     boxSizing: 'border-box',
+    position: 'absolute',
     top: 0,
     left: 0
 }
@@ -28,7 +29,7 @@ const CourseTypes = [
     { value: 'Transfer', label: 'Transfer' }
 
 ]
-class PathwaySelector extends Component {
+class ElectiveSelector extends Component {
 
     constructor(props) {
         super(props);
@@ -36,30 +37,42 @@ class PathwaySelector extends Component {
         this.state = {
             courseType: null,
             courseId: null,
-            tempPathwayType: null,
-            pathwayType: null,
             courseOptions: [],
+            category: null,
             isLoaded: false
         }
     }
 
-    assignPathway = () => {
-        
-        this.setState({isLoaded: false})
+    componentDidMount() {
+        const courseId = this.props.electiveId;
+        console.log(this.props.categories)
+        for (const category of this.props.categories) {
+            if (courseId.toLowerCase().includes(category.toLowerCase())) {
+                this.setState({
+                    category: category
+                })
+                this.getElectiveOptions(category)
+                break;
+            }
+        }
+    }
+
+    assignElective = () => {
+        this.setState({ isLoaded: false })
         dbFetch.put({
-            endpoint: "/assignPathway",
+            endpoint: "/assignElective",
             data: {
                 userId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
                 courseType: this.state.courseType,
                 courseId: this.state.courseId,
-                pathwayType: this.state.pathwayType,
-                pathwayId: this.props.pathwayId,
-                semester: this.props.semNum
+                electiveId: this.props.electiveId,
+                semester: this.props.semNum,
             }
         })
             .then(() => {
-                this.setState({isLoaded: true})
+                this.setState({ isLoaded: true })
                 this.props.changeViewBack();
+
             })
             .catch((error) => {
                 alert("Failed to fetch course. " + error.message);
@@ -71,19 +84,17 @@ class PathwaySelector extends Component {
     }
 
 
-    getPathwayCourses() {
-
-        dbFetch.put({
-            endpoint: "/getCoursesByPathway",
-            data: {
-                pathways: [this.state.tempPathwayType]
-            }
+    getElectiveOptions = (category) => {
+        dbFetch.get({
+            endpoint: "/getElectiveOptions/" + category,
+            data: {}
         })
             .then(res => res.json())
             .then((data) => {
                 const cleanedCourses = []
 
                 data.forEach(course => {
+                    console.log(course);
                     cleanedCourses.push({
                         value: course.courseId,
                         label: course.courseId + " " + course.name + "  (" + course.credits + ")"
@@ -94,10 +105,69 @@ class PathwaySelector extends Component {
                     courseOptions: cleanedCourses,
                 })
             })
-            .then(() => this.setState({
-                pathwayType: this.state.tempPathwayType
-            }))
             .catch((error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+    }
+
+
+    fetchXXXOptions = async () => {
+
+        this.setState({ isLoaded: false })
+        await dbFetch.get({
+            endpoint: "/autocompleteCoursePrefix",
+            data: {
+                category: "CS",
+                number: "3"
+            }
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                if(data.length == 0)
+                    alert("No more course options available!")
+
+                this.setState({ courseOptions: data })
+                return
+            })
+            .catch((error) => {
+                console.error("Failed to autocomple course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+
+        await dbFetch.get({
+            endpoint: "/autocompleteCoursePrefix",
+            data: {
+                category: "CS",
+                number: "4"
+            }
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+
+                const currOptions = this.state.courseOptions;
+
+                data.forEach(course => {
+                    currOptions.push(course)
+                })
+
+                this.setState({
+                    isLoaded: true,
+                    courseOptions: currOptions
+                })
+
+            })
+            .catch((error) => {
+                console.error("Failed to autocomple course. " + error.message);
                 this.setState({
                     isLoaded: true,
                     error
@@ -108,50 +178,32 @@ class PathwaySelector extends Component {
 
     render() {
 
-
-        const cleanPathways = (inputValue) => {
-
-
-            const cleanedPathways = [];
-            for (var pathway in this.props.pathways) {
-                if (pathway.toLowerCase().includes(inputValue.toLowerCase()) || this.props.pathways[pathway].toLowerCase().includes(inputValue.toLowerCase()) || inputValue === '' || !inputValue) {
-                    cleanedPathways.push({
-                        value: pathway,
-                        label: pathway + ": " + this.props.pathways[pathway]
-                    })
-                }
-            }
-
-            return cleanedPathways;
-        }
-
-
-        const handlePathwayChange = (e) => {
-
-            this.setState({
-                tempPathwayType: e.value
-            })
-
-            if (!e || !e.value)
-                return
-
-            this.getPathwayCourses()
-
-
-        }
-
         const getCourseTypes = () => {
             return CourseTypes;
         }
         const getCourseOptions = () => {
-            return this.state.courseOptions;
+
+            if (!this.props.xxxElective)
+                return this.state.courseOptions;
+
+            this.fetchXXXOptions()
+                .then(() => {
+                    return this.state.courseOptions;
+                })
+                .catch(error => {
+                    alert(error)
+                })
         }
 
         const cleanApOptions = (inputValue) => {
             const cleanedOptions = []
 
+            if(this.props.apOptions.length == 0)
+                alert("No more ap classes available to use!")
+
             this.props.apOptions.forEach((equivalent) => {
                 if (!equivalent.used)
+
                     cleanedOptions.push({
                         value: equivalent.equivalentId.toString(),
                         label: equivalent.apName + ' (' + equivalent.apScore + ') => ' + equivalent.vtCourseId + '-' + equivalent.vtCourseName
@@ -203,6 +255,8 @@ class PathwaySelector extends Component {
 
 
         return (
+
+
             <div>
                 { this.state.isLoaded ? (
                     <div>
@@ -217,20 +271,12 @@ class PathwaySelector extends Component {
                 <h2 className="title">Course Info</h2>
                 <div >
                     <div> <label style={{ fontSize: 15 }}>Type of class:</label></div>
-                    <div> <SearchBar multiSelect={false} options={getCourseTypes} handleChange={(e) => this.setState({ pathwayType: null, courseId: null, courseType: e.value })} /> </div>
+                    <div> <SearchBar multiSelect={false} options={getCourseTypes} handleChange={(e) => this.setState({ courseId: null, courseType: e.value })} /> </div>
                     <br></br>
-
-                    {this.state.courseType ? (
-                        <div>
-                            <div> <label style={{ fontSize: 15 }}>Pathway Type:</label></div>
-                            <div> <SearchBar multiSelect={false} options={cleanPathways} handleChange={handlePathwayChange} /> </div>
-                            <br></br>
-                        </div>
-                    ) : <span />}
 
                     {this.state.courseType === 'Regular' ? (
                         <div>
-                            {this.state.pathwayType ? (
+                            {this.state.category ? (
                                 <div>
                                     <div> <label style={{ fontSize: 15 }}>Course:</label></div>
                                     <div> <SearchBar options={getCourseOptions} handleChange={(e) => this.setState({ courseId: e.value })} /> </div>
@@ -265,10 +311,10 @@ class PathwaySelector extends Component {
 
                 </div>
                 <div style={{ marginBottom: 200 }}>
-                    {this.state.courseId && this.state.pathwayType ? (
+                    {this.state.courseId && this.state.category ? (
                         <div className='inpageNav'>
-                            <button id='mainbtn' onClick={() => this.assignPathway()}>
-                                Assign Pathway
+                            <button id='mainbtn' onClick={() => this.assignElective()}>
+                                Assign Elective
                         </button>
                         </div>
                     ) : <span />}
@@ -279,4 +325,4 @@ class PathwaySelector extends Component {
 
 }
 
-export default PathwaySelector;
+export default ElectiveSelector;

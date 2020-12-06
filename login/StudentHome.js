@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
 import fire from './config/Fire';
 import CheckSheet from '../checksheet/Checksheet'
-import Chat from '../utilities/Chat'
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
 import NavBar from '../utilities/NavBar'
+import Requests from "../requests/Requests";
+import MentorHome from "./MentorHome";
 
 const circleStyle = {
     display: 'block',
@@ -65,7 +66,7 @@ class StudentHome extends Component {
 
     render() {
         const { error, isLoaded, userData } = this.state;
-        const { firstName, lastName } = userData
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -84,7 +85,8 @@ class StudentHome extends Component {
                         </div>
                     ) : (
                         <div>
-                            <Chat/>
+                            <NavBar current="myprofile" />
+                            <MentorHome/>
                         </div>
                     )}
                 </div>

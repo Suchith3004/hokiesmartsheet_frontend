@@ -2,12 +2,11 @@ import React from "react";
 import styled from 'styled-components';
 import Task from './Class'
 import { Droppable } from "react-beautiful-dnd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+    background-color: ${props => (props.isDraggingOver ? 'white' : 'white')};
     flex-grow: 1;
     width: 400px;
     min-height: 100px;
@@ -35,7 +34,7 @@ export default class Column extends React.Component {
     }
 
     render(){
-
+        
         const height = (this.props.height) * 30 + 200
         return (
             <div class='semester' height={height}>
@@ -49,7 +48,7 @@ export default class Column extends React.Component {
                         >
                             {
                                 this.state.displayedCourses.map((course, index) => {
-                                    return <Task key={index} task={course} index={index} semNum={this.props.semNum} courseClick={this.props.courseClick}/>
+                                    return <Task key={index} task={course} index={index} semNum={this.props.semNum} courseClick={this.props.courseClick} alertCompleteHandler={this.props.alertCompleteHandler}/>
                                 })
                             }
                             {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}

@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
-import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
 import List from 'react-list-select';
-import NavBar from "../utilities/NavBar";
-import fire from "../login/config/Fire";
 import SentRequestsItem from "./SentRequestsItem";
 
+
 const Container = styled.div`
-    display: flex;
-    margin:0 auto;
-`;
-
-const Container2 = styled.div`
-    width : 40%;
-    margin : 20px;
-`;
-
-const Container3 = styled.div`
-    margin : 40px;
+    margin-left : 25%;
+    margin-right : 25%;
+    margin-top : 5%;
+    background-color:white;
+    padding-top : 25px;
+    padding-right : 3%;
+    padding-bottom : 25px;
+    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
+    border-radius: 15px;
 `;
 
 class SentRequestsList extends Component {
@@ -27,39 +23,163 @@ class SentRequestsList extends Component {
             isLoaded: false,
             error: null,
             userData: null,
-            requestsR : [],
+            pendingR : [],
+            acceptedR : [],
+            deniedR : [],
+            viewType: "pending",
         }
     }
 
     componentDidMount() {
-                this.setState({
-                    isLoaded: true,
-                    userData: this.props.userData,
-                    requestsR: this.props.userData.mentorRequests.map((item) => {
-                        return (
-                            <SentRequestsItem
-                                uid = {item.userId}
-                            >
-                            </SentRequestsItem>
-                        );
-                    }),
-                });
+
+        let req =  Object.keys(this.props.userData.mentorRequests)
+        let pending = []
+        let accepted = []
+        let denyed = []
+
+
+
+        for(let i = 0; i < req.length; i++){
+            if (this.props.userData.mentorRequests[req[i]] === "SENT"){
+                pending.push(req[i]);
+            }else if (this.props.userData.mentorRequests[req[i]] === "ACCEPTED"){
+                accepted.push(req[i])
+            }else{
+                denyed.push(req[i])
+            }
+        }
+
+        this.setState({
+            isLoaded: true,
+            userData: this.props.userData,
+            pendingR:
+                pending.map(function(key) {
+                    return (
+                        <SentRequestsItem
+                            uid = {key}
+                        >
+                        </SentRequestsItem>
+                    );
+                }),
+            acceptedR:
+                accepted.map(function(key) {
+                    return (
+                        <SentRequestsItem
+                            uid = {key}
+                        >
+                        </SentRequestsItem>
+                    );
+                }),
+            deniedR:
+                denyed.map(function(key) {
+                    return (
+                        <SentRequestsItem
+                            uid = {key}
+                        >
+                        </SentRequestsItem>
+                    );
+                }),
+        });
     }
 
 
     render() {
         return (
             <div>
-                <NavBar current="mentorSearch" />
-                <Container>
-                    <Container2>
-                        <List
-                            items={ this.state.requestsR}
-                        />
-                    </Container2>
-                </Container>
+
+                <div className="inpageNav">
+                    <button id="firstbtn" onClick={() => this.setState({viewType: "pending"})}
+                            className={this.state.viewType === "pending" ? "active" : ''}>Pending
+                    </button>
+                    <button onClick={() => this.setState({viewType: "accepted"})}
+                            className={this.state.viewType === "accepted" ? "active" : ''}>Accepted
+                    </button>
+                    <button id="lastbtn" onClick={() => this.setState({viewType: "denied"})}
+                            className={this.state.viewType === "denied" ? "active" : ''}>Denied
+                    </button>
+                </div>
+
+                {this.state.viewType === 'pending' ? (
+                    <div>
+                        {this.state.pendingR.length === 0 ? (
+                            <div>
+                                <Container>
+                                    <h1
+                                        style = {{paddingBottom : 15}}
+                                    > Pending Requests</h1>
+                                    <h3
+                                        style = {{paddingBottom : 15}}
+                                    >You Have No Pending Mentor Requests</h3>
+                                </Container>
+                            </div>
+                        ) : (
+                            <div>
+                                <Container>
+                                    <h1 style = {{paddingBottom : 15}}
+                                    > Pending Requests</h1>
+                                    <List
+                                        items={this.state.pendingR}
+                                    />
+                                </Container>
+                            </div>
+                        )}
+                    </div>
+                ) : <span />}
+
+                {this.state.viewType === 'accepted' ? (
+                    <div>
+                        {this.state.acceptedR.length === 0 ? (
+                            <div>
+                                <Container>
+                                    <h1
+                                        style = {{paddingBottom : 15}}
+                                    > Accepted Requests</h1>
+                                    <h3
+                                        style = {{paddingBottom : 15}}
+                                    >You Have No Accepted Mentor Requests</h3>
+                                </Container>
+                            </div>
+                        ) : (
+                            <div>
+                                <Container>
+                                    <h1 style = {{paddingBottom : 15}}
+                                    > Accepted Requests</h1>
+                                    <List
+                                        items={this.state.acceptedR}
+                                    />
+                                </Container>
+                            </div>
+                        )}
+                    </div>
+                ) : <span />}
+                {this.state.viewType === 'denied' ? (
+                    <div>
+                        {this.state.deniedR.length === 0 ? (
+                            <div>
+                                <Container>
+                                    <h1
+                                        style = {{paddingBottom : 15}}
+                                    > Denyed Requests</h1>
+                                    <h3
+                                        style = {{paddingBottom : 15}}
+                                    >You Have No Denied Mentor Requests</h3>
+                                </Container>
+                            </div>
+                        ) : (
+                            <div>
+                                <Container>
+                                    <h1 style = {{paddingBottom : 15}}
+                                    > Denied Requests</h1>
+                                    <List
+                                        items={this.state.deniedR}
+                                    />
+                                </Container>
+                            </div>
+                        )}
+                    </div>
+                ) : <span />}
             </div>
-        );
+        )
     }
 
 }

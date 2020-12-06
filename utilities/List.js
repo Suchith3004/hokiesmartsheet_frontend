@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 class List extends Component {
 
     render() {
+        var key = 0
         const elements = this.props.elements;
         return (
 
@@ -10,13 +11,15 @@ class List extends Component {
                 {
                     this.props.handleClick ? (
                         elements.map(elem => {
-                            return <li id={this.props.double ? '' : 'single'}
-                                onClick={() => { this.props.handleClick(elem) }}
+                            key += 1;
+                            return <li key={key} id={this.props.double ? '' : 'single'}
+                                onClick={() => { this.props.handleClick(elem, this.props.optionalList) }}
                             >{this.props.getListElem(elem)}</li>
                         })
                     ) : (
                             elements.map(elem => {
-                                return <li id={this.props.double ? '' : 'single'}>
+                                key += 1;
+                                return <li key={key} id={this.props.double ? '' : 'single'}>
                                     {this.props.getListElem(elem)}
                                 </li>
                             })

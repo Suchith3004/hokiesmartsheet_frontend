@@ -20,6 +20,7 @@ const circleStyle = {
     borderTop: '0.5rem solid #3498db',
     borderRadius: '50%',
     boxSizing: 'border-box',
+    position: 'absolute',
     top: 0,
     left: 0
 }
@@ -31,7 +32,7 @@ const spinTransition = {
 }
 
 
-export default class Table extends React.Component {
+export default class SharedChecksheet extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,33 +50,9 @@ export default class Table extends React.Component {
         };
     }
 
-    updateUserChecksheet = () => {
-        console.log("called")
-        dbFetch.get({
-            endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
-            data: {}
-        })
-            .then(response => response.json())
-            .then((data) => {
-                this.setState({
-                    isLoaded: true,
-                    userData: data
-                });
-                console.log("GOT HERE FIRST")
-            })
-            .catch((error) => {
-                console.error("Failed to fetch course. " + error.message);
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            });
-    }
 
     componentDidMount() {
         this.calculateSemHeight();
-        // this.setState({isLoaded: false})
-        // this.updateUserChecksheet();
 
         dbFetch.get({
             endpoint: "/getAllPathways",
@@ -84,7 +61,7 @@ export default class Table extends React.Component {
             .then(response => response.json())
             .then((data) => {
                 this.setState({
-                    isLoaded: true,
+                    isLoaded: !this.props.isMentor,
                     pathways: data
                 });
             })
@@ -95,7 +72,31 @@ export default class Table extends React.Component {
                     error
                 });
             });
-        
+
+        if (this.props.isMentor) {
+            dbFetch.get({
+                endpoint: "/sharedChecksheet" ,
+                data: {
+                    mentorId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+                    menteeId: this.props.menteeId
+                }
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    this.setState({
+                        isLoaded: true,
+                        userData: data
+                    });
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch course. " + error.message);
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                });
+        }
+
     }
 
     calculateSemHeight = () => {
@@ -125,91 +126,23 @@ export default class Table extends React.Component {
     };
 
     onDragEnd = result => {
-        let classHandles = ReactDOM.findDOMNode(this).getElementsByClassName('classHandleText');
-        for (let elem of classHandles) {
-            elem.style.color = "inherit";
-        }
-        const { destination, source, draggableId } = result;
 
-        if (!destination || !source || !destination.droppableId || !source.droppableId || !draggableId)
-            return
-
-        if ((destination.droppableId === source.droppableId && destination.index === source.index) || !destination) {
-            return;
-        }
-
-        const fromSem = parseInt(source.droppableId.split(" ")[1]);
-        const toSem = parseInt(destination.droppableId.split(' ')[1]);
-
-        if (destination.droppableId === source.droppableId) {
-            return;
-        }
-
-        this.setState({isLoaded: false})
-        dbFetch.put({
-            endpoint: "/moveClass",
-            data: {
-                userId: this.props.userData.userId,
-                courseId: draggableId,
-                toSem: toSem,
-                fromSem: fromSem,
-                toIndex: destination.index
-            }
-        })
-            .then(response => response.json())
-            .then((data) => {
-                if (!(data.prerequisites && data.corequisites && !data.dependents)) {
-                    alert('Prerequisites not met: ' + data.preReqsNotMet + '\nCorequisites not met: ' + data.coReqsNotMet + '\nDependents: ' + data.dependentCourses)
-                    this.setState({
-                        isLoaded: true
-                    })
-                }
-                else {
-                    this.setState({
-                        userData: data.userData,
-                        isLoaded: true
-                    })
-                }
-            })
-            .catch((error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            });
     };
 
-    changeCompletionStatus = (courseId, semNum) => {
-        const semester = this.state.userData.semesters[semNum];
+    handleCourseClick = (courseId, semNum, isPathway, isElective) => {
 
-        semester.semesterCourses.forEach((course, index) => {
-            if (courseId === course.courseId) {
-                semester.semesterCourses[index].completed = false;
-                const userSheet = this.state.userData;
-                userSheet.semesters[semNum] = semester;
-                this.setState({
-                    userData: userSheet
-                })
-            }
-        })
-    }
-
-
-    handleCourseClick = (courseId, semNum, isPathway, isElective, fromCourseInfo) => {
-
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
         this.updateUserChecksheet();
 
         var viewType = 'course-info'
-        if (courseId.includes("Pathway") || (isPathway && fromCourseInfo)) {
-            viewType = 'pathway-selector'
+        if (courseId.includes("Pathway")) {
+            return
         }
-        if (courseId.includes("Elective") || (isElective && fromCourseInfo)) {
-            viewType = 'elective-selector'
+        if (courseId.includes("Elective")) {
+            return
         }
         if (courseId.includes("XXX")) {
-            this.setState({ xxxElective: true})
-            viewType = 'elective-selector'
+            return
         }
 
 
@@ -225,33 +158,11 @@ export default class Table extends React.Component {
 
     changeViewType = (newView) => {
 
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
         this.updateUserChecksheet()
-        
+
         this.setState({ viewType: newView })
 
-    }
-
-
-    handleCourseClick = (courseId, semNum) => {
-
-        var viewType = 'course-info'
-        if (courseId.includes("Pathway")) {
-            viewType = 'Pathway'
-        }
-        if (courseId.includes("Elective")) {
-            viewType = 'Elective'
-        }
-        if (courseId.includes("XXX")) {
-            viewType = 'XXXElective'
-        }
-
-
-        this.setState({
-            currCourse: courseId,
-            viewType: viewType,
-            semNum: semNum
-        })
     }
 
 
@@ -295,7 +206,7 @@ export default class Table extends React.Component {
                                 const column = sem;
                                 const tasks = sem.semesterCourses;
                                 const name = "Semester " + sem.semNum;
-                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} semNum={sem.semNum} courseClick={this.handleCourseClick} alertCompleteHandler={this.changeCompletionStatus} />
+                                return <Column key={index} name={name} column={column} tasks={tasks} height={this.state.maxHeight} semNum={sem.semNum} courseClick={this.handleCourseClick} alertCompleteHandler={null} />
                             })}
                         </div>
                     </DragDropContext>
@@ -322,19 +233,8 @@ export default class Table extends React.Component {
                     </div>
                 ) : <span />}
 
-                {this.state.viewType === 'pathway-selector' ? (
-                    <div style={{ marginBottom: 100 }}>
-                        <PathwaySelector pathwayId={this.state.currCourse} semNum={this.state.semNum} pathways={this.state.pathways} changeViewBack={() => this.changeViewType("checksheet")} apOptions={this.state.userData.apEquivalents} transferOptions={this.state.userData.transferCourses} />
-                    </div>
-                ) : <span />}
 
-                {this.state.viewType === 'elective-selector' ? (
-                    <div style={{ marginBottom: 100 }}>
-                        <ElectiveSelector electiveId={this.state.currCourse} semNum={this.state.semNum} pathways={this.state.pathways} changeViewBack={() => this.changeViewType("checksheet")} apOptions={this.state.userData.apEquivalents} transferOptions={this.state.userData.transferCourses} categories={this.state.categories} xxxElective={this.state.xxxElective}/>
-                    </div>
-                ) : <span />}
 
-                
             </div>
 
 

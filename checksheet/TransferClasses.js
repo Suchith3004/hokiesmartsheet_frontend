@@ -8,10 +8,11 @@ export default class TransferClasses extends React.Component {
 
     classItem(transferCourse) {
         return <div className="transfer-item">
+            <input type="checkbox" checked={transferCourse.used} />
+
             <p>{transferCourse.courseId}</p>
             <p>{transferCourse.name}</p>
             <p id="credits">{transferCourse.credits}</p>
-
             {transferCourse.elective ? (
                 <p id="elective-icon">E</p>) : (
                     <span />
