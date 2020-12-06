@@ -4,6 +4,8 @@ import fire from "../login/config/Fire";
 
 import { Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons, deleteMessages } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import dbFetch from '../api/dbFetch'
+
 
 import './override.css'
 
@@ -36,14 +38,16 @@ class Chat extends Component {
 
         console.log(`New message incoming! ${newMessage}`);
 
-        let currentUser = fire.auth().currentUser;
+        let currentUserId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
 
-        let displayName = currentUser.firstName ? currentUser.firstName : "unknown";
+        let displayName = currentUserId;
+
+        //let displayName = this.state.userData.firstName + " " + this.state.userData.lastName;
 
         console.log("setting ref");
         firedb.collection(collectionName).add({
                 name: displayName,
-                id: currentUser.uid,
+                id: currentUserId,
                 message: newMessage,
                 created: Date.now(),
                 invisible: false
@@ -81,6 +85,8 @@ class Chat extends Component {
                 return;
             }
 
+            let localUserId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
+
             var usertitle;
 
             if (this.props.location.data.isUsersMentor) {
@@ -98,17 +104,19 @@ class Chat extends Component {
 
             console.log(this.props.location.data);
 
-            let localId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
-
             let superCollection;
 
             if (this.props.location.data.isUsersMentor) {
-                superCollection = "chats/" + this.props.location.data.userId + "---" + localId + "/";
+                console.log("I am the student");
+                superCollection = "chats/" + this.props.location.data.userId + "---" + localUserId + "/";
             } else {
-                superCollection = "chats/" + localId + "---" + this.props.location.data.userId + "/";
+                console.log("I am the mentor");
+                superCollection = "chats/" + localUserId + "---" + this.props.location.data.userId + "/";
             }
 
             collectionName = superCollection + "messages";
+
+            console.log("collection name = ", collectionName);
 
             console.log("determining if chat exists")
 

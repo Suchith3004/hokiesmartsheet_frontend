@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
 import fire from "../login/config/Fire";
-import Logo from '../utilities/logo_transparent_2.png';
+import Logo from '../utilities/output-onlinepngtools.png';
 import Button from "@material-ui/core/Button";
 import { motion } from 'framer-motion'
 

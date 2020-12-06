@@ -56,6 +56,7 @@ class RecievedRequestsItem extends Component {
             isLoaded: false,
             error: null,
             userData: {},
+            buttonDisable : false,
         }
     }
 
@@ -82,6 +83,7 @@ class RecievedRequestsItem extends Component {
     }
 
     respondToRequest(resp){
+
         let mentorUid = fire.auth().currentUser.uid;
         let menteeUid = this.props.uid;
 
@@ -101,12 +103,16 @@ class RecievedRequestsItem extends Component {
                     submitted: false
                 });
             });
+
+        this.setState({
+            buttonDisable: true,
+        });
     }
 
 
     render() {
         const { isLoaded } = this.state;
-         if (!isLoaded) {
+        if (!isLoaded) {
             return <div>
                 <motion.span
                     style={circleStyle}
@@ -119,11 +125,11 @@ class RecievedRequestsItem extends Component {
             return (
                 <Container>
                     <FieldsContainer1>
-                            <img
-                                src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
-                                alt="new"
-                                style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 5 }}
-                            />
+                        <img
+                            src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                            alt="new"
+                            style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 5 }}
+                        />
                     </FieldsContainer1>
                     <FieldsContainer2>
                         <h2
@@ -134,14 +140,18 @@ class RecievedRequestsItem extends Component {
                             this.respondToRequest(true)
                             alert('Request Accepted')
                         }}
-                                variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
+                                variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}
+                                disabled={this.state.buttonDisable}
+                        >
                             Accept
                         </Button>
                         <Button onClick={() => {
                             this.respondToRequest(false)
                             alert('Request Denied')
                         }}
-                                variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
+                                variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}
+                                disabled={this.state.buttonDisable}
+                        >
                             Deny
                         </Button>
                     </FieldsContainer2>
