@@ -20,6 +20,7 @@ import SentRequestsList from "./requests/SentRequestsList";
 import MentorHome from "./login/MentorHome";
 import About from "./login/About";
 import { motion } from 'framer-motion'
+import MentorAdd from "./login/AddMentor"
 
 const circleStyle = {
   display: 'block',
@@ -113,6 +114,7 @@ class App extends Component {
               <Route path="/mentorsearch" component={MentorList} />
               <Route path="/about" component={About} />
               <Route path="/singleChat/" component={SingleChatPage} />
+              <Route path="/addMentor/" component={MentorAdd} />
             </Switch>
           </Router>
         </div>

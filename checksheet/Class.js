@@ -84,7 +84,7 @@ export default class Task extends React.Component {
                         className="classHandleText"
                     >
 
-                        <input type="checkbox" checked={this.state.completed} onClick={() => {this.props.alertCompleteHandler(this.props.task.courseId, this.props.semNum)}} onChange={() => { this.changeCompleteStatus() }} />
+                        <input type="checkbox" checked={this.state.completed} onClick={() => {this.props.alertCompleteHandler ? this.props.alertCompleteHandler(this.props.task.courseId, this.props.semNum) : null}} onChange={() => { this.changeCompleteStatus() }} />
                         <div onClick={() => { this.props.courseClick(this.props.task.courseId, this.props.semNum, this.props.task.pathway, this.props.task.elective) }}>
                             <p id="courseId">{courseId}</p>
                             <p>{courseName}</p>

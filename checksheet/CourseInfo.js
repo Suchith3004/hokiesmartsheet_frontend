@@ -161,14 +161,14 @@ class CourseInfo extends Component {
                     <div>
                         <div className='inpageNav'>
                             {this.props.isPathway ? (
-                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.elective, true)}>
+                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.isElective, true)}>
                                     Change Pathway
                                 </button>
                             ) : (<span />)}
                         </div>
                         <div className='inpageNav'>
                             {this.props.isElective ? (
-                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.elective, true)}>
+                                <button id='mainbtn' onClick={() => this.props.handleClick(this.props.courseId, null, this.props.isPathway, this.props.isElective, true)}>
                                     Change Elective
                                 </button>
                             ) : (<span />)}

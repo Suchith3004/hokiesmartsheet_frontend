@@ -31,7 +31,8 @@ class ClassesReg extends Component {
             chosenMajor: null,
             schools: [],
             chosenSchool: null,
-            gradYear: 2022
+            gradYear: 2022,
+            gradSeason: "Fall"
         }
 
     }
@@ -114,6 +115,7 @@ class ClassesReg extends Component {
                     major: this.state.chosenMajor,
                     school: this.state.chosenSchool,
                     gradYear: this.state.gradYear,
+                    gradSeason: this.state.gradSeason,
                     apEquivalents: this.state.chosenAP,
                     transferCredits: this.state.chosenCourses
                 }
@@ -309,6 +311,28 @@ class ClassesReg extends Component {
             });
         }
 
+        const cleanGradSeason = (inputValue) => {
+            const seasons = ["Fall", "Spring"]
+            const seasonOptions = []
+
+            seasons.forEach(season => {
+                seasonOptions.push({
+                    value: season,
+                    label: season
+                })
+            })
+
+            return yearOptions;
+        }
+
+        const handleChosenSeason = (e) => {
+            if (!e)
+                return
+
+            this.setState({
+                gradSeason: e.value
+            });
+        }
 
         return (
 
@@ -327,8 +351,9 @@ class ClassesReg extends Component {
                         <br></br>
 
                         <br></br>
-                        <div> <label style={{ fontSize: 15 }}>Graduation Year:</label></div>
-                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>
+                        <div> <label style={{ fontSize: 15 }}>Graduation Year & Season:</label></div>
+                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>                        
+                        <div> <SearchBar multiSelect={false} options={cleanGradSeason} handleChange={handleChosenSeason} /> </div>
                         <br></br>
 
                         <br></br>

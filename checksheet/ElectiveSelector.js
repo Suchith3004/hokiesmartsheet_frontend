@@ -12,6 +12,7 @@ const circleStyle = {
     borderTop: '0.5rem solid #3498db',
     borderRadius: '50%',
     boxSizing: 'border-box',
+    position: 'absolute',
     top: 0,
     left: 0
 }
@@ -127,9 +128,11 @@ class ElectiveSelector extends Component {
                 return response.json()
             })
             .then((data) => {
+                if(data.length == 0)
+                    alert("No more course options available!")
 
                 this.setState({ courseOptions: data })
-
+                return
             })
             .catch((error) => {
                 console.error("Failed to autocomple course. " + error.message);
@@ -183,7 +186,7 @@ class ElectiveSelector extends Component {
             if (!this.props.xxxElective)
                 return this.state.courseOptions;
 
-            await this.fetchXXXOptions()
+            this.fetchXXXOptions()
                 .then(() => {
                     return this.state.courseOptions;
                 })
@@ -194,6 +197,9 @@ class ElectiveSelector extends Component {
 
         const cleanApOptions = (inputValue) => {
             const cleanedOptions = []
+
+            if(this.props.apOptions.length == 0)
+                alert("No more ap classes available to use!")
 
             this.props.apOptions.forEach((equivalent) => {
                 if (!equivalent.used)

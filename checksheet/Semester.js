@@ -34,7 +34,7 @@ export default class Column extends React.Component {
     }
 
     render(){
-
+        
         const height = (this.props.height) * 30 + 200
         return (
             <div class='semester' height={height}>
