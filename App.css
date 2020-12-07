@@ -422,6 +422,12 @@ div {
     font-family: var(--raleway-font);
 }
 
+.registration {
+    padding: 0px 10px;
+    margin: 0px 5px;
+    font-family: var(--raleway-font);
+}
+
 .label {
     font-weight: bold;
     float: left;
