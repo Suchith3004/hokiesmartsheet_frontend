@@ -1,21 +1,6 @@
 import React from "react";
 import List from '../utilities/List'
 
-
-// const pathwaysList = {
-//     "1a": "Advanced/Applied Discourse",
-//     "1f": "Foundational Discourse",
-//     "2": "Critical Thinking in the Humanities",
-//     "3": "Reasoning in the Social Sciences",
-//     "4": "Reasoning in the Natural Sciences",
-//     "5a": "Advanced/Applied Quantitative and Computational Thinking",
-//     "5f": "Foundational Quantitative and Computational Thinking",
-//     "6a": "Critique and Practice in the Arts",
-//     "6d": "Critique and Practice in Design",
-//     "7": "Critical Analysis of Equity and Identity in the United States",
-// }
-
-
 export default class Pathways extends React.Component {
     constructor(props) {
         super(props);

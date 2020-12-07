@@ -2,27 +2,19 @@ import React, { Component } from 'react';
 import dbFetch from "../api/dbFetch";
 import styled from "styled-components";
 import fire from "../login/config/Fire";
-import Logo from '../utilities/logo_transparent_2.png';
+import Logo from '../utilities/output-onlinepngtools.png';
 import Button from "@material-ui/core/Button";
 import { motion } from 'framer-motion'
 
 
-const Container = styled.div`
-    background-color:white;
-    width:600px;
-    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
-`;
-
 const FieldsContainer = styled.div`
     background-color:white;
-    width:400px;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
     text-align: center;
-    width: 50%;
-    margin: 0 auto;
     padding : 5px;
-    margin-top: 7px;
+    margin-top: 10px;
+    margin: 4px 40px;
 `;
 const circleStyle = {
     display: 'block',
@@ -49,62 +41,75 @@ class MentorProfile extends Component {
             isLoaded: false,
             error: "",
             mentor: {},
+            buttonIsDisabled: false,
         }
-    }
-    componentDidUpdate(prevProps) {
-        dbFetch.get({
-            endpoint: "/getUser/" + this.props.uid,
-            data: {}
-        })
-            .then(response => response.json())
-            .then((data) => {
-                this.setState({
-                    isLoaded: true,
-                    mentor: data,
-                });
-
-            })
-            .catch((error) => {
-                console.error("Failed to fetch mentor data: " + error.message);
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            });
     }
 
     componentDidMount() {
-        dbFetch.get({
-            endpoint: "/getUser/" + this.props.uid,
-            data: {}
-        })
-            .then(response => response.json())
-            .then((data) => {
-                this.setState({
-                    isLoaded: true,
-                    mentor: data,
-                });
-
-
+        if (this.props.uid != null) {
+            dbFetch.get({
+                endpoint: "/getUser/" + this.props.uid,
+                data: {}
             })
-            .catch((error) => {
-                console.error("Failed to fetch mentor data: " + error.message);
-                this.setState({
-                    isLoaded: true,
-                    error
+                .then(response => response.json())
+                .then((data) => {
+                    this.setState({
+                        isLoaded: true,
+                        mentor: data,
+                        buttonIsDisabled: false,
+                    });
+
+
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch mentor data: " + error.message);
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
                 });
+        } else {
+            this.setState({
+                isLoaded: true,
             });
+        }
     }
 
-    sendMentorRequest(){
+    componentDidUpdate(prevProps) {
+        if (this.props.uid != prevProps.uid) {
+            dbFetch.get({
+                endpoint: "/getUser/" + this.props.uid,
+                data: {}
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    this.setState({
+                        isLoaded: true,
+                        mentor: data,
+                        buttonIsDisabled: false,
+                    });
+
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch mentor data: " + error.message);
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                });
+        }
+    }
+
+
+    sendMentorRequest() {
         let menteeUid = fire.auth().currentUser.uid;
         let mentorUid = this.props.uid;
-        
+
         dbFetch.post({
             endpoint: "/sendMenteeRequest",
             data: {
-                menteeId : menteeUid,
-                mentorId : mentorUid,
+                menteeId: menteeUid,
+                mentorId: mentorUid,
             }
         })
             .then((response) => response.json())
@@ -115,26 +120,32 @@ class MentorProfile extends Component {
                     submitted: false
                 });
             });
-    }
-    getString(array){
 
-        if(array != null) {
+        this.setState({
+            buttonIsDisabled: true
+        })
+
+        this.props.deleteMentor(mentorUid)
+    }
+
+    getString(array) {
+        if (array != null) {
             let i;
             let string = "";
-             for (i = 0; i< array.length; i++){
-                 if(i === array.length-1){
-                     string = string + array[i]
-                 }else {
-                     string = string + array[i] + ", "
-                 }
-             }
+            for (i = 0; i < array.length; i++) {
+                if (i === array.length - 1) {
+                    string = string + array[i]
+                } else {
+                    string = string + array[i] + ", "
+                }
+            }
             return string
         }
         return "Not Rendered"
     }
 
     render() {
-        const {isLoaded } = this.state;
+        const { isLoaded } = this.state;
         if (!isLoaded) {
             return <div>
                 <motion.span
@@ -143,55 +154,59 @@ class MentorProfile extends Component {
                     transition={spinTransition}
                 />
             </div>
+        } else if (this.state.mentor.firstName == undefined) {
+            return (<h2
+                style={{ paddingBottom: 20, paddingRight: 200, paddingLeft: 200, }}
+            > Select A Mentor</h2>)
         }
         else {
             return (
-                <div>
-                    <Container>
-                        <img
-                            src={Logo}
-                            alt="new"
-                            style={{ borderRadius: 200, height: 120, width: 170, boxShadow: 10, padding : 5, }}
-                        />
-                        <FieldsContainer>
-                            <h2>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"Occupation: "}</h5>
-                            <h5>{this.state.mentor.occupation}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"Organization: "}</h5>
-                            <h5>{this.state.mentor.organizationName}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"Alumni: "}</h5>
-                            <h5>{this.state.mentor.alumni}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"My Bio: "}</h5>
-                            <h5>{this.state.mentor.description}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"My Interests: "}</h5>
-                            <h5>{this.getString(this.state.mentor.mentorInterests)}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"My Hobbies: "}</h5>
-                            <h5>{this.getString(this.state.mentor.hobbies)}</h5>
-                        </FieldsContainer>
-                        <FieldsContainer>
-                            <h5>{"My Qualities: "}</h5>
-                            <h5>{this.getString(this.state.mentor.qualities)}</h5>
-                        </FieldsContainer>
-                        <Button onClick={() => {
-                            this.sendMentorRequest()
-                            alert('Your Request Has Been Submitted')
-                        }}
-                                variant="contained" size = "large" style={{margin : "20px", backgroundColor: "#1fd127"}}>
-                            Request Help
+                <div className='mentor-details'>
+                    <img
+                        src={Logo}
+                        alt="new"
+                        style={{ borderRadius: 200, height: 120, width: 170, boxShadow: 10, padding: 5, }}
+                    />
+                    <FieldsContainer>
+                        <h2>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Occupation: "}</h5>
+                        <h5>{this.state.mentor.occupation}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Organization: "}</h5>
+                        <h5>{this.state.mentor.organizationName}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"Alumni: "}</h5>
+                        <h5>{this.state.mentor.alumni}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Bio: "}</h5>
+                        <h5>{this.state.mentor.description}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Interests: "}</h5>
+                        <h5>{this.getString(this.state.mentor.mentorInterests)}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Hobbies: "}</h5>
+                        <h5>{this.getString(this.state.mentor.hobbies)}</h5>
+                    </FieldsContainer>
+                    <FieldsContainer>
+                        <h5>{"My Qualities: "}</h5>
+                        <h5>{this.getString(this.state.mentor.qualities)}</h5>
+                    </FieldsContainer>
+                    <Button onClick={() => {
+                        this.sendMentorRequest()
+                        alert('Your Request Has Been Submitted')
+                    }}
+                        variant="contained" size="large" style={{ margin: "20px", backgroundColor: "#1fd127" }}
+                        disabled={this.state.buttonIsDisabled}
+                    >
+                        Request Help
                         </Button>
-                    </Container>
                 </div>
             );
         }

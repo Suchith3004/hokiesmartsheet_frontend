@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import MentorRegister from './MentorRegister'
+import NavBar from "../utilities/NavBar";
+import dbFetch from '../api/dbFetch'
 
 export default class AddMentor extends Component {
 
@@ -55,10 +57,16 @@ export default class AddMentor extends Component {
 
         }
 
-    
-        return <div className="info">
-            <MentorRegister student={true} submitted={this.state.submitted} submit={handleSubmit} />
-            <button onClick={() => this.setState({submitted: true})} style={{ marginLeft: '25px', marginBottom: '20px', borderRadius: 10, boxShadow: 10 }} className="btn btn-success">Complete Registration as Mentor</button>
+
+        return <div>
+            <NavBar current="mentorSearch" />
+            <div className="info">
+                <br />
+                <br />
+                <MentorRegister student={true} submitted={this.state.submitted} submit={handleSubmit} />
+                <br />
+                <button onClick={() => this.setState({ submitted: true })} style={{ marginLeft: '25px', marginBottom: '20px', borderRadius: 10, boxShadow: 10 }} className="btn btn-success">Complete Registration as Mentor</button>
+            </div>
         </div>
     }
 

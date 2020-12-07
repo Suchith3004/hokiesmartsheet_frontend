@@ -9,11 +9,6 @@ padding:20px;
   border:0;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
 `;
-const roundedInput = styled.div`
-padding:10px;
-border-radius:10px;
-border-top-left-radius: 25px;
-`;
 
 class ClassesReg extends Component {
 
@@ -322,7 +317,7 @@ class ClassesReg extends Component {
                 })
             })
 
-            return yearOptions;
+            return seasonOptions;
         }
 
         const handleChosenSeason = (e) => {
@@ -339,7 +334,7 @@ class ClassesReg extends Component {
             <form action="/">
                 <u><label style={{ fontSize: 30, padding: -40 }}><u>Student Registration</u></label></u>
                 <Container>
-                    <div className="info">
+                    <div className="registration">
 
                         <div> <label style={{ fontSize: 15 }}>School:</label></div>
                         <div> <SearchBar multiSelect={false} options={cleanSchools} handleChange={handleChosenSchool} /> </div>
@@ -352,7 +347,8 @@ class ClassesReg extends Component {
 
                         <br></br>
                         <div> <label style={{ fontSize: 15 }}>Graduation Year & Season:</label></div>
-                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>                        
+                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>  
+                        <br/>                      
                         <div> <SearchBar multiSelect={false} options={cleanGradSeason} handleChange={handleChosenSeason} /> </div>
                         <br></br>
 
@@ -362,7 +358,7 @@ class ClassesReg extends Component {
                         <br></br>
 
                         <br></br>
-                        <div> <label style={{ fontSize: 15 }}>Select all the  courses you have completed:</label></div>
+                        <div> <label style={{ fontSize: 15 }}>Select all the transfer courses you have completed:</label></div>
                         <div> <SearchBar multiSelect={true} options={cleanCourses} handleChange={handleChosenCourses} /> </div>
                         <br></br>
 
