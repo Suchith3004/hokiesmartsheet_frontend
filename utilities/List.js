@@ -6,7 +6,6 @@ class List extends Component {
         var key = 0
         const elements = this.props.elements;
         return (
-
             <ul class={this.props.double ? "double-list" : "single-list"}>
                 {
                     this.props.handleClick ? (

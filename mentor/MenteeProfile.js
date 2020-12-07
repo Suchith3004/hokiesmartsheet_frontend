@@ -6,6 +6,7 @@ import Logo from '../utilities/output-onlinepngtools.png';
 import Button from "@material-ui/core/Button";
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom';
+import SharedChecksheet from '../chat/SharedChecksheet'
 
 
 const FieldsContainer = styled.div`
@@ -42,7 +43,9 @@ function OpenChatButton(props) {
     function handleClick() {
         history.push({
             pathname: "/singleChat",
-            data: props.otherUserData
+            userData: {},
+            isMentor: true,
+            menteeId: this.props.otherUserData.userId
         });
     }
 
@@ -51,19 +54,19 @@ function OpenChatButton(props) {
     );
 }
 
-function OpenChecksheetShare(props) {
+function OpenSharedChecksheet(props) {
 
     let history = useHistory();
 
     function handleClick() {
         history.push({
-            pathname: "/checksheetShare",
+            pathname: "/sharedChecksheet",
             mentorId: props.otherUserData.userId
         });
     }
 
     return (
-        <button onClick={handleClick} style={{ display: 'inline-block', margin: '25px' }} className="btn btn-success">Share Checksheet</button>
+        <button onClick={handleClick} style={{ display: 'inline-block', margin: '25px' }} className="btn btn-success">View Shared Checksheet</button>
     );
 }
 
@@ -76,6 +79,7 @@ class MentorProfile extends Component {
             error: "",
             mentor: {},
             buttonIsDisabled: false,
+            viewType: 'details'
         }
     }
 
@@ -134,35 +138,6 @@ class MentorProfile extends Component {
         }
     }
 
-
-    sendMentorRequest() {
-        let menteeUid = fire.auth().currentUser.uid;
-        let mentorUid = this.props.uid;
-
-        dbFetch.post({
-            endpoint: "/sendMenteeRequest",
-            data: {
-                menteeId: menteeUid,
-                mentorId: mentorUid,
-            }
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                this.setState({
-                    isLoaded: true,
-                    error,
-                    submitted: false
-                });
-            });
-
-        this.setState({
-            buttonIsDisabled: true
-        })
-
-        if (this.props.deleteMentor)
-            this.props.deleteMentor(mentorUid)
-    }
-
     getString(array) {
         if (array != null) {
             let i;
@@ -195,63 +170,34 @@ class MentorProfile extends Component {
             > Select A Mentor</h2>)
         }
         else {
-            return (
-                <div className='mentor-details'>
-                    <img
-                        src={Logo}
-                        alt="new"
-                        style={{ borderRadius: 200, height: 120, width: 170, boxShadow: 10, padding: 5, }}
-                    />
-                    <FieldsContainer>
-                        <h2>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"Occupation: "}</h5>
-                        <h5>{this.state.mentor.occupation}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"Organization: "}</h5>
-                        <h5>{this.state.mentor.organizationName}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"Alumni: "}</h5>
-                        <h5>{this.state.mentor.alumni}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"My Bio: "}</h5>
-                        <h5>{this.state.mentor.description}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"My Interests: "}</h5>
-                        <h5>{this.getString(this.state.mentor.mentorInterests)}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"My Hobbies: "}</h5>
-                        <h5>{this.getString(this.state.mentor.hobbies)}</h5>
-                    </FieldsContainer>
-                    <FieldsContainer>
-                        <h5>{"My Qualities: "}</h5>
-                        <h5>{this.getString(this.state.mentor.qualities)}</h5>
-                    </FieldsContainer>
+            return <div className='mentor-details'>
+                <img
+                    src={Logo}
+                    alt="new"
+                    style={{ borderRadius: 200, height: 120, width: 170, boxShadow: 10, padding: 5, }}
+                />
+                <FieldsContainer>
+                    <h2>{this.state.mentor.firstName + " " + this.state.mentor.lastName}</h2>
+                </FieldsContainer>
+                <FieldsContainer>
+                    <h5>{"Major: "}</h5>
+                    <h5>{this.state.mentor.major}</h5>
+                </FieldsContainer>
+                <FieldsContainer>
+                    <h5>{"School: "}</h5>
+                    <h5>{this.state.mentor.school}</h5>
+                </FieldsContainer>
+                <FieldsContainer>
+                    <h5>{"Graduation: "}</h5>
+                    <h5>{this.state.mentor.gradYear}</h5>
+                </FieldsContainer>
 
-                    {this.props.deleteMentor ? (
-                        <Button onClick={() => {
-                            this.sendMentorRequest()
-                            alert('Your Request Has Been Submitted')
-                        }}
-                            variant="contained" size="large" style={{ margin: "20px", backgroundColor: "#1fd127" }}
-                            disabled={this.state.buttonIsDisabled}
-                        >
-                            Request Help
-                        </Button>
-                    ) : (
-                            <div className='mentor-details'>
-                                <OpenChatButton otherUserData={this.props.otherUserData} />
-                                <OpenChecksheetShare otherUserData={this.props.otherUserData} />
-                            </div>
-                        )}
+                <div className='mentor-details'>
+                    <OpenChatButton otherUserData={this.props.otherUserData} />
+                    <OpenSharedChecksheet otherUserData={this.props.otherUserData} />
                 </div>
-            );
+            </div>
+
         }
 
     }

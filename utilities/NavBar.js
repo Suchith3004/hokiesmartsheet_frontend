@@ -80,7 +80,7 @@ export default class NavBar extends Component {
             return (
 
                 <div class="topnav" id="myTopnav" >
-                    <img src={Logo} height="50" width="60" style={{ float: "left", paddingTop: 5 }}alt='website logo' />
+                    <img src={Logo} height="45" width="60" style={{ float: "left", paddingTop: 5 }}alt='website logo' />
                     <a class="hokiesheetname" >HokieSmartSheet</a>
 
                     {userData.semesters ? (

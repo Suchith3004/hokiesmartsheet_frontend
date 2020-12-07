@@ -5,6 +5,7 @@ import fire from "../login/config/Fire";
 import { Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons, deleteMessages } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import dbFetch from '../api/dbFetch'
+import NavBar from "../utilities/NavBar";
 
 
 import './override.css'
@@ -46,16 +47,16 @@ class Chat extends Component {
 
         console.log("setting ref");
         firedb.collection(collectionName).add({
-                name: displayName,
-                id: currentUserId,
-                message: newMessage,
-                created: Date.now(),
-                invisible: false
-            })
-            .then(function() {
+            name: displayName,
+            id: currentUserId,
+            message: newMessage,
+            created: Date.now(),
+            invisible: false
+        })
+            .then(function () {
                 console.log("Document successfully written!");
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error("Error writing document: ", error);
             });
 
@@ -67,7 +68,7 @@ class Chat extends Component {
         toggleWidget();
 
         if (data === "Back") {
-            this.props.history.goBack();
+            this.props.history.push('/chat');
         }
 
         // setQuickButtons(buttons.filter(button => button.value !== data));
@@ -77,105 +78,104 @@ class Chat extends Component {
         toggleWidget();
     }
 
-    getCustomLauncher = (handleToggle) => < span / >
+    getCustomLauncher = (handleToggle) => < span />
 
-        componentDidMount() {
+    componentDidMount() {
 
-            if (!this.props.location.data) {
-                return;
-            }
-
-            let localUserId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
-
-            var usertitle;
-
-            if (this.props.location.data.isUsersMentor) {
-                usertitle = this.props.location.data.occupation + " at " + this.props.location.data.organizationName;
-            } else {
-                usertitle = this.props.location.data.major + " class of " + this.props.location.data.year;
-            }
-
-            this.setState({ subtitle: usertitle });
-
-            toggleWidget();
-            deleteMessages();
-            setQuickButtons([{ label: "Exit", value: "Back" }]);
-
-
-            console.log(this.props.location.data);
-
-            let superCollection;
-
-            if (this.props.location.data.isUsersMentor) {
-                console.log("I am the student");
-                superCollection = "chats/" + this.props.location.data.userId + "---" + localUserId + "/";
-            } else {
-                console.log("I am the mentor");
-                superCollection = "chats/" + localUserId + "---" + this.props.location.data.userId + "/";
-            }
-
-            collectionName = superCollection + "messages";
-
-            console.log("collection name = ", collectionName);
-
-            console.log("determining if chat exists")
-
-
-            const query = firedb.doc(superCollection);
-            if (query.empty) {
-                console.log("chat doesn't exist");
-            }
-
-            console.log("getting first messages");
-
-            firedb.collection(collectionName)
-                .onSnapshot(function(querySnapshot) {
-                    console.log("snapshot set");
-                    let orderedMessages = [];
-                    querySnapshot.docChanges().forEach(function(change) {
-                        let doc = change.doc;
-                        let messageData = doc.data();
-                        console.log("new doc ", doc.id, " =>", doc.data());
-                        if (messageData.id && messageData.message && messageData.created && !doc.metadata.hasPendingWrites && !doc.invisible) {
-                            orderedMessages.push(messageData);
-                        }
-                    });
-                    orderedMessages.sort(function(a, b) { return a.created - b.created });
-                    orderedMessages.forEach(function(m) {
-                        if (m.id === fire.auth().currentUser.uid) {
-                            addUserMessage(m.message);
-                        } else {
-                            addResponseMessage(m.message);
-                        }
-                    });
-                });
-
+        if (!this.props.location.data) {
+            return;
         }
 
+        let localUserId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
+
+        var usertitle;
+
+        if (this.props.location.data.isUsersMentor) {
+            usertitle = this.props.location.data.occupation + " at " + this.props.location.data.organizationName;
+        } else {
+            usertitle = this.props.location.data.major + " class of " + this.props.location.data.year;
+        }
+
+        this.setState({ subtitle: usertitle });
+
+        toggleWidget();
+        deleteMessages();
+        setQuickButtons([{ label: "Exit", value: "Back" }]);
+
+
+        console.log(this.props.location.data);
+
+        let superCollection;
+
+        if (this.props.location.data.isUsersMentor) {
+            console.log("I am the student");
+            superCollection = "chats/" + this.props.location.data.userId + "---" + localUserId + "/";
+        } else {
+            console.log("I am the mentor");
+            superCollection = "chats/" + localUserId + "---" + this.props.location.data.userId + "/";
+        }
+
+        collectionName = superCollection + "messages";
+
+        console.log("collection name = ", collectionName);
+
+        console.log("determining if chat exists")
+
+
+        const query = firedb.doc(superCollection);
+        if (query.empty) {
+            console.log("chat doesn't exist");
+        }
+
+        console.log("getting first messages");
+
+        firedb.collection(collectionName)
+            .onSnapshot(function (querySnapshot) {
+                console.log("snapshot set");
+                let orderedMessages = [];
+                querySnapshot.docChanges().forEach(function (change) {
+                    let doc = change.doc;
+                    let messageData = doc.data();
+                    console.log("new doc ", doc.id, " =>", doc.data());
+                    if (messageData.id && messageData.message && messageData.created && !doc.metadata.hasPendingWrites && !doc.invisible) {
+                        orderedMessages.push(messageData);
+                    }
+                });
+                orderedMessages.sort(function (a, b) { return a.created - b.created });
+                orderedMessages.forEach(function (m) {
+                    if (m.id === fire.auth().currentUser.uid) {
+                        addUserMessage(m.message);
+                    } else {
+                        addResponseMessage(m.message);
+                    }
+                });
+            });
+
+    }
+
     render() {
-        return (
-            this.props.location.data ? (
+        return <div>
+            {this.props.location.data ? (
 
 
                 // <Container>
                 <
-                Widget handleNewUserMessage = { this.handleNewUserMessage }
-                handleQuickButtonClicked = { this.handleQuickButtonClicked }
-                launcher = { handleToggle => this.getCustomLauncher(handleToggle) }
-                title = { this.props.location.data.firstName + " " + this.props.location.data.lastName }
-                subtitle = { this.state.subtitle }
-                fullScreenMode = { true }
-                showCloseButton = { false }
+                    Widget handleNewUserMessage={this.handleNewUserMessage}
+                    handleQuickButtonClicked={this.handleQuickButtonClicked}
+                    launcher={handleToggle => this.getCustomLauncher(handleToggle)}
+                    title={this.props.location.data.firstName + " " + this.props.location.data.lastName}
+                    subtitle={this.state.subtitle}
+                    fullScreenMode={true}
+                    showCloseButton={false}
                 />
 
             ) : (
 
                 <
-                Redirect to = "/chat" / >
+                    Redirect to="/chat" />
 
-            )
-
-        );
+            )}
+        </div>
     }
 
 }
