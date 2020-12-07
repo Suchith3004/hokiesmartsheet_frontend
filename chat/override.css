@@ -1,5 +1,5 @@
 .rcw-conversation-container .rcw-header {
-    background-color: maroon;
+    background-color:#00aeba;
     border-radius: 10px 10px 0 0;
     color: #fff;
     display: -ms-flexbox;
@@ -40,7 +40,7 @@
 }
 
 .rcw-full-screen .rcw-close-button {
-    background-color: maroon;
+    background-color: #00aeba;
     border: 0;
     display: block;
     position: absolute;
@@ -65,7 +65,7 @@
         padding: 0 0 15px
     }
     .rcw-conversation-container .rcw-close-button {
-        background-color: maroon;
+        background-color: #00aeba;
         border: 0;
         display: block;
         position: absolute;
@@ -146,7 +146,7 @@
 }
 
 .rcw-snippet {
-    background-color: maroon;
+    background-color: #00aeba;
     border-radius: 10px;
     padding: 15px;
     max-width: 215px;
@@ -158,7 +158,7 @@
 }
 
 .rcw-snippet-details {
-    border-left: 2px solid maroon;
+    border-left: 2px solid #00aeba;
     margin-top: 5px;
     padding-left: 10px
 }
@@ -178,7 +178,7 @@
 }
 
 .quick-button:active {
-    background: maroon;
+    background: #00aeba;
     color: #212121
 }
 
@@ -193,7 +193,7 @@
 }
 
 .loader-container {
-    background-color: maroon;
+    background-color: #00aeba;
     border-radius: 10px;
     padding: 15px;
     max-width: 215px;
@@ -367,7 +367,7 @@
     position: fixed;
     top: -10px;
     right: -5px;
-    background-color: red;
+    background-color: #00aeba;
     color: #fff;
     width: 25px;
     height: 25px;

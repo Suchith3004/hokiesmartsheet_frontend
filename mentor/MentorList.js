@@ -6,7 +6,7 @@ import MentorProfile from "./MentorProfile";
 import NavBar from "../utilities/NavBar";
 import fire from "../login/config/Fire";
 import { motion } from "framer-motion";
-import { Link }  from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const circleStyle = {
     display: 'block',
@@ -71,7 +71,7 @@ class MentorList extends Component {
             });
 
         dbFetch.get({
-            endpoint: "/getUser/" +  (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+            endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
             data: {}
         })
             .then(response => response.json())

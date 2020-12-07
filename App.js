@@ -13,7 +13,7 @@ import {
 import StudentRegister from "./login/StudentRegister";
 import ChatPage from "./chat/ChatPage"
 import SingleChatPage from "./chat/SingleChatPage"
-// import Chat from "./chat/ChatPage"
+import Chat from "./chat/Chat"
 import MentorList from "./mentor/MentorList";
 import Requests from "./requests/Requests";
 import SentRequestsList from "./requests/SentRequestsList";
@@ -21,6 +21,8 @@ import MentorHome from "./login/MentorHome";
 import About from "./login/About";
 import { motion } from 'framer-motion'
 import MentorAdd from "./login/AddMentor"
+import SharedChecksheet from './chat/SharedChecksheet'
+import ChecksheetShare from './chat/ChecksheetShare'
 
 const circleStyle = {
   display: 'block',
@@ -109,12 +111,14 @@ class App extends Component {
               )} />
               <Route path="/editcourses" component={StudentRegister} />
               <Route path="/myprofile" component={MentorHome} />
-              <Route path="/chat" component={ChatPage} />
+              <Route path="/chat" component={Chat} />
               <Route path="/requests" component={Requests} />
               <Route path="/mentorsearch" component={MentorList} />
               <Route path="/about" component={About} />
               <Route path="/singleChat/" component={SingleChatPage} />
               <Route path="/addMentor/" component={MentorAdd} />
+              <Route path="/sharedChecksheet/" component={SharedChecksheet} />
+              <Route path="/checksheetShare/" component={ChecksheetShare} />
             </Switch>
           </Router>
         </div>

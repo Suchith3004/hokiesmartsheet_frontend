@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import Column from "./Semester";
+import Column from "../checksheet/Semester";
 import '@atlaskit/css-reset'
 import { DragDropContext } from "react-beautiful-dnd";
 import dbFetch from '../api/dbFetch'
 import { motion } from 'framer-motion'
-import ApClasses from './ApClasses'
-import TransferClasses from './TransferClasses'
-import CourseInfo from './CourseInfo'
-import PathwaySelector from './PathwaySelector'
-import ElectiveSelector from './ElectiveSelector'
-import Pathways from './Pathways'
+import ApClasses from '../checksheet/ApClasses'
+import TransferClasses from '../checksheet/TransferClasses'
+import CourseInfo from '../checksheet/CourseInfo'
+import PathwaySelector from '../checksheet/PathwaySelector'
+import ElectiveSelector from '../checksheet/ElectiveSelector'
+import Pathways from '../checksheet/Pathways'
+import NavBar from "../utilities/NavBar";
 
 const circleStyle = {
     display: 'block',
@@ -38,7 +39,7 @@ export default class SharedChecksheet extends React.Component {
         this.state = {
             error: null,
             isLoaded: true,
-            userData: this.props.userData,
+            userData: this.props.userData ? this.props.userData : this.props.location.userData,
             maxHeight: 0,
             pathways: {},
             categories: ["Capstone", "Natural Science", "Professional Writing", "Communications", "CS Theory", "Statistics"],
@@ -61,7 +62,7 @@ export default class SharedChecksheet extends React.Component {
             .then(response => response.json())
             .then((data) => {
                 this.setState({
-                    isLoaded: !this.props.isMentor,
+                    isLoaded: this.props.isMentor ? !this.props.isMentor : !this.props.location.isMentor,
                     pathways: data
                 });
             })
@@ -73,12 +74,13 @@ export default class SharedChecksheet extends React.Component {
                 });
             });
 
-        if (this.props.isMentor) {
-            dbFetch.get({
-                endpoint: "/sharedChecksheet" ,
+
+        if (this.props.isMentor || this.props.location.isMentor) {
+            dbFetch.put({
+                endpoint: "/getSharedChecksheet",
                 data: {
                     mentorId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
-                    menteeId: this.props.menteeId
+                    menteeId: this.props.menteeId ? this.props.menteeId : this.props.location.menteeId
                 }
             })
                 .then(response => response.json())
@@ -100,7 +102,7 @@ export default class SharedChecksheet extends React.Component {
     }
 
     calculateSemHeight = () => {
-        if (!this.state.userData)
+        if (!this.state.userData.semesters)
             return
 
         var maxHeight = 0;
@@ -159,8 +161,6 @@ export default class SharedChecksheet extends React.Component {
     changeViewType = (newView) => {
 
         this.setState({ isLoading: false })
-        this.updateUserChecksheet()
-
         this.setState({ viewType: newView })
 
     }
@@ -175,23 +175,27 @@ export default class SharedChecksheet extends React.Component {
         }
         else if (!isLoaded) {
             return <div>
-                <motion.span
+                {/* <motion.span
                     style={circleStyle}
                     animate={{ rotate: 360 }}
                     transition={spinTransition}
-                />
+                /> */}
             </div>
         }
         else {
 
             return <div>
-                <div class="inpageNav">
-                    <button id="firstbtn" onClick={() => this.changeViewType("checksheet")} class={this.state.viewType === "checksheet" ? "active" : ''}>Checksheet</button>
-                    <button onClick={() => this.changeViewType("ap-transfer")} class={this.state.viewType === "ap-transfer" ? "active" : ''}>AP/Transfer</button>
-                    <button id="lastbtn" onClick={() => this.changeViewType("pathway")} class={this.state.viewType === "pathway" ? "active" : ''}>Pathways</button>
-                </div>
+                {this.props.isMentor || this.props.location.isMentor? (
+                    <NavBar current="chat" />
+                ) : (
+                        <div class="inpageNav">
+                            <button id="firstbtn" onClick={() => this.changeViewType("checksheet")} class={this.state.viewType === "checksheet" ? "active" : ''}>Checksheet</button>
+                            <button onClick={() => this.changeViewType("ap-transfer")} class={this.state.viewType === "ap-transfer" ? "active" : ''}>AP/Transfer</button>
+                            <button id="lastbtn" onClick={() => this.changeViewType("pathway")} class={this.state.viewType === "pathway" ? "active" : ''}>Pathways</button>
+                        </div>
+                    )}
 
-                {this.state.viewType === 'checksheet' ? (
+                {this.state.viewType === 'checksheet' && this.state.userData.semesters ? (
                     <DragDropContext
                         onDragStart={this.onDragStart}
                         onDragUpdate={this.onDragUpdate}
