@@ -19,6 +19,8 @@ import {
 
 var collectionName;
 
+var unsubscribe;
+
 const firedb = fire.firestore();
 
 class Chat extends Component {
@@ -60,6 +62,12 @@ class Chat extends Component {
             });
 
     };
+
+    componentWillUnmount() {
+        if (unsubscribe) {
+            unsubscribe();
+        }
+    }
 
     handleQuickButtonClicked = data => {
         console.log(data);
@@ -128,7 +136,7 @@ class Chat extends Component {
 
             console.log("getting first messages");
 
-            firedb.collection(collectionName)
+            unsubscribe = firedb.collection(collectionName)
                 .onSnapshot(function(querySnapshot) {
                     console.log("snapshot set");
                     let orderedMessages = [];
