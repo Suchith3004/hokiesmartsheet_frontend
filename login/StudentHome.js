@@ -50,6 +50,7 @@ class StudentHome extends Component {
         })
             .then(response => response.json())
             .then((data) => {
+                console.log(data);
                 this.setState({
                     isLoaded: true,
                     userData: data

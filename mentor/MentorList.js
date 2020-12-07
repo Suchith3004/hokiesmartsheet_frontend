@@ -5,7 +5,8 @@ import List from '../utilities/List'
 import MentorProfile from "./MentorProfile";
 import NavBar from "../utilities/NavBar";
 import fire from "../login/config/Fire";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { Link }  from "react-router-dom";
 
 const circleStyle = {
     display: 'block',
@@ -32,50 +33,8 @@ const spinTransition = {
 
 const Container = styled.div`
     display: flex;
-    margin:0 auto;
-`;
-
-const Container2 = styled.div`
-    background-color:white;
-    width : 40%;
-    margin : 20px;
-    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
-    border-radius: 15px;
-    padding-right : 40px;
-    padding-bottom : 15px;
-`;
-
-const Container3 = styled.div`
-    background-color:white;
-    margin : 40px;
-    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
-    border-radius: 15px;
-    padding : 40px;
-`;
-
-const Cont = styled.div`
-    width:100%;
-    height: 150px;
-    box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
-    border-radius: 15px;
-`;
-
-const FieldsContainer1 = styled.div`
-  background-color:white;
-  width: 35%;
-  height: 150px;
-  float: left;
-  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-   border-radius: 15px;
-`;
-
-const FieldsContainer2 = styled.div`
-    background-color:white;
-    height: 150px;
-    margin-top: 10px;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-    padding : 10px;
-    border-radius: 15px;
+    margin-bottom: 100px;
+    margin-top: 20px
 `;
 
 class MentorList extends Component {
@@ -86,6 +45,7 @@ class MentorList extends Component {
             error: null,
             mentors: [],
             selected: null,
+            userData: {}
         }
     }
 
@@ -110,85 +70,113 @@ class MentorList extends Component {
                 });
             });
 
+        dbFetch.get({
+            endpoint: "/getUser/" +  (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+            data: {}
+        })
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    isLoaded: true,
+                    userData: data
+                });
+
+            })
+            .catch((error) => {
+                console.error("Failed to fetch mentor data: " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+
     }
 
-    deleteMentor = (uid) =>{
+    deleteMentor = (uid) => {
         this.setState({
-            mentors: this.state.mentors.filter(function( obj ) {
+            mentors: this.state.mentors.filter(function (obj) {
                 return obj.userId !== uid;
             }),
         })
     }
 
-    handleClick = (e) =>{
+    handleClick = (e) => {
         this.setState({
             selected: e.userId,
         })
     }
 
     mentorItem(mentor) {
-        return <Cont>
-            <FieldsContainer1>
+        return <div className="mentor-list-item">
+            <div id="mentor-img">
                 <img
                     src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
                     alt="new"
-                    style={{ borderRadius: 200, height: 150, width: 150, boxShadow: 10, padding: 5 }}
                 />
-            </FieldsContainer1>
-            <FieldsContainer2>
+            </div>
+            <div className='mentor-short-info'>
                 <h2
-                    style={{margin: 5}}>{mentor.name }</h2>
+                    style={{ margin: 5 }}>{mentor.name}</h2>
                 <h5>{"Occupation: " + mentor.occupation}</h5>
                 <h5>{"Organization: " + mentor.organizationName}</h5>
-            </FieldsContainer2>
-        </Cont>
+            </div>
+        </div>
     }
 
     render() {
-        const {error, isLoaded} = this.state;
+        const { error, isLoaded } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <motion.span
                 style={circleStyle}
-                animate={{rotate: 360}}
+                animate={{ rotate: 360 }}
                 transition={spinTransition}
             />
         } else {
             return (
                 <div>
-                    <NavBar current="mentorSearch"/>
+                    <NavBar current="mentorSearch" />
                     <Container>
-                        <Container2>
+                        <div className="mentor-list">
+
                             <h1
-                                style={{padding: 15}}
+                                style={{ padding: 15, color: 'white' }}
                             > Available Mentors</h1>
 
                             {this.state.mentors.length > 0 ? (
                                 <List elements={this.state.mentors}
-                                      key = {0}
-                                      getListElem={this.mentorItem}
-                                      handleClick={this.handleClick}/>
+                                    key={0}
+                                    getListElem={this.mentorItem}
+                                    handleClick={this.handleClick} />
                             ) : (
-                                <h3
-                                    style={{paddingBottom: 15}}
-                                >There Are No Available Mentors</h3>
-                            )}
+                                    <h3
+                                        style={{ paddingBottom: 15 }}
+                                    >There Are No Available Mentors</h3>
+                                )}
 
-                        </Container2>
-                        {this.state.mentors.length > 0 || this.state.selected!= null ? (
-                            <Container3>
+                            <div className='add-mentor'>
+                                {!this.state.userData.isMentor ? (
+                                    <Link to='/addMentor'>
+                                        Become a Mentor
+                                    </Link>
+                                ) : (<span />)}
+                            </div>
+                        </div>
+
+                        {this.state.mentors.length > 0 || this.state.selected != null ? (
+                            <div className='search-page-details'>
                                 <h1
-                                    style={{paddingBottom: 20}}
+                                    style={{ paddingBottom: 20 }}
                                 > Selected Mentor</h1>
                                 <MentorProfile
-                                    uid= {this.state.selected}
-                                    deleteMentor = {this.deleteMentor}
+                                    uid={this.state.selected}
+                                    deleteMentor={this.deleteMentor}
                                 />
-                            </Container3>
+                            </div>
                         ) : (
-                            <span/>
-                        )}
+                                <span />
+                            )}
                     </Container>
                 </div>
             );

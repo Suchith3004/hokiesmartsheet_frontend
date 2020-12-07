@@ -9,11 +9,6 @@ padding:20px;
   border:0;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
 `;
-const roundedInput = styled.div`
-padding:10px;
-border-radius:10px;
-border-top-left-radius: 25px;
-`;
 
 class ClassesReg extends Component {
 
