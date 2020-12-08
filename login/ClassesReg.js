@@ -9,11 +9,6 @@ padding:20px;
   border:0;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
 `;
-const roundedInput = styled.div`
-padding:10px;
-border-radius:10px;
-border-top-left-radius: 25px;
-`;
 
 class ClassesReg extends Component {
 
@@ -31,7 +26,8 @@ class ClassesReg extends Component {
             chosenMajor: null,
             schools: [],
             chosenSchool: null,
-            gradYear: 2022
+            gradYear: 2022,
+            gradSeason: "Fall"
         }
 
     }
@@ -114,6 +110,7 @@ class ClassesReg extends Component {
                     major: this.state.chosenMajor,
                     school: this.state.chosenSchool,
                     gradYear: this.state.gradYear,
+                    gradSeason: this.state.gradSeason,
                     apEquivalents: this.state.chosenAP,
                     transferCredits: this.state.chosenCourses
                 }
@@ -122,7 +119,7 @@ class ClassesReg extends Component {
         }
     }
 
-    async autocompleteCourse(coursePrefix) {
+    autocompleteCourse = async(coursePrefix) => {
 
         const abbreviation = coursePrefix.split(' ')[0].split('-');
         const query = {
@@ -256,11 +253,13 @@ class ClassesReg extends Component {
         }
 
         const cleanCourses = async (inputValue) => {
-            if (!this.state || !inputValue || inputValue === '') {
+            if (!this.state) {
                 return [];
             }
 
-            const options = await this.autocompleteCourse(inputValue);
+            var options;
+            if (inputValue && inputValue !== '')
+                options = await this.autocompleteCourse(inputValue);
 
             const cleanedCourses = [];
             this.state.courseOptions.forEach(course => {
@@ -274,11 +273,10 @@ class ClassesReg extends Component {
         }
 
         const handleChosenCourses = (e) => {
-            if (!e)
-                return
             const chosenCourses = [];
 
-            e.forEach(item => chosenCourses.push(item.value));
+            if (e)
+                e.forEach(item => chosenCourses.push(item.value));
 
             this.state.chosenCourses = chosenCourses;
         }
@@ -308,13 +306,35 @@ class ClassesReg extends Component {
             });
         }
 
+        const cleanGradSeason = (inputValue) => {
+            const seasons = ["Fall", "Spring"]
+            const seasonOptions = []
+
+            seasons.forEach(season => {
+                seasonOptions.push({
+                    value: season,
+                    label: season
+                })
+            })
+
+            return seasonOptions;
+        }
+
+        const handleChosenSeason = (e) => {
+            if (!e)
+                return
+
+            this.setState({
+                gradSeason: e.value
+            });
+        }
 
         return (
 
             <form action="/">
                 <u><label style={{ fontSize: 30, padding: -40 }}><u>Student Registration</u></label></u>
                 <Container>
-                    <div className="info">
+                    <div className="registration">
 
                         <div> <label style={{ fontSize: 15 }}>School:</label></div>
                         <div> <SearchBar multiSelect={false} options={cleanSchools} handleChange={handleChosenSchool} /> </div>
@@ -326,8 +346,10 @@ class ClassesReg extends Component {
                         <br></br>
 
                         <br></br>
-                        <div> <label style={{ fontSize: 15 }}>Graduation Year:</label></div>
-                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>
+                        <div> <label style={{ fontSize: 15 }}>Graduation Year & Season:</label></div>
+                        <div> <SearchBar multiSelect={false} options={cleanGradYear} handleChange={handleChosenGradYear} /> </div>  
+                        <br/>                      
+                        <div> <SearchBar multiSelect={false} options={cleanGradSeason} handleChange={handleChosenSeason} /> </div>
                         <br></br>
 
                         <br></br>
@@ -336,7 +358,7 @@ class ClassesReg extends Component {
                         <br></br>
 
                         <br></br>
-                        <div> <label style={{ fontSize: 15 }}>Select all the  courses you have completed:</label></div>
+                        <div> <label style={{ fontSize: 15 }}>Select all the transfer courses you have completed:</label></div>
                         <div> <SearchBar multiSelect={true} options={cleanCourses} handleChange={handleChosenCourses} /> </div>
                         <br></br>
 

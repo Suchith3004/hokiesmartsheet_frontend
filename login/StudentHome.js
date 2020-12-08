@@ -50,6 +50,7 @@ class StudentHome extends Component {
         })
             .then(response => response.json())
             .then((data) => {
+                console.log(data);
                 this.setState({
                     isLoaded: true,
                     userData: data
@@ -66,7 +67,7 @@ class StudentHome extends Component {
 
     render() {
         const { error, isLoaded, userData } = this.state;
-        const { firstName, lastName } = userData
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {

@@ -13,12 +13,33 @@ import {
 import StudentRegister from "./login/StudentRegister";
 import ChatPage from "./chat/ChatPage"
 import SingleChatPage from "./chat/SingleChatPage"
-// import Chat from "./chat/ChatPage"
+import Chat from "./chat/Chat"
 import MentorList from "./mentor/MentorList";
 import Requests from "./requests/Requests";
 import SentRequestsList from "./requests/SentRequestsList";
 import MentorHome from "./login/MentorHome";
 import About from "./login/About";
+import { motion } from 'framer-motion'
+import MentorAdd from "./login/AddMentor"
+import SharedChecksheet from './chat/SharedChecksheet'
+import ChecksheetShare from './chat/ChecksheetShare'
+
+const circleStyle = {
+  display: 'block',
+  width: '7rem',
+  height: '7rem',
+  border: '0.5rem solid #e9e9e9',
+  borderTop: '0.5rem solid #3498db',
+  borderRadius: '50%',
+  boxSizing: 'border-box',
+  margin: 'auto auto'
+}
+
+const spinTransition = {
+  loop: Infinity,
+  ease: "linear",
+  duration: 1,
+}
 
 
 class App extends Component {
@@ -26,6 +47,7 @@ class App extends Component {
     super();
     this.state = ({ //puts user in a state 
       user: null,
+      isLoaded: false
     });
     this.authListener = this.authListener.bind(this);
   }
@@ -37,55 +59,71 @@ class App extends Component {
   authListener() {
     fire.auth().onAuthStateChanged((user) => { //checks if user logged in 
       if (user) {
-        this.setState({ user });
+        this.setState({ user: user, isLoaded: true });
         localStorage.setItem('userId', user.uid);
       } else {
-        this.setState({ user: null });
+        this.setState({ user: null, isLoaded: true });
         localStorage.removeItem('userId');
       }
     });
+
   }
 
   render() {
-    return (
-      <div className="App">
-        <Router>
-          <Switch>
-            <Route exact path="/" render={() => (
-              this.state.user ? (
-                <Redirect to="/home" />
-              ) : (
-                  <Redirect to="/login" />
-                )
-            )} />
-            <Route path="/home" render={() => (
-              this.state.user ? (
+    if (!this.state.isLoaded) {
+      return (
+        <div>
+          <motion.span
+            style={circleStyle}
+            animate={{ rotate: 360 }}
+            transition={spinTransition}
+          />
+        </div>)
+    }
+    else {
+      return (
+        <div className="App">
+          <Router>
+            <Switch>
+              <Route exact path="/" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home" />
+                ) : (
+                    <Redirect to="/login" />
+                  )
+              )} />
+              <Route path="/home" render={() => (
+                this.state.user ? (
+                  <Home />
+                ) : (
+                    <Redirect to="/login" />
+                  )
+              )} />
+              <Route path="/createUser" render={() => (
                 <Home />
-              ) : (
-                  <Redirect to="/login" />
-                )
-            )} />
-            <Route path="/createUser" render={() => (
-              <Home />
-            )} />
-            <Route path="/login" render={() => (
-              this.state.user ? (
-                <Redirect to="/home" />
-              ) : (
-                  <Login />
-                )
-            )} />
-            <Route path="/editcourses" component={StudentRegister} />
-            <Route path="/myprofile" component={MentorHome} />
-            <Route path="/chat" component={ChatPage} />
-            <Route path="/requests" component={Requests} />
-            <Route path="/mentorsearch" component={MentorList} />
-            <Route path="/about" component={About} />
-            <Route path="/singleChat/" component={SingleChatPage} />
-          </Switch>
-        </Router>
-      </div>
-    );
+              )} />
+              <Route path="/login" render={() => (
+                this.state.user ? (
+                  <Redirect to="/home" />
+                ) : (
+                    <Login />
+                  )
+              )} />
+              <Route path="/editcourses" component={StudentRegister} />
+              <Route path="/myprofile" component={MentorHome} />
+              <Route path="/chat" component={Chat} />
+              <Route path="/requests" component={Requests} />
+              <Route path="/mentorsearch" component={MentorList} />
+              <Route path="/about" component={About} />
+              <Route path="/singleChat/" component={SingleChatPage} />
+              <Route path="/addMentor/" component={MentorAdd} />
+              <Route path="/sharedChecksheet/" component={SharedChecksheet} />
+              <Route path="/checksheetShare/" component={ChecksheetShare} />
+            </Switch>
+          </Router>
+        </div>
+      );
+    }
   }
 }
 

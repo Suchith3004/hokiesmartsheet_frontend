@@ -1,129 +1,218 @@
 import React, { Component } from 'react';
-
+import dbFetch from "../api/dbFetch";
+import styled from "styled-components";
+import List from '../utilities/List'
+import MentorProfile from "../mentor/MentorProfile";
+import MenteeProfile from "../mentor/MenteeProfile";
+import NavBar from "../utilities/NavBar";
 import fire from "../login/config/Fire";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-import {Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons} from 'react-chat-widget';
-import 'react-chat-widget/lib/styles.css';
+const circleStyle = {
+    display: 'block',
+    marginLeft: '100px',
+    marginRight: '100px',
+    width: '7rem',
+    height: '7rem',
+    border: '0.5rem solid #e9e9e9',
+    borderTop: '0.5rem solid #3498db',
+    borderRadius: '50%',
+    position: 'absolute',
+    boxSizing: 'border-box',
+    top: '50%',
+    left: '50%',
+    marginTop: '-50px',
+    marginLeft: '-50px',
+}
 
-var collectionName;
+const spinTransition = {
+    loop: Infinity,
+    ease: "linear",
+    duration: 1,
+}
 
-const firedb = fire.firestore();
+const Container = styled.div`
+    display: flex;
+    margin-bottom: 100px;
+    margin-top: 20px
+`;
 
-class Chat extends Component {
-
-    let 
-
+class MentorList extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             isLoaded: false,
             error: null,
-            userData: {}
+            connections: [],
+            selected: null,
+            userData: {},
+            viewType: 'mentors'
         }
     }
-    
-    handleNewUserMessage = newMessage => {
-
-        console.log(`New message incoming! ${newMessage}`);
-
-        let currentUser = fire.auth().currentUser;
-
-        let displayName = currentUser.firstName ? currentUser.firstName : "unknown";
-
-        console.log("setting ref");
-        firedb.collection(collectionName).add({
-            name: displayName,
-            id: currentUser.uid,
-            message: newMessage,
-            created: Date.now(),
-            invisible: false
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });    
-        
-    };
-    
-    handleQuickButtonClicked = data => {
-        console.log(data);
-        // setQuickButtons(buttons.filter(button => button.value !== data));
-    };
-    
-    handleChatButtonClicked() {
-        toggleWidget();
-    }
-
-    getCustomLauncher = (handleToggle) => <span />
 
     componentDidMount() {
+        dbFetch.post({
+            endpoint: "/getAllUserConnections/",
+            data: {
+                userId: (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)
+            }
+        })
+            .then(response => response.json())
+            .then((data) => {
 
-        // let localId = (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid);
+                this.setState({
+                    connections: data
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch all connections data: " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
 
-        // let superCollection;
+        dbFetch.get({
+            endpoint: "/getUser/" + (localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid),
+            data: {}
+        })
+            .then(response => response.json())
+            .then((data) => {
 
-        // if(this.props.otherUserData.isUsersMentor) {
-        //     superCollection = "chats/" + this.props.otherUserData.userId + "---" + localId + "/";
-        // }else {
-        //     superCollection = "chats/" + localId + "---" + this.props.otherUserData.userId + "/";
-        // }
+                console.log(data)
+                this.setState({
+                    isLoaded: true,
+                    userData: data,
+                    viewType: data.isMentor && !data.semesters ? "mentees" : 'mentors'
+                });
+            })
+            .catch((error) => {
+                console.error("Failed to fetch course. " + error.message);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            });
+    }
 
-        // collectionName = superCollection + "messages";
 
-        // console.log("determining if chat exists")
+    handleClick = (e) => {
+        this.setState({
+            selected: e,
+        })
+    }
 
-
-        // const query = firedb.doc(superCollection);
-        // if(query.empty) {
-        //     console.log("chat doesn't exist");
-        // }
-
-        // console.log("getting first messages");
-
-        // firedb.collection(collectionName)
-        // .onSnapshot(function(querySnapshot) {
-        //     console.log("snapshot set");
-        //     let orderedMessages = [];
-        //     querySnapshot.docChanges().forEach(function(change) {
-        //         let doc = change.doc;
-        //         let messageData = doc.data();
-        //         console.log("new doc ", doc.id, " =>", doc.data());
-        //         if(messageData.id && messageData.message && messageData.created && !doc.metadata.hasPendingWrites && !doc.invisible) {
-        //             orderedMessages.push(messageData);
-        //         }
-        //     });
-        //     orderedMessages.sort(function(a, b){return a.created - b.created});
-        //     orderedMessages.forEach(function(m){
-        //         if (m.id === fire.auth().currentUser.uid) {
-        //             addUserMessage(m.message);
-        //         }else {
-        //             addResponseMessage(m.message);
-        //         }
-        //     });
-        // });
-
+    mentorItem(mentor) {
+        return <div className="mentor-list-item">
+            <div id="mentor-img">
+                <img
+                    src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                    alt="new"
+                />
+            </div>
+            <div className='mentor-short-info'>
+                <h2 style={{ margin: 5 }}>{mentor.firstName + ' ' + mentor.lastName}</h2>
+                <h5>{"Occupation: " + mentor.occupation}</h5>
+                <h5>{"Organization: " + mentor.organizationName}</h5>
+            </div>
+        </div>
     }
 
     render() {
-        return (
-            // <Container>
+        const { error, isLoaded } = this.state;
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+            return <motion.span
+                style={circleStyle}
+                animate={{ rotate: 360 }}
+                transition={spinTransition}
+            />
+        } else {
 
-            <span />
+            const getFilteredConnections = () => {
 
-// {/* <Widget
-//         //   handleNewUserMessage={this.handleNewUserMessage}
-//         //   handleQuickButtonClicked={this.handleQuickButtonClicked}
-//         //   launcher={handleToggle => this.getCustomLauncher(handleToggle)}
-//         //   title={this.props.otherUserData.firstName + " " + this.props.otherUserData.lastName}
-//         //    subtitle={this.props.otherUserData.occupation + " at " + this.props.otherUserData.organizationName}
-//         /> */}
+                const mentors = []
+                const mentees = []
 
-        );
+                this.state.connections.forEach(user => {
+                    if (user.isUsersMentor)
+                        mentors.push(user)
+                    else
+                        mentees.push(user)
+                })
+
+
+                if (this.state.viewType === 'mentees') {
+                    return mentees
+                }
+                else {
+                    return mentors
+                }
+            }
+
+            return (
+                <div>
+                    <NavBar current="chat" />
+                    {this.state.userData.isMentor && this.state.userData.semesters ? (
+                        <div className="inpageNav">
+                            <button id="firstbtn" onClick={() => this.setState({ viewType: "mentees", selected: null })}
+                                className={this.state.viewType === "mentees" ? "active" : ''}>Mentees
+                            </button>
+                            <button id="lastbtn" onClick={() => this.setState({ viewType: "mentors", selected: null })}
+                                className={this.state.viewType === "mentors" ? "active" : ''}>Mentors
+                            </button>
+                        </div>
+                    ) : <span />}
+
+                    <Container>
+                        <div className="mentor-list">
+
+                            <h1
+                                style={{ padding: 15, color: 'white' }}
+                            > {this.state.viewType === 'mentees' ? 'Your Mentees' : 'Your Mentors'}</h1>
+
+                            {this.state.connections.length > 0 ? (
+                                <List elements={getFilteredConnections()}
+                                    key={0}
+                                    getListElem={this.mentorItem}
+                                    handleClick={this.handleClick} />
+                            ) : (
+                                    <div>
+                                        <h3
+                                            style={{ paddingBottom: 15 }}
+                                        >Your have no mentor connections</h3>
+                                        <br />
+                                        <Link to='/mentorsearch'>Search for a mentor</Link>
+                                    </div>
+                                )}
+                        </div>
+
+                        {this.state.connections.length > 0 || this.state.selected != null ? (
+                            <div className='search-page-details'>
+                                <h1
+                                    style={{ paddingBottom: 20 }}
+                                > {this.state.viewType === 'mentees' ? 'Selected Mentee' : 'Selected Mentor'}</h1>
+                                {!this.state.selected || this.state.selected.isUsersMentor? (
+
+                                    <MentorProfile
+                                        uid={this.state.selected ? this.state.selected.userId : null} otherUserData={this.state.selected}
+                                    />
+                                ) : (
+                                    <MenteeProfile
+                                        uid={this.state.selected ? this.state.selected.userId : null} otherUserData={this.state.selected}
+                                    />
+                                )}
+                            </div>
+                        ) : (
+                                <span />
+                            )}
+                    </Container>
+                </div>
+            );
+        }
     }
-
 }
 
-export default Chat;
+export default MentorList;

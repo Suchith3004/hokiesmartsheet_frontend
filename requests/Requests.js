@@ -4,7 +4,7 @@ import dbFetch from "../api/dbFetch";
 import fire from "../login/config/Fire";
 import RecievedRequestsList from "./RecievedRequestsList";
 import SentRequestsList from "./SentRequestsList";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 const circleStyle = {
     display: 'block',
@@ -36,6 +36,7 @@ class Requests extends Component {
             isLoaded: false,
             error: null,
             userData: null,
+            viewType: 'student'
         }
     }
 
@@ -47,9 +48,11 @@ class Requests extends Component {
         })
             .then(response => response.json())
             .then((data) => {
+
                 this.setState({
                     isLoaded: true,
-                    userData: data
+                    userData: data,
+                    viewType: data.isMentor ? 'mentor' : 'student'
                 });
             })
             .catch((error) => {
@@ -63,24 +66,36 @@ class Requests extends Component {
 
 
     render() {
-        const {error, isLoaded} = this.state;
+        const { error, isLoaded } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <motion.span
                 style={circleStyle}
-                animate={{rotate: 360}}
+                animate={{ rotate: 360 }}
                 transition={spinTransition}
             />
         } else {
             return (
                 <div>
-                    <NavBar current="requests"/>
-                    {this.state.userData.semesters ?(
-                        <SentRequestsList userData = {this.state.userData}/>
+                    <NavBar current="requests" />
+
+                    {this.state.userData.isMentor && this.state.userData.semesters ? (
+                        <div className="inpageNav">
+                            <button id="firstbtn" onClick={() => this.setState({ viewType: "mentor" })}
+                                className={this.state.viewType === "mentor" ? "active" : ''}>Mentor
+                            </button>
+                            <button id="lastbtn" onClick={() => this.setState({ viewType: "student" })}
+                                className={this.state.viewType === "student" ? "active" : ''}>Student
+                            </button>
+                        </div>
+                    ) : <span />}
+
+                    {this.state.viewType === 'student' ? (
+                        <SentRequestsList userData={this.state.userData} />
                     ) : (
-                        <RecievedRequestsList userData = {this.state.userData}/>
-                    )}
+                            <RecievedRequestsList userData={this.state.userData} />
+                        )}
                 </div>
             )
         };

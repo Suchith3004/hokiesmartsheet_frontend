@@ -131,7 +131,7 @@ class MentorRegister extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.submitted != prevProps.submitted && this.props.submitted != false) {
-            if (!this.state.chosenOrganization || !this.state.alumni || !this.state.description) {
+            if (!this.state.chosenOrganization || !this.state.description) {
                 console.log()
                 this.props.submit(null, 'mentor');
             }

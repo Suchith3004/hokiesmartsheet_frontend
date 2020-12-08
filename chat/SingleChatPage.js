@@ -5,6 +5,7 @@ import fire from "../login/config/Fire";
 import { Widget, addResponseMessage, addLinkSnippet, addUserMessage, toggleWidget, setQuickButtons, deleteMessages } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import dbFetch from '../api/dbFetch'
+import NavBar from "../utilities/NavBar";
 
 
 import './override.css'
@@ -75,7 +76,7 @@ class Chat extends Component {
         toggleWidget();
 
         if (data === "Back") {
-            this.props.history.goBack();
+            this.props.history.push('/chat');
         }
 
         // setQuickButtons(buttons.filter(button => button.value !== data));
@@ -134,8 +135,6 @@ class Chat extends Component {
                 console.log("chat doesn't exist");
             }
 
-            console.log("getting first messages");
-
             unsubscribe = firedb.collection(collectionName)
                 .onSnapshot(function(querySnapshot) {
                     console.log("snapshot set");
@@ -157,11 +156,12 @@ class Chat extends Component {
                         }
                     });
                 });
+        });
 
-        }
+}
 
-    render() {
-        return (
+render() {
+    return <div > {
             this.props.location.data ? (
 
 
@@ -182,9 +182,9 @@ class Chat extends Component {
                 Redirect to = "/chat" / >
 
             )
-
-        );
-    }
+        } <
+        /div>
+}
 
 }
 
