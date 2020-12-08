@@ -156,35 +156,34 @@ class Chat extends Component {
                         }
                     });
                 });
-        });
 
-}
+        }
 
-render() {
-    return <div > {
-            this.props.location.data ? (
+    render() {
+        return <div > {
+                this.props.location.data ? (
 
 
-                // <Container>
-                <
-                Widget handleNewUserMessage = { this.handleNewUserMessage }
-                handleQuickButtonClicked = { this.handleQuickButtonClicked }
-                launcher = { handleToggle => this.getCustomLauncher(handleToggle) }
-                title = { this.props.location.data.firstName + " " + this.props.location.data.lastName }
-                subtitle = { this.state.subtitle }
-                fullScreenMode = { true }
-                showCloseButton = { false }
-                />
+                    // <Container>
+                    <
+                    Widget handleNewUserMessage = { this.handleNewUserMessage }
+                    handleQuickButtonClicked = { this.handleQuickButtonClicked }
+                    launcher = { handleToggle => this.getCustomLauncher(handleToggle) }
+                    title = { this.props.location.data.firstName + " " + this.props.location.data.lastName }
+                    subtitle = { this.state.subtitle }
+                    fullScreenMode = { true }
+                    showCloseButton = { false }
+                    />
 
-            ) : (
+                ) : (
 
-                <
-                Redirect to = "/chat" / >
+                    <
+                    Redirect to = "/chat" / >
 
-            )
-        } <
-        /div>
-}
+                )
+            } <
+            /div>
+    }
 
 }
 
