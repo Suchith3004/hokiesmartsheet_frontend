@@ -140,7 +140,7 @@ class MentorRegister extends Component {
                     occupation: this.state.occupation,
                     organizationId: this.state.chosenOrganization,
                     description: this.state.description,
-                    occupation: this.state.occupation ? this.state.occupation : 'N/A',
+                    occupation: this.state.occupation ? this.state.occupation : 'VT Student',
                     qualities: this.state.qualities,
                     hobbies: this.state.hobbies,
                     clubs: this.state.clubs,
