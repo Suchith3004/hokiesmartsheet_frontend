@@ -179,7 +179,22 @@ class ElectiveSelector extends Component {
     render() {
 
         const getCourseTypes = () => {
-            return CourseTypes;
+            const typeOptions = [];
+
+            CourseTypes.forEach(type => {
+                if(type.value === 'Transfer') {
+                    if(this.props.transferOptions.length > 0)
+                        typeOptions.push(type)
+                }
+                else if(type.value === 'AP') {
+                    if(this.props.apOptions.length > 0) 
+                        typeOptions.push(type)
+                }
+                else {
+                    typeOptions.push(type);
+                }
+            })
+            return typeOptions;
         }
         const getCourseOptions = () => {
 

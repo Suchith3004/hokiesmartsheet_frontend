@@ -27,7 +27,12 @@ export default class TransferClasses extends React.Component {
         return <div>
             <h2 className="title">Transfer Courses</h2>
             <div className='list-container'>
-                <List elements={this.props.transfers} getListElem={this.classItem} />
+                {this.props.transfers.length > 0 ? (
+                    <List elements={this.props.transfers} getListElem={this.classItem} />
+                ) : (
+                        <h3 className='title'>No transfer courses have been added.</h3>
+                    )}
+
             </div>
         </div>
     }

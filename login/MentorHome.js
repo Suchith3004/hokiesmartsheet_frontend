@@ -12,6 +12,7 @@ const Container = styled.div`
     margin-left : 25%;
     margin-right : 25%;
     margin-top : 5%;
+    margin-bottom: 60px;
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
     text-color: black;
@@ -24,11 +25,13 @@ const FieldsContainer = styled.div`
     box-shadow:0 0 15px 4px rgba(192,192,192,0.3);
     border-radius: 15px;
     text-align: center;
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
     padding : 5px;
     margin-top: 7px;
 `;
+
+
 const circleStyle = {
     display: 'block',
     width: '7rem',

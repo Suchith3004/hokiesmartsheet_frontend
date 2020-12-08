@@ -17,7 +17,7 @@ const circleStyle = {
     position: 'absolute',
     boxSizing: 'border-box',
     top: '50%',
-    left: '50%',
+    left: '40%',
     marginTop: '-50px',
 
 }

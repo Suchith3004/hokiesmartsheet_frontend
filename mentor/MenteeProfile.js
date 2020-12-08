@@ -97,7 +97,6 @@ class MentorProfile extends Component {
                         buttonIsDisabled: false,
                     });
 
-
                 })
                 .catch((error) => {
                     console.error("Failed to fetch mentor data: " + error.message);
@@ -194,7 +193,9 @@ class MentorProfile extends Component {
 
                 <div className='mentor-details'>
                     <OpenChatButton otherUserData={this.props.otherUserData} />
-                    <OpenSharedChecksheet otherUserData={this.props.otherUserData} />
+                    {this.state.mentor.shared && this.state.mentor.shared[(localStorage.getItem('userId') ? localStorage.getItem('userId') : fire.auth().currentUser.uid)] ? (
+                        <OpenSharedChecksheet otherUserData={this.props.otherUserData} />
+                    ) : <span />}
                 </div>
             </div>
 

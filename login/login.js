@@ -6,11 +6,7 @@ import Logo from '../utilities/logo_transparent.png';
 
 
 
-const Container = styled.div`
-    margin-left : 33%;
-    margin-right : 4%;
-    margin-top : 5%;
-`;
+
 
 
 function SubmitButton(props) {
@@ -65,28 +61,24 @@ class Login extends Component {
     render() {
 
         return (
-            <Container>
-                <div class="login">
+            <div class="login">
 
-                    <div className="col-md-6" style={{ alignItems: 'center' }}>
-                        <h1><label style={{ fontSize: 70, color: "white" }} htmlFor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
-                        <br></br>
-                        <img src={Logo} height="200" width="200" alt='website logo' />
+                <h1><label style={{ fontSize: 70, color: "white" }} htmlFor="title>">Virginia Tech Course Planning & Mentoring Portal</label></h1>
+                <br></br>
+                <img src={Logo} height="200" width="200" alt='website logo' />
 
 
-                        <div className="form-group">
-                            <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                        </div>
-                        <div className="form-group">
-                            <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-
-                        </div>
-                        <button onClick={this.login} className="btn btn-primary">Login</button>
-                        <SubmitButton email={this.state.email} password={this.state.password} />
-
-                    </div>
+                <div className="form-group">
+                    <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
                 </div>
-            </Container>
+                <div className="form-group">
+                    <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+
+                </div>
+                <button onClick={this.login} className="btn btn-primary">Login</button>
+                <SubmitButton email={this.state.email} password={this.state.password} />
+
+            </div>
         );
 
     }

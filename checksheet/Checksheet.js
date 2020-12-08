@@ -232,29 +232,6 @@ export default class Table extends React.Component {
 
     }
 
-
-    handleCourseClick = (courseId, semNum) => {
-
-        var viewType = 'course-info'
-        if (courseId.includes("Pathway")) {
-            viewType = 'Pathway'
-        }
-        if (courseId.includes("Elective")) {
-            viewType = 'Elective'
-        }
-        if (courseId.includes("XXX")) {
-            viewType = 'XXXElective'
-        }
-
-
-        this.setState({
-            currCourse: courseId,
-            viewType: viewType,
-            semNum: semNum
-        })
-    }
-
-
     render() {
 
         const { error, isLoaded, userData } = this.state;

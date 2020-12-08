@@ -84,7 +84,7 @@ class MentorList extends Component {
                 this.setState({
                     isLoaded: true,
                     userData: data,
-                    viewType: data.isMentor && !data.semesters ? "mentees" : 'mentors'
+                    viewType: data.mentors && data.mentors.length > 0 ? "mentors" : 'mentees'
                 });
             })
             .catch((error) => {
@@ -104,20 +104,38 @@ class MentorList extends Component {
     }
 
     mentorItem(mentor) {
-        return <div className="mentor-list-item">
-            <div id="mentor-img">
-                <img
-                    src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
-                    alt="new"
-                />
+            return <div className="mentor-list-item">
+                <div id="mentor-img">
+                    <img
+                        src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                        alt="new"
+                    />
+                </div>
+                <div className='mentor-short-info'>
+                    <h2 style={{ margin: 5 }}>{mentor.firstName + ' ' + mentor.lastName}</h2>
+                    <h5>{"Occupation: " + mentor.occupation}</h5>
+                    <h5>{"Organization: " + mentor.organizationName}</h5>
+                </div>
             </div>
-            <div className='mentor-short-info'>
-                <h2 style={{ margin: 5 }}>{mentor.firstName + ' ' + mentor.lastName}</h2>
-                <h5>{"Occupation: " + mentor.occupation}</h5>
-                <h5>{"Organization: " + mentor.organizationName}</h5>
-            </div>
-        </div>
     }
+
+    menteeItem(mentor) {
+        return <div className="mentor-list-item">
+        <div id="mentor-img">
+            <img
+                src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg"
+                alt="new"
+            />
+        </div>
+        <div className='mentor-short-info'>
+            <h2 style={{ margin: 5 }}>{mentor.firstName + ' ' + mentor.lastName}</h2>
+            <h5>{"Major: " + mentor.major}</h5>
+            <h5>{"Graduation Year: " + mentor.gradYear}</h5>
+        </div>
+    </div>
+    }
+
+
 
     render() {
         const { error, isLoaded } = this.state;
@@ -176,15 +194,27 @@ class MentorList extends Component {
                             {this.state.connections.length > 0 ? (
                                 <List elements={getFilteredConnections()}
                                     key={0}
-                                    getListElem={this.mentorItem}
+                                    getListElem={this.state.viewType === 'mentees' ? this.menteeItem : this.mentorItem}
                                     handleClick={this.handleClick} />
                             ) : (
-                                    <div>
-                                        <h3
-                                            style={{ paddingBottom: 15 }}
-                                        >Your have no mentor connections</h3>
-                                        <br />
-                                        <Link to='/mentorsearch'>Search for a mentor</Link>
+
+                                    <div className='empty-search'>
+
+                                        {this.state.viewType === 'mentors' ? (
+                                            <div>
+
+                                                <h3
+                                                    style={{ paddingBottom: 15 }}
+                                                >Your have no mentor connections</h3>
+                                                <br />
+                                                <Link to='/mentorsearch'>Search for a mentor</Link>
+                                            </div>
+                                        ) : (
+
+                                                <h3
+                                                    style={{ paddingBottom: 15 }}
+                                                >Your have no mentee connections</h3>
+                                            )}
                                     </div>
                                 )}
                         </div>
@@ -194,16 +224,16 @@ class MentorList extends Component {
                                 <h1
                                     style={{ paddingBottom: 20 }}
                                 > {this.state.viewType === 'mentees' ? 'Selected Mentee' : 'Selected Mentor'}</h1>
-                                {!this.state.selected || this.state.selected.isUsersMentor? (
+                                {!this.state.selected || this.state.selected.isUsersMentor ? (
 
                                     <MentorProfile
                                         uid={this.state.selected ? this.state.selected.userId : null} otherUserData={this.state.selected}
                                     />
                                 ) : (
-                                    <MenteeProfile
-                                        uid={this.state.selected ? this.state.selected.userId : null} otherUserData={this.state.selected}
-                                    />
-                                )}
+                                        <MenteeProfile
+                                            uid={this.state.selected ? this.state.selected.userId : null} otherUserData={this.state.selected}
+                                        />
+                                    )}
                             </div>
                         ) : (
                                 <span />

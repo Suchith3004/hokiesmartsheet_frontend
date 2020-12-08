@@ -27,7 +27,7 @@ export default class Pathways extends React.Component {
 
     render() {
         return <div>
-            <h2 className="title">Your Pathways</h2>
+            <h2 className="title">Pathways</h2>
             <div className='list-container'>
                 <List elements={this.props.userPathways} getListElem={this.classItem} double={true} />
             </div>

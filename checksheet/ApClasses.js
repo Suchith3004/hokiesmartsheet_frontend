@@ -36,7 +36,11 @@ export default class ApClasses extends React.Component {
         return <div>
             <h2 className="title">AP Classes</h2>
             <div className='list-container'>
-                <List elements={this.props.equivalents} getListElem={this.classItem} double={true} />
+                {this.props.equivalents.length > 0 ? (
+                    <List elements={this.props.equivalents} getListElem={this.classItem} double={true} />
+                ) : (
+                        <h3 className='title'>You have no AP classes</h3>
+                    )}
             </div>
         </div>
     }

@@ -90,6 +90,8 @@ export default class ChecksheetShare extends Component {
                     isLoaded: true
                 })
 
+                alert("Your checkshseet has been shared!")
+
             })
             .catch((error) => {
                 alert("Failed to create new user! " + error.message);
@@ -140,13 +142,9 @@ export default class ChecksheetShare extends Component {
             <NavBar current="chat" />
             <br />
             <br />
-            <div>
-                {this.state.userInfo.shared && this.state.userInfo.shared[this.props.location.mentorId] ? (
-                    <div class="inpageNav">
-                        <button id="firstbtn" onClick={() => this.setState({ viewType: "share" })} class={this.state.viewType === "share" ? "active" : ''}>Share</button>
-                        <button id="lastbtn" onClick={() => this.setState({ viewType: "checksheet" })} class={this.state.viewType === "checksheet" ? "active" : ''}>Your Checksheet</button>
-                    </div>
-                ) : <span />}
+            <div class="inpageNav">
+                <button id="firstbtn" onClick={() => this.setState({ viewType: "share" })} class={this.state.viewType === "share" ? "active" : ''}>Share</button>
+                <button id="lastbtn" onClick={() => this.setState({ viewType: "checksheet" })} class={this.state.viewType === "checksheet" ? "active" : ''}>Your Checksheet</button>
             </div>
             <br></br>
             {this.state.viewType === "share" ? (

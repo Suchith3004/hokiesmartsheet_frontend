@@ -475,7 +475,7 @@ div {
     height: 850px;
 }
 
-.mentor-details {
+.mentor-details:not(.empty-search) {
     background-color: white;
     box-shadow: var(--box-shadow);
     border-radius: 15px;
@@ -486,11 +486,37 @@ div {
     display: inline-block;
     width: 50%;
     background-color: white;
-    box-shadow: var(--box-shadow);;
+    box-shadow: var(--box-shadow);
+    ;
     border-radius: 15px;
     padding: 15px 0px;
     margin-top: 85px;
     height: 800px;
+}
+
+.empty-search {
+    width: 60%;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    border-radius: 15px;
+    padding: 15px 10px;
+    margin: auto;
+}
+
+.empty-search a {
+    text-decoration: none;
+    padding: 8px 15px;
+    background-color: #00aeba;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 1px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border: 2px;
+    font-family: var(--raleway-font);
+    border-radius: 10px;
 }
 
 .add-mentor a {
@@ -553,4 +579,13 @@ body::-webkit-scrollbar-thumb {
     /* roundness of the scroll thumb */
     border: 3px solid rgb(255, 255, 255);
     /* creates padding around scroll thumb */
+}
+
+.login:not(.form-group) {
+    margin: 60px 200px;
+}
+
+.form-group {
+    width: 40%;
+    margin: 20px auto
 }
