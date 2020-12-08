@@ -84,7 +84,7 @@ class MentorList extends Component {
                 this.setState({
                     isLoaded: true,
                     userData: data,
-                    viewType: data.mentors && data.mentors.length > 0 ? "mentors" : 'mentees'
+                    viewType: data.isMentor ? "mentees" : 'mentors'
                 });
             })
             .catch((error) => {
@@ -201,7 +201,7 @@ class MentorList extends Component {
                                     <div className='empty-search'>
 
                                         {this.state.viewType === 'mentors' ? (
-                                            <div>
+                                            <div className='empty-search'>
 
                                                 <h3
                                                     style={{ paddingBottom: 15 }}
