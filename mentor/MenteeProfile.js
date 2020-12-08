@@ -43,9 +43,7 @@ function OpenChatButton(props) {
     function handleClick() {
         history.push({
             pathname: "/singleChat",
-            userData: {},
-            isMentor: true,
-            menteeId: this.props.otherUserData.userId
+            data: props.otherUserData
         });
     }
 
@@ -61,7 +59,9 @@ function OpenSharedChecksheet(props) {
     function handleClick() {
         history.push({
             pathname: "/sharedChecksheet",
-            mentorId: props.otherUserData.userId
+            userData: {},
+            isMentor: true,
+            menteeId: props.otherUserData.userId
         });
     }
 
