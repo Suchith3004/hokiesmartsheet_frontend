@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 import React from "react";
 import styled from 'styled-components';
 import Task from './Class'
 import { Droppable } from "react-beautiful-dnd";
+=======
+import React, { Component } from 'react';
+>>>>>>> master
 
 const TaskList = styled.div`
     padding: 8px;
