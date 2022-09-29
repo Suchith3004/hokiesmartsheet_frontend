@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-class SSDListItemDetails extends Component {
+
+class ClassDetails extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,4 +15,4 @@ class SSDListItemDetails extends Component {
 
 }
 
-export default SSDListItemDetails;
+export default ClassDetails;

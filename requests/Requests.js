@@ -1,11 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
-import fire from './config/Fire';
-import CheckSheet from '../checksheet/Checksheet'
-import dbFetch from '../api/dbFetch'
-import { motion } from 'framer-motion'
+import React, { Component } from 'react';
 import NavBar from '../utilities/NavBar'
-import Requests from "../requests/Requests";
-import MentorHome from "./MentorHome";
+import dbFetch from "../api/dbFetch";
+import fire from "../login/config/Fire";
+import RecievedRequestsList from "./RecievedRequestsList";
+import SentRequestsList from "./SentRequestsList";
+import { motion } from "framer-motion";
 
 const circleStyle = {
     display: 'block',
@@ -30,18 +29,17 @@ const spinTransition = {
     duration: 1,
 }
 
-class StudentHome extends Component {
-
+class Requests extends Component {
     constructor(props) {
         super(props);
-
-
         this.state = {
             isLoaded: false,
             error: null,
-            userData: {}
+            userData: null,
+            viewType: 'student'
         }
     }
+
 
     componentDidMount() {
         dbFetch.get({
@@ -50,10 +48,11 @@ class StudentHome extends Component {
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(data);
+
                 this.setState({
                     isLoaded: true,
-                    userData: data
+                    userData: data,
+                    viewType: data.isMentor ? 'mentor' : 'student'
                 });
             })
             .catch((error) => {
@@ -65,9 +64,9 @@ class StudentHome extends Component {
             });
     }
 
+
     render() {
-        const { error, isLoaded, userData } = this.state;
-        
+        const { error, isLoaded } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -79,24 +78,29 @@ class StudentHome extends Component {
         } else {
             return (
                 <div>
-                    {userData.semesters ? (
-                        <div>
-                            <NavBar current="checksheet" />
-                            <CheckSheet userData={userData} />
+                    <NavBar current="requests" />
+
+                    {this.state.userData.isMentor && this.state.userData.semesters ? (
+                        <div className="inpageNav">
+                            <button id="firstbtn" onClick={() => this.setState({ viewType: "mentor" })}
+                                className={this.state.viewType === "mentor" ? "active" : ''}>Mentor
+                            </button>
+                            <button id="lastbtn" onClick={() => this.setState({ viewType: "student" })}
+                                className={this.state.viewType === "student" ? "active" : ''}>Student
+                            </button>
                         </div>
+                    ) : <span />}
+
+                    {this.state.viewType === 'student' ? (
+                        <SentRequestsList userData={this.state.userData} />
                     ) : (
-                        <div>
-                            <NavBar current="myprofile" />
-                            <MentorHome/>
-                        </div>
-                    )}
+                            <RecievedRequestsList userData={this.state.userData} />
+                        )}
                 </div>
-            );
-        }
+            )
+        };
 
     }
 
 }
-
-export default StudentHome;
-
+export default Requests;

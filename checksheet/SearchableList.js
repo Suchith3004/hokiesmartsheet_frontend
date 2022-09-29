@@ -1,32 +1,47 @@
-<<<<<<< HEAD
 import React from "react";
-import styled from 'styled-components';
-import Task from './Class'
-import { Droppable } from "react-beautiful-dnd";
-=======
-import React, { Component } from 'react';
->>>>>>> master
+import {Droppable} from "react-beautiful-dnd";
+import Task from "./Class";
+import styled from "styled-components";
+
+
+const Container = styled.div`
+    margin: 2px;
+    border: 1px solid white;
+    border-radius: 2px;
+    width: 360px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? 'white' : 'white')};
+    background-color: ${props => (props.isDraggingOver ? 'red' : 'white')};
     flex-grow: 1;
-    width: 400px;
+    width: 350px;x
     min-height: 100px;
-    background-color:white;
-    margin-top: 15px;
+    background-color:#a24857;
 `;
 
-export default class Column extends React.Component {
+const Title = styled.h3`
+    padding: 8px;
+    color: aqua;
+`;
+
+const SearchBarStyle = styled.h3`
+    padding-bottom: 5px;
+    color: aqua;
+`;
+export default class SearchableList extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { displayedCourses: this.props.tasks }
+        this.state = {displayedCourses: this.props.tasks}
         this.searchHandler = this.searchHandler.bind(this);
     }
 
-    searchHandler(event) {
-
+    searchHandler (event) {
         let searcjQery = event.target.value.toLowerCase(),
             displayedCourses = this.props.tasks.filter((el) => {
                 let searchValue = el.name.toLowerCase();
@@ -38,11 +53,9 @@ export default class Column extends React.Component {
     }
 
     render(){
-        
-        const height = (this.props.height) * 30 + 200
         return (
-            <div class='semester' height={height}>
-                <h2 id="totalcredits">{this.props.name}</h2 >
+            <Container>
+                <Title>{this.props.name}</Title>
                 <Droppable droppableId = {this.props.name}>
                     {(provided,snapshot) => (
                         <TaskList
@@ -50,18 +63,20 @@ export default class Column extends React.Component {
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
+                            <SearchBarStyle>
+                            <input type="text" className="search" placeholder="Class Name" onChange={this.searchHandler}/>
+                            </SearchBarStyle>
                             {
                                 this.state.displayedCourses.map((course, index) => {
-                                    return <Task key={index} task={course} index={index} semNum={this.props.semNum} courseClick={this.props.courseClick} alertCompleteHandler={this.props.alertCompleteHandler}/>
+                                    return <Task key={index} task = {course} index={index}/>
                                 })
                             }
-                            {/* {this.props.tasks.map((task,index) => <Task key={task.id} task = {task} index={index}/>)} */}
                             {provided.placeholder}
                         </TaskList>
                     )}
                 </Droppable>
-                <h3 id='totalcredits'>Total Credits:       {this.props.column.totalCredits}</h3>
-            </div>
+            </Container>
         );
     }
+
 }
