@@ -14,14 +14,18 @@ import Pathways from './Pathways'
 
 const circleStyle = {
     display: 'block',
+    marginLeft: '100px',
+    marginRight: '100px',
     width: '7rem',
     height: '7rem',
     border: '0.5rem solid #e9e9e9',
     borderTop: '0.5rem solid #3498db',
     borderRadius: '50%',
+    position: 'absolute',
     boxSizing: 'border-box',
-    top: 0,
-    left: 0
+    top: '50%',
+    left: '40%',
+    marginTop: '-50px',
 }
 
 const spinTransition = {
