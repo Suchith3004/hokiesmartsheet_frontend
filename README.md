@@ -13,9 +13,9 @@ Although we provide users with access to a base collection of classes for their 
 
 ## Tech Stack
 
-**Client:** React, [Expo](https://expo.dev/)
+**Client:** React, [Expo](https://expo.dev/), Firebase (Authentication)
 
-**Server:** Firebase (Authentication, Functions, Firestore, Chat), Node.js
+**Server:** Firebase (Functions, Firestore, Chat), Node.js
 
 
 ## Run Locally
